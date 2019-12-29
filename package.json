@@ -20,6 +20,6 @@
   },
   "scripts": {
     "lint": "eslint",
-    "serve": "nodemon server.js"
+    "serve": "nodemon src/server.js"
   }
 }
