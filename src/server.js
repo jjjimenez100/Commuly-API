@@ -2,7 +2,7 @@ const express = require('express');
 const logger = require('./config/winston');
 const routes = require('./routes');
 const { BASE_URL, PORT } = require('./constants/api');
-const connectToMongoDB = require('./config/database');
+const { connectToMongoDB } = require('./config/database');
 
 const app = express();
 

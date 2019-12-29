@@ -7,5 +7,9 @@ const mongooseOptions = {
 
 // replace this with constant and env
 const connectToMongoDB = () => mongoose.connect('mongodb://localhost:27017/test', mongooseOptions);
+const closeMongoDBConnection = () => mongoose.disconnect();
 
-module.exports = connectToMongoDB;
+module.exports = {
+  connectToMongoDB,
+  closeMongoDBConnection,
+};
