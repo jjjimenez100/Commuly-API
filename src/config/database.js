@@ -6,6 +6,6 @@ const mongooseOptions = {
 };
 
 // replace this with constant and env
-const connectToMongoDB = () => mongoose.connect('mongodb://localhost/test', mongooseOptions);
+const connectToMongoDB = () => mongoose.connect('mongodb://localhost:27017/test', mongooseOptions);
 
 module.exports = connectToMongoDB;

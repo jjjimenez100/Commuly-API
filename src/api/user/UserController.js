@@ -1,8 +1,10 @@
 const logger = require('../../config/winston');
+const User = require('./UserModel');
 
-const getAllUsers = (request, response) => {
+const getAllUsers = async (request, response) => {
   logger.info('inside get all users');
-  response.send('OK');
+  const users = await User.find({});
+  response.send(users);
 };
 
 const getUserById = (request, response) => {
