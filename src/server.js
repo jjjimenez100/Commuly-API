@@ -15,7 +15,8 @@ app.use(bodyParser.json());
 
 const morganBodyOptions = {
   stream: { write: (message) => logger.error(message.trim()) },
-  skip: (request, response) => response.statusCode < 400,
+  // Skip 422 responses since we wouldn't want to flood our logs with invalid requests
+  skip: (request, response) => response.statusCode < 400 || response.statusCode === 422,
 };
 morganBody(app, morganBodyOptions);
 
