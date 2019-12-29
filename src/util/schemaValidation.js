@@ -35,7 +35,7 @@ const requiredNumeric = (parameterName) => body(parameterName)
   .isNumeric()
   .bail();
 
-const validatePolicies = (request, response, next) => {
+const validate = (request, response, next) => {
   const errors = validationResult(request);
   if (errors.isEmpty()) {
     return next();
@@ -59,5 +59,5 @@ module.exports = {
   requiredInteger,
   requiredNumeric,
   requiredString,
-  validatePolicies,
+  validate,
 };

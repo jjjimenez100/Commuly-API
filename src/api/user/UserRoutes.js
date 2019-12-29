@@ -1,12 +1,14 @@
 const router = require('express').Router();
 const {
-  getAllUsers, getUserByEmail, postUser, updateUser, deleteUser,
+  getAllUsers, getUserById, postUser, updateUser, deleteUser,
 } = require('./UserController');
+const { UserValidation, idValidation } = require('./UserValidation');
+const { validate } = require('../../util/schemaValidation');
 
 router.get('/users', getAllUsers);
-router.get('/user:id', getUserByEmail);
+router.get('/user/:id', idValidation, validate, getUserById);
 
-router.post('/user', postUser);
+router.post('/user', UserValidation, validate, postUser);
 
 router.put('/user', updateUser);
 

@@ -6,15 +6,38 @@ const getAllUsers = async (request, response) => {
   response.send(users);
 };
 
-const getUserByEmail = async (request, response) => {
-  const { email } = request.body;
-  const user = await UserService.getUserByEmail(email);
+const getUserById = async (request, response) => {
+  const { id } = request.params;
+  const user = await UserService.getUserById(id);
   response.send(user);
 };
 
-const postUser = async (request, response) => {
-  const newUser = await UserService.registerUser(request.body);
-  response.send(newUser);
+const postUser = async (request, response, next) => {
+  // Get only necessary values, prevents http pollution
+  const {
+    firstName,
+    lastName,
+    phoneNumber,
+    avatarUrl,
+    email,
+    role,
+  } = request.body;
+
+  const user = {
+    firstName,
+    lastName,
+    phoneNumber,
+    avatarUrl,
+    email,
+    role,
+  };
+
+  try {
+    const newUser = await UserService.registerUser(user);
+    response.send(newUser);
+  } catch (error) {
+    next(error);
+  }
 };
 
 const updateUser = async (request, response) => {
@@ -30,5 +53,5 @@ const deleteUser = async (request, response) => {
 };
 
 module.exports = {
-  getAllUsers, getUserByEmail, postUser, updateUser, deleteUser,
+  getAllUsers, getUserById, postUser, updateUser, deleteUser,
 };

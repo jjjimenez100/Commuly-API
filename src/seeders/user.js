@@ -8,7 +8,6 @@ const dataGeneratorFunction = () => {
   const phoneNumber = faker.phone.phoneNumber();
   const avatarUrl = faker.internet.url();
   const email = faker.internet.email();
-  const password = faker.lorem.word();
   const role = faker.lorem.word();
 
   return {
@@ -17,7 +16,6 @@ const dataGeneratorFunction = () => {
     phoneNumber,
     avatarUrl,
     email,
-    password,
     role,
   };
 };

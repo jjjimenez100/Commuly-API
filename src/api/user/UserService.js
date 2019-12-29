@@ -2,7 +2,7 @@ const UserRepository = require('./UserRepository');
 
 const getAllUsers = () => UserRepository.getAllUsers();
 
-const getUser = (email) => UserRepository.getUserByEmail(email);
+const getUserById = (id) => UserRepository.getUserById(id);
 
 const registerUser = (user) => UserRepository.saveUser(user);
 
@@ -11,5 +11,5 @@ const registerUser = (user) => UserRepository.saveUser(user);
 const unregisterUser = (email) => UserRepository.deleteUserByEmail(email);
 
 module.exports = {
-  getAllUsers, getUser, registerUser, unregisterUser,
+  getAllUsers, getUserById, registerUser, unregisterUser,
 };

@@ -2,14 +2,14 @@ const User = require('./UserModel');
 
 const getAllUsers = () => User.find({});
 
-const getUserByEmail = (email) => User.find({ email });
+const getUserById = (id) => User.findById(id);
 
-const saveUser = (user) => User.save(user);
+const saveUser = (user) => User.create(user);
 
 // TODO: update user
 
 const deleteUserByEmail = (email) => User.deleteOne({ email });
 
 module.exports = {
-  getAllUsers, getUserByEmail, saveUser, deleteUserByEmail,
+  getAllUsers, getUserById, saveUser, deleteUserByEmail,
 };
