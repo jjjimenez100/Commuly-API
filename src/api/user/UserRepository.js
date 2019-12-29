@@ -8,8 +8,8 @@ const saveUser = (user) => User.create(user);
 
 // TODO: update user
 
-const deleteUserByEmail = (email) => User.deleteOne({ email });
+const deleteUserById = (id) => User.findByIdAndDelete(id);
 
 module.exports = {
-  getAllUsers, getUserById, saveUser, deleteUserByEmail,
+  getAllUsers, getUserById, saveUser, deleteUserById,
 };

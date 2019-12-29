@@ -47,8 +47,8 @@ const updateUser = async (request, response) => {
 };
 
 const deleteUser = async (request, response) => {
-  const { email } = request.body;
-  await UserService.unregisterUser(email);
+  const { id } = request.params;
+  await UserService.unregisterUser(id);
   response.status(204).send();
 };
 

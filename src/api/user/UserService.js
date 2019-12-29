@@ -8,7 +8,7 @@ const registerUser = (user) => UserRepository.saveUser(user);
 
 // TODO: update user
 
-const unregisterUser = (email) => UserRepository.deleteUserByEmail(email);
+const unregisterUser = (id) => UserRepository.deleteUserById(id);
 
 module.exports = {
   getAllUsers, getUserById, registerUser, unregisterUser,

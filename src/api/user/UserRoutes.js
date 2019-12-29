@@ -10,8 +10,9 @@ router.get('/user/:id', idValidation, validate, getUserById);
 
 router.post('/user', UserValidation, validate, postUser);
 
+// TODO
 router.put('/user', updateUser);
 
-router.delete('/user', deleteUser);
+router.delete('/user/:id', idValidation, validate, deleteUser);
 
 module.exports = router;
