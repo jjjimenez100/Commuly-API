@@ -1,38 +1,46 @@
 const logger = require('../../config/winston');
 const UserService = require('./UserService');
 
-const getAllUsers = async (request, response) => {
-  const users = await UserService.getAllUsers();
-  response.send(users);
+const getAllUsers = async (request, response, next) => {
+  try {
+    const users = await UserService.getAllUsers();
+    response.send(users);
+  } catch (error) {
+    next(error);
+  }
 };
 
-const getUserById = async (request, response) => {
-  const { id } = request.params;
-  const user = await UserService.getUserById(id);
-  response.send(user);
+const getUserById = async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    const user = await UserService.getUserById(id);
+    response.send(user);
+  } catch (error) {
+    next(error);
+  }
 };
 
 const postUser = async (request, response, next) => {
-  // Get only necessary values, prevents http pollution
-  const {
-    firstName,
-    lastName,
-    phoneNumber,
-    avatarUrl,
-    email,
-    role,
-  } = request.body;
-
-  const user = {
-    firstName,
-    lastName,
-    phoneNumber,
-    avatarUrl,
-    email,
-    role,
-  };
-
   try {
+    // Get only necessary values, prevents http pollution
+    const {
+      firstName,
+      lastName,
+      phoneNumber,
+      avatarUrl,
+      email,
+      role,
+    } = request.body;
+
+    const user = {
+      firstName,
+      lastName,
+      phoneNumber,
+      avatarUrl,
+      email,
+      role,
+    };
+
     const newUser = await UserService.registerUser(user);
     response.send(newUser);
   } catch (error) {
@@ -40,16 +48,44 @@ const postUser = async (request, response, next) => {
   }
 };
 
-const updateUser = async (request, response) => {
-  // TODO
-  logger.info('inside update user');
-  response.send('OK');
+const updateUser = async (request, response, next) => {
+  try {
+    // Get only necessary values, prevents http pollution
+    const {
+      firstName,
+      lastName,
+      phoneNumber,
+      avatarUrl,
+      email,
+      role,
+    } = request.body;
+
+    const { id } = request.params;
+
+    const user = {
+      firstName,
+      lastName,
+      phoneNumber,
+      avatarUrl,
+      email,
+      role,
+    };
+
+    await UserService.updateUser(id, user);
+    response.status(204).send();
+  } catch (error) {
+    next(error);
+  }
 };
 
-const deleteUser = async (request, response) => {
-  const { id } = request.params;
-  await UserService.unregisterUser(id);
-  response.status(204).send();
+const deleteUser = async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    await UserService.unregisterUser(id);
+    response.status(204).send();
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = {
