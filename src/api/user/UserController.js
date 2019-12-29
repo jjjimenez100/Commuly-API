@@ -42,6 +42,7 @@ const postUser = async (request, response, next) => {
     };
 
     const newUser = await UserService.registerUser(user);
+    logger.info(`Registered new user: ${JSON.stringify(newUser)}`);
     response.send(newUser);
   } catch (error) {
     next(error);
@@ -72,6 +73,7 @@ const updateUser = async (request, response, next) => {
     };
 
     await UserService.updateUser(id, user);
+    logger.info(`Updated user with ObjectID of ${id}`);
     response.status(204).send();
   } catch (error) {
     next(error);
@@ -82,6 +84,7 @@ const deleteUser = async (request, response, next) => {
   try {
     const { id } = request.params;
     await UserService.unregisterUser(id);
+    logger.info(`Deleted user with ObjectID of ${id}`);
     response.status(204).send();
   } catch (error) {
     next(error);
