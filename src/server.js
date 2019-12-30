@@ -15,11 +15,12 @@ app.use(bodyParser.json());
 
 const morganBodyOptions = {
   stream: { write: (message) => logger.error(message.trim()) },
-  // Skip 422 and 404 responses since we wouldn't want to flood our logs with not found and unprocessable requests
-  skip: (request, response) => response.statusCode < 400 || response.statusCode === 422 || response.statusCode === 404,
+  // We wouldn't want to flood our logs with not found and unprocessable requests
+  skip: (request, response) => response.statusCode < 400
+   || response.statusCode === 422
+    || response.statusCode === 404,
 };
 morganBody(app, morganBodyOptions);
-
 app.use(BASE_URL, routes);
 connectToMongoDB().then(async () => {
   app.listen(PORT, () => logger.info(`Listening to port ${PORT}`));
