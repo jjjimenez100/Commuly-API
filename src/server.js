@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morganBody = require('morgan-body');
+const helmet = require('helmet');
+const cors = require('cors');
 const logger = require('./config/winston');
 const routes = require('./routes');
 const { BASE_URL, PORT } = require('./constants/api');
@@ -20,6 +22,11 @@ const morganBodyOptions = {
     || response.statusCode === 404,
 };
 morganBody(app, morganBodyOptions);
+
+app.use(helmet());
+app.use(cors());
+// TODO: Add csurf and rate limit succeeding requests per ms
+
 app.use(BASE_URL, routes);
 connectToMongoDB().then(async () => {
   app.listen(PORT, () => logger.info(`Listening to port ${PORT}`));
