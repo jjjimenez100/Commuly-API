@@ -13,7 +13,9 @@ const cardSchema = new Schema({
   },
 
   textContent: String,
-  chartContent: [Number],
+  // By default, arrays have a default value of []
+  // see; https://mongoosejs.com/docs/schematypes.html#arrays
+  chartContent: { type: [Number], default: undefined },
   imageURLContent: String,
   videoURLContent: String,
 }, { typePojoToMixed: false });
