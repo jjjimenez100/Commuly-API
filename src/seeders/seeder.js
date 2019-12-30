@@ -19,10 +19,10 @@ const startSeeder = (seedCount, model, dataGeneratorFunction) => {
     try {
       await seeder(seedCount, model, dataGeneratorFunction);
       logger.info(`Done seeding ${seedCount} fake entities`);
-      await closeMongoDBConnection();
     } catch (error) {
       logger.error(`Failed to seed data, ${error}`);
     }
+    await closeMongoDBConnection();
   }).catch(() => logger.error('Failed to connect to mongo database'));
 };
 
