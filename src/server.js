@@ -26,4 +26,4 @@ connectToMongoDB().then(async () => {
 });
 
 app.use(serverErrorHandler);
-console.log('josh');
+const test = 's';
