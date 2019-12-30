@@ -12,7 +12,6 @@ const app = express();
 
 // TODO: Separate these modules into loaders
 app.use(bodyParser.json());
-
 const morganBodyOptions = {
   stream: { write: (message) => logger.error(message.trim()) },
   // We wouldn't want to flood our logs with not found and unprocessable requests
@@ -27,3 +26,4 @@ connectToMongoDB().then(async () => {
 });
 
 app.use(serverErrorHandler);
+console.log('josh');

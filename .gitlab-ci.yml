@@ -12,3 +12,9 @@ lint:
   script:
     - yarn install
     - yarn lint src
+  only:
+    - tags
+    - master
+    - development
+    - staging
+    - merge_requests
