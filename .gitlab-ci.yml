@@ -15,6 +15,5 @@ lint:
   only:
     - tags
     - master
-    - development
     - staging
     - merge_requests

@@ -26,4 +26,3 @@ connectToMongoDB().then(async () => {
 });
 
 app.use(serverErrorHandler);
-const test = 's';
