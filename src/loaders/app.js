@@ -1,5 +1,5 @@
 const figlet = require('figlet');
-const logger = require('../config/winston');
+const logger = require('../modules/logger');
 const { initDatabaseConnection } = require('./database');
 const { initMiddlewares } = require('./middleware');
 const { initRoutes } = require('./route');

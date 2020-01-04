@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const logger = require('../config/winston');
+const logger = require('../modules/logger');
 const errorHandler = require('../api/errorHandler');
 const { BASE_URL } = require('../constants/api');
 

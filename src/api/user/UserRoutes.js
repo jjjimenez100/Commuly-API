@@ -3,7 +3,7 @@ const {
   getAllUsers, getUserById, postUser, updateUser, deleteUser,
 } = require('./UserController');
 const { UserValidation, idValidation } = require('./UserValidation');
-const { validate } = require('../modules/validation');
+const { validate } = require('../validation');
 
 router.get('/users', getAllUsers);
 router.get('/user/:id', idValidation, validate, getUserById);

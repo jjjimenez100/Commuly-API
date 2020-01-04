@@ -4,9 +4,10 @@ const {
   transports,
 } = require('winston');
 const path = require('path');
+const LOGGING_LEVEL = require('../config/logger');
 
 const logger = createLogger({
-  level: 'info',
+  level: LOGGING_LEVEL,
   format: format.combine(
     format.label({
       label: path.basename(process.mainModule.filename),

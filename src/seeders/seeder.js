@@ -1,5 +1,5 @@
-const logger = require('../config/winston');
-const { connectToMongoDB, closeMongoDBConnection } = require('../config/database');
+const logger = require('../modules/logger');
+const { connectToMongoDB, closeMongoDBConnection } = require('../modules/database');
 
 const seeder = (seedCount, model, dataGeneratorFunction) => {
   const entities = [];

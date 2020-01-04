@@ -1,5 +1,5 @@
-const { connectToMongoDB } = require('../config/database');
-const logger = require('../config/winston');
+const { connectToMongoDB } = require('../modules/database');
+const logger = require('../modules/logger');
 
 const initDatabaseConnection = async () => {
   try {

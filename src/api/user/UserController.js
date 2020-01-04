@@ -1,4 +1,4 @@
-const logger = require('../../config/winston');
+const logger = require('../../modules/logger');
 const UserService = require('./UserService');
 
 const getAllUsers = async (request, response, next) => {

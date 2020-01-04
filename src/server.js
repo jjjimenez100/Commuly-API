@@ -1,5 +1,5 @@
 const express = require('express');
-const logger = require('./config/winston');
+const logger = require('./modules/logger');
 const { initAppLoaders } = require('./loaders/app');
 const { PORT } = require('./constants/api');
 

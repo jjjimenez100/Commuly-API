@@ -1,4 +1,4 @@
-const logger = require('../config/winston');
+const logger = require('../modules/logger');
 
 const errorHandler = (error, request, response, next) => {
   logger.error(`Server Error. ${error}`);

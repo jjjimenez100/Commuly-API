@@ -3,7 +3,7 @@ const morganBody = require('morgan-body');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const cors = require('cors');
-const logger = require('../config/winston');
+const logger = require('../modules/logger');
 
 // TODO: Add csurf
 
