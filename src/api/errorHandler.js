@@ -1,6 +1,6 @@
 const logger = require('../config/winston');
 
-const serverErrorHandler = (error, request, response, next) => {
+const errorHandler = (error, request, response, next) => {
   logger.error(`Server Error. ${error}`);
   if (response.headersSent) {
     return next(error);
@@ -10,4 +10,4 @@ const serverErrorHandler = (error, request, response, next) => {
   });
 };
 
-module.exports = serverErrorHandler;
+module.exports = errorHandler;

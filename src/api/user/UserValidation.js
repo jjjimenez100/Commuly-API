@@ -1,5 +1,5 @@
 const { body, param } = require('express-validator');
-const { requiredString } = require('../../util/schemaValidation');
+const { requiredString } = require('../modules/validation');
 
 const idValidation = param('id').isMongoId();
 const firstNameValidation = requiredString('firstName');
