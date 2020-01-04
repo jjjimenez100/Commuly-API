@@ -20,7 +20,30 @@ const cardSchema = new Schema({
   imageURLContent: String,
   videoURLContent: String,
   serialTableContent: Mixed,
-
+  assignmentContent: {
+    type: {
+      textContent: String,
+      owner: String,
+      dueDate: Date,
+      attachmentUrl: String,
+    },
+  },
+  scheduledEventContent: {
+    type: {
+      scheduledDate: Date,
+      name: String,
+      userWorkShift: {
+        type: {
+          // no DateTime object on mongoose
+          start: String,
+          end: String,
+          firstBreak: String,
+          lunchBreak: String,
+          lastBreak: String,
+        },
+      },
+    },
+  },
 }, { typePojoToMixed: false });
 
 const Card = model('Card', cardSchema);
