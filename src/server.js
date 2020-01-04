@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const morganBody = require('morgan-body');
 const helmet = require('helmet');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
+
 const logger = require('./config/winston');
 const routes = require('./routes');
 const { BASE_URL, PORT } = require('./constants/api');
@@ -22,6 +24,19 @@ const morganBodyOptions = {
     || response.statusCode === 404,
 };
 morganBody(app, morganBodyOptions);
+
+const windowMs = 15 * 60 * 1000;
+const max = 100;
+const rateLimiter = rateLimit({
+  windowMs,
+  max,
+  handler(request, response) {
+    const { ip } = request;
+    const errorMessage = `${ip} exceeded ${max} requests within ${windowMs}`;
+    response.status(429).send(errorMessage);
+  },
+});
+app.use(rateLimiter);
 
 app.use(helmet());
 app.use(cors());
