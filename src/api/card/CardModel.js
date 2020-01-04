@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 
+const { Mixed } = Schema.Types;
 const cardSchema = new Schema({
   owner: { type: String, required: true },
   cardType: { type: String, required: true },
@@ -15,9 +16,11 @@ const cardSchema = new Schema({
   textContent: String,
   // By default, arrays have a default value of []
   // see; https://mongoosejs.com/docs/schematypes.html#arrays
-  chartContent: { type: [Number], default: undefined },
+  chartContent: { labels: [String], type: [Number], default: undefined },
   imageURLContent: String,
   videoURLContent: String,
+  serialTableContent: Mixed,
+
 }, { typePojoToMixed: false });
 
 const Card = model('Card', cardSchema);
