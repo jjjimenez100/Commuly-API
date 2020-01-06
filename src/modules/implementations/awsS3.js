@@ -1,5 +1,5 @@
 const S3 = require('aws-sdk/clients/s3');
-const logger = require('./logger');
+const logger = require('../logger');
 
 /**
  *  AWS doesnt offer an endpoint for updating a specific file, so we

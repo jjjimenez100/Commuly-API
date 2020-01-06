@@ -1,5 +1,5 @@
-// wrap aws sns calls
-const sendSNS = require('./awsSns');
+// TODO: Further testing
+const sendSNS = require('../implementations/awsSns');
 
 const sendSMS = (phoneNumber, message, sender) => {
   const messageData = { phoneNumber, message, sender };
