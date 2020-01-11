@@ -7,6 +7,7 @@ cache:
 stages:
   - lint
   - deploy_staging
+  - test_reusable_deploy_script
 
 lint:
   stage: lint
@@ -25,6 +26,12 @@ deploy_staging:
     - ls
     - ssh -i "commuly-api.pem" ec2-user@ec2-54-225-55-219.compute-1.amazonaws.com -o StrictHostKeyChecking=no "cd commuly-api && git pull origin development && wget https://firebasestorage.googleapis.com/v0/b/coursely-stg.appspot.com/o/environments%2Fenv?alt=media -O .env && pm2 restart all"
   only:
-    - tags
+    # - tags
     - master
+    # - development
+
+test_reusable_deploy_script:
+  stage: test_reusable_deploy_script
+  script: ./scripts/deploy-to-cloud.sh
+  only:
     - development
