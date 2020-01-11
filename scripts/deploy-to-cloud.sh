@@ -23,7 +23,7 @@ wget ${SSH_KEYS_URL} -O ${SSH_KEYS}
 echo "Changing permission for ssh keys"
 chmod 400 commuly-api.pem
 
-echo "Using SSH to access EC2 instance at ${HOST_URL}"
+echo "Using SSH to access EC2 instance"
 echo "Deploying changes..."
 ssh -i ${SSH_KEYS} ${HOST_URL} -o StrictHostKeyChecking=no "cd ${PROJECT_DIRECTORY} && git pull origin ${BRANCH_NAME} && wget ${ENV_URL} -O .env && pm2 restart all"
 
