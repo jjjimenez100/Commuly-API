@@ -32,6 +32,6 @@ deploy_staging:
 
 test_reusable_deploy_script:
   stage: test_reusable_deploy_script
-  script: ./scripts/deploy-to-cloud.sh
+  script: sudo bash scripts/deploy-to-cloud.sh
   only:
     - development
