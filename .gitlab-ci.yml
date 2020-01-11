@@ -6,7 +6,6 @@ cache:
 
 stages:
   - lint
-  - get_ec2_keys
   - deploy_staging
 
 lint:
@@ -15,27 +14,16 @@ lint:
     - yarn install
     - yarn lint src
   only:
-    - tags
-    - master
-    - development
     - merge_requests
 
-get_ec2_keys:
-  stage: get_ec2_keys
+deploy_staging:
+  stage: deploy_staging
   script:
     - wget https://firebasestorage.googleapis.com/v0/b/coursely-stg.appspot.com/o/aws-ec2-keys%2Fcommuly-api.pem?alt=media -O commuly-api.pem
     - chmod 400 commuly-api.pem
     - pwd
     - ls
-  only:
-    - tags
-    - master
-    - development
-
-deploy_staging:
-  stage: deploy_staging
-  script:
-    - ssh -i "commuly-api.pem" ec2-user@ec2-54-225-55-219.compute-1.amazonaws.com -o StrictHostKeyChecking=no pwd && ls
+    - ssh -i "commuly-api.pem" ec2-user@ec2-54-225-55-219.compute-1.amazonaws.com -o StrictHostKeyChecking=no pwd && rm -rf commuly-api && ls && git clone git@gitlab.com:futuritylearning/commuly-api.git && cd commuly-api && yarn prod
   only:
     - tags
     - master
