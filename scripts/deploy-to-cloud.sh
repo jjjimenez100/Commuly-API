@@ -25,6 +25,6 @@ chmod 400 commuly-api.pem
 
 echo "Using SSH to access EC2 instance"
 echo "Deploying changes..."
-ssh -i ${SSH_KEYS} ${HOST_URL} -o StrictHostKeyChecking=no "cd ${PROJECT_DIRECTORY} && git pull origin ${BRANCH_NAME} && wget ${ENV_URL} -O .env && pm2 restart all"
+ssh -i ${SSH_KEYS} ${HOST_URL} -o StrictHostKeyChecking=no "cd ${PROJECT_DIRECTORY} && git pull origin ${BRANCH_NAME} && wget ${ENV_URL} -O .env && yarn install && pm2 restart all"
 
 echo "Done deploying changes to EC2 instance"
