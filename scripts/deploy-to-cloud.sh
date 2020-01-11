@@ -22,8 +22,6 @@ wget ${SSH_KEYS_URL} -O ${SSH_KEYS}
 
 echo "Changing permission for ssh keys"
 chmod 400 commuly-api.pem
-pwd
-ls
 
 echo "Using SSH to access EC2 instance at ${HOST_URL}"
 echo "Deploying changes..."
