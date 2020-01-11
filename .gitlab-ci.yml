@@ -20,7 +20,7 @@ lint:
 deploy_staging:
   stage: deploy_staging
   script:
-    - bash scripts/deploy-to-cloud.sh -p "https://firebasestorage.googleapis.com/v0/b/" -s "commuly-api.pem" -u "ec2-user@ec2-54-225-55-219.compute-1.amazonaws.com" -d "commuly-api" -b "development" -e "https://firebasestorage.googleapis.com/v0/b/coursely-stg.appspot.com/o/environments%2Fenv?alt=media"
+    - bash scripts/deploy-to-cloud.sh -p "https://firebasestorage.googleapis.com/v0/b/coursely-stg.appspot.com/o/aws-ec2-keys%2Fcommuly-api.pem?alt=media" -s "commuly-api.pem" -u "ec2-user@ec2-54-225-55-219.compute-1.amazonaws.com" -d "commuly-api" -b "development" -e "https://firebasestorage.googleapis.com/v0/b/coursely-stg.appspot.com/o/environments%2Fenv?alt=media"
   only:
     - tags
     - master
