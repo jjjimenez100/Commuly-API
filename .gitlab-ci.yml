@@ -15,8 +15,8 @@ lint:
     - yarn lint src
   only:
     - merge_requests
-    - master
-    - development
+    # - master
+    # - development
 
 deploy_staging:
   stage: deploy_staging
