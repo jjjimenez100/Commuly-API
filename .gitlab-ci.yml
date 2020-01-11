@@ -7,7 +7,6 @@ cache:
 stages:
   - lint
   - deploy_staging
-  - test_reusable_deploy_script
 
 lint:
   stage: lint
@@ -16,6 +15,8 @@ lint:
     - yarn lint src
   only:
     - merge_requests
+    - master
+    - development
 
 deploy_staging:
   stage: deploy_staging
@@ -23,5 +24,4 @@ deploy_staging:
     - bash scripts/deploy-to-cloud.sh -p "$STAGING_SSH_KEYS_URL" -s "$STAGING_SSH_KEYS" -u "$STAGING_HOST_URL" -b "$STAGING_BRANCH_NAME" -e "$STAGING_ENV_URL" -d "$STAGING_PROJECT_DIRECTORY"
   only:
     - tags
-    - master
-    - development
+    # - development
