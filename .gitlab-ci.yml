@@ -6,7 +6,8 @@ cache:
 
 stages:
   - lint
-  - deploy_staging
+  - get_ec2_keys
+  - install_pm2
 
 lint:
   stage: lint
@@ -16,15 +17,50 @@ lint:
   only:
     - tags
     - master
-    - staging
+    - development
     - merge_requests
 
-deploy_staging:
-  stage: deploy_staging
+get_env:
+  stage: get_env
+  script:
+    - wget https://firebasestorage.googleapis.com/v0/b/coursely-stg.appspot.com/o/environments%2Fenv?alt=media -O .env
+    - pwd
+    - ls
+  only:
+    - tags
+    - master
+    - development
+
+get_ec2_keys:
+  stage: get_ec2_keys
   script:
     - wget https://firebasestorage.googleapis.com/v0/b/coursely-stg.appspot.com/o/aws-ec2-keys%2Fcommuly-api.pem?alt=media -O commuly-api.pem
     - chmod 400 commuly-api.pem
     - pwd
     - ls
-    - ssh -i "commuly-api.pem" ec2-user@ec2-54-225-55-219.compute-1.amazonaws.com -o StrictHostKeyChecking=no
+  only:
+    - tags
+    - master
+    - development
+
+install_pm2:
+  stage: install_pm2
+  script:
+    - yarn global add pm2
+  only:
+    - tags
+    - master
+    - development
+
+deploy_staging:
+  stage: deploy_staging
+  script:
+    - pm2 deploy ecosystem.config.js staging
     - pwd
+    - ls
+  only:
+    - tags
+    - master
+    - development
+
+// ssh -i "commuly-api.pem" ec2-user@ec2-54-225-55-219.compute-1.amazonaws.com -o StrictHostKeyChecking=no
