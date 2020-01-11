@@ -23,7 +23,7 @@ deploy_staging:
     - chmod 400 commuly-api.pem
     - pwd
     - ls
-    - ssh -i "commuly-api.pem" ec2-user@ec2-54-225-55-219.compute-1.amazonaws.com -o StrictHostKeyChecking=no pwd && rm -rf commuly-api && ls && git clone git@gitlab.com:futuritylearning/commuly-api.git && cd commuly-api && yarn prod
+    - ssh -i "commuly-api.pem" ec2-user@ec2-54-225-55-219.compute-1.amazonaws.com -o StrictHostKeyChecking=no pwd && cd commuly-api && pwd && ls && git pull origin development && pwd && ls && wget https://firebasestorage.googleapis.com/v0/b/coursely-stg.appspot.com/o/environments%2Fenv?alt=media -O .env && pwd && ls && pm2 restart all
   only:
     - tags
     - master
