@@ -6,6 +6,7 @@ cache:
 
 stages:
   - lint
+  - deploy_staging
 
 lint:
   stage: lint
@@ -17,3 +18,12 @@ lint:
     - master
     - staging
     - merge_requests
+
+deploy_staging:
+  stage: deploy_staging
+  script:
+    - wget https://firebasestorage.googleapis.com/v0/b/coursely-stg.appspot.com/o/aws-ec2-keys%2Fcommuly-api.pem?alt=media -O commuly-api.pem
+    - pwd
+    - ls
+    - ssh -i "commuly-api.pem" ec2-user@ec2-54-225-55-219.compute-1.amazonaws.com -o StrictHostKeyChecking=no
+    - pwd
