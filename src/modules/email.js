@@ -1,4 +1,5 @@
 const { createTransport } = require('nodemailer');
+const EmailTemplate = require('email-templates');
 const SNS = require('aws-sdk/clients/sns');
 
 class SNSEmail {
@@ -15,6 +16,20 @@ class SNSEmail {
 
   sendTextEmail(messageDetails) {
     return this.transporter.sendMail(messageDetails);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  sendTemplateEmail(template, recipients, locals, messageOptions, from) {
+    const email = new EmailTemplate({
+      message: { from },
+      transport: this.transporter,
+    });
+    // returns an array of promises
+    return recipients.map((recipient) => email.send({
+      template,
+      message: { ...messageOptions, to: recipient },
+      locals,
+    }));
   }
 }
 
