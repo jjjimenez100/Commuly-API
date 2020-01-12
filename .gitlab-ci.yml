@@ -21,7 +21,7 @@ lint:
 deploy_staging:
   stage: deploy_staging
   script:
-    - bash scripts/deploy-to-cloud.sh -p "$STAGING_SSH_KEYS_URL" -s "$STAGING_SSH_KEYS" -u "$STAGING_HOST_URL" -b "$STAGING_BRANCH_NAME" -e "$STAGING_ENV_URL" -d "$STAGING_PROJECT_DIRECTORY"
+    - bash scripts/deploy-to-cloud.sh -p "$STAGING_SSH_KEYS_URL" -s "$STAGING_SSH_KEYS" -u "$STAGING_HOST_URL" -b "$STAGING_BRANCH_NAME" -e "$STAGING_ENV_URL" -d "$STAGING_PROJECT_DIRECTORY" -c "$STAGING_CLOUDFRONT_URL"
   only:
     - tags
-    # - development
+    - development
