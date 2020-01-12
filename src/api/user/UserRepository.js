@@ -4,7 +4,7 @@ const getAllUsers = () => User.find({}).exec();
 
 const getUserById = (id) => User.findById(id).exec();
 
-const saveUser = (user) => User.create(user).exec();
+const saveUser = (user) => User.create(user);
 
 const updateUser = (_id, user) => User.findOneAndUpdate(
   { _id }, user, { useFindAndModify: false },
