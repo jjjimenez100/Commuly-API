@@ -1,14 +1,14 @@
 const { createTransport } = require('nodemailer');
 const EmailTemplate = require('email-templates');
-const SNS = require('aws-sdk/clients/sns');
+const SES = require('aws-sdk/clients/ses');
 
-class SNSEmail {
+class SESEmail {
   constructor(accessKeyId, secretAccessKey, region) {
     const accessConfig = {
       accessKeyId, secretAccessKey, region,
     };
 
-    this.snsInstance = new SNS(accessConfig);
+    this.snsInstance = new SES(accessConfig);
     this.transporter = createTransport({
       SES: this.snsInstance,
     });
@@ -33,4 +33,4 @@ class SNSEmail {
   }
 }
 
-module.exports = SNSEmail;
+module.exports = SESEmail;
