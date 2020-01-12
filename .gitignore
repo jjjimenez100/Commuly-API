@@ -178,5 +178,5 @@ $RECYCLE.BIN/
 *.lnk
 
 .env
-.pem
+*.pem
 # End of https://www.gitignore.io/api/node,linux,macos,windows
