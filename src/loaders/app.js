@@ -3,11 +3,13 @@ const logger = require('../modules/logger');
 const { initDatabaseConnection } = require('./database');
 const { initMiddlewares } = require('./middleware');
 const { initRoutes } = require('./route');
+const { initVariablesOnExternalFiles } = require('./variable');
 
 const initAppLoaders = async (app) => {
   logger.info('Initializing server modules...');
 
   try {
+    initVariablesOnExternalFiles();
     initMiddlewares(app);
     initRoutes(app);
     await initDatabaseConnection(app);
