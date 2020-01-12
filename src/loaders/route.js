@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const logger = require('../modules/logger');
 const errorHandler = require('../api/errorHandler');
-const { BASE_URL } = require('../constants/api');
+const { BASE_URL } = require('../config/api');
 
 const UserRoutes = require('../api/user/UserRoutes');
 const CardRoutes = require('../api/card/CardRoutes');
