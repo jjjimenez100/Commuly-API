@@ -14,7 +14,7 @@ const contentCardSchema = {
   },
   // By default, arrays have a default value of []
   // see; https://mongoosejs.com/docs/schematypes.html#arrays
-  chartContent: { labels: [String], type: [Number], default: undefined },
+  chartContent: { labels: [String], values: [Number] },
   imageURLContent: String,
   videoURLContent: String,
   serialTableContent: Mixed,
@@ -66,53 +66,43 @@ const questionCardSchema = {
       question: String,
       choices: [String],
 
-      responses: {
-        type: {
-          ...userResponseInfoSchema,
-          answer: String,
-        },
-      },
+      responses: [{
+        ...userResponseInfoSchema,
+        answer: String,
+      }],
     },
   },
   likertContent: {
     type: {
       question: String,
-      choices: {
-        type: {
-          lowerBoundChoice: String,
-          upperBoundChoice: String,
-        },
-      },
-      responses: {
-        type: {
-          ...userResponseInfoSchema,
-          answer: Number,
-        },
-      },
+      choices: [{
+        lowerBoundChoice: String,
+        upperBoundChoice: String,
+      }],
+      responses: [{
+        ...userResponseInfoSchema,
+        answer: Number,
+      }],
     },
   },
   openTextContent: {
     type: {
       question: String,
-      responses: {
-        type: {
-          ...userResponseInfoSchema,
-          answer: String,
-        },
-      },
+      responses: [{
+        ...userResponseInfoSchema,
+        answer: String,
+      }],
     },
   },
   columnReorderingContent: {
     type: {
       question: String,
       choices: [String],
-      responses: {
-        type: {
-          ...userResponseInfoSchema,
-          // in order
-          answer: [String],
-        },
-      },
+      responses: [{
+        ...userResponseInfoSchema,
+        // in order
+        answer: [String],
+      }],
     },
   },
 };
@@ -134,6 +124,7 @@ const cardSchema = new Schema({
   reactions: {
     type: {
       // ObjectIDs
+      // also maybe store this to the users collection
       understood: [String],
       excited: [String],
       bored: [String],
@@ -145,5 +136,5 @@ const cardSchema = new Schema({
 }, { typePojoToMixed: false });
 
 const Card = model('Card', cardSchema);
-
+console.log('josh schema', Object.keys(Card.schema.paths));
 module.exports = Card;
