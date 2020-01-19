@@ -7,7 +7,7 @@ const seeder = (seedCount, model, dataGeneratorFunction) => {
 
   for (let index = 0; index < seedCount; index += 1) {
     const entity = dataGeneratorFunction();
-    logger.info(`Entity data: ${JSON.stringify(entity)}`);
+    logger.info(`Entity data: ${JSON.stringify(entity, null, 2)}`);
     entities.push(entity);
   }
 
