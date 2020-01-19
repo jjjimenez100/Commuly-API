@@ -46,13 +46,15 @@ const contentCardSchema = {
       // Enum for: Done or Stuck
       status: String,
       attachmentUrl: String,
-      responsibleUser: ObjectId,
+      // ObjectID
+      responsibleUser: String,
     },
   },
 };
 
 const userResponseInfoSchema = {
-  id: ObjectId,
+  // ObjectID
+  id: String,
   // additional details for viewing responses
   firstName: String,
   lastName: String,
@@ -75,10 +77,12 @@ const questionCardSchema = {
   likertContent: {
     type: {
       question: String,
-      choices: [{
-        lowerBoundChoice: String,
-        upperBoundChoice: String,
-      }],
+      choices: {
+        type: {
+          lowerBoundChoice: String,
+          upperBoundChoice: String,
+        },
+      },
       responses: [{
         ...userResponseInfoSchema,
         answer: Number,
@@ -121,6 +125,8 @@ const cardSchema = new Schema({
   tags: {
     taggedUsers: [ObjectId],
   },
+  // ObjectIDs
+  teams: [String],
   reactions: {
     type: {
       // ObjectIDs
@@ -136,5 +142,4 @@ const cardSchema = new Schema({
 }, { typePojoToMixed: false });
 
 const Card = model('Card', cardSchema);
-console.log('josh schema', Object.keys(Card.schema.paths));
 module.exports = Card;

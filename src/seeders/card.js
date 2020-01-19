@@ -21,8 +21,6 @@ const {
   OPEN_TEXT_QUESTION,
 
   TODO_STATUS,
-  DONE_STATUS,
-  STUCK_STATUS,
 } = require('../api/card/CardEnum');
 
 const seedCount = 10;
@@ -37,6 +35,16 @@ const generateFakeUser = () => {
   return {
     id, firstName, lastName,
   };
+};
+
+const shuffleArrayOrder = (array) => {
+  const shuffledArray = [...array];
+  for (let index = shuffledArray.length - 1; index > 0; index -= 1) {
+    const j = Math.floor(Math.random() * (index + 1));
+    [shuffledArray[index], shuffledArray[j]] = [shuffledArray[j], shuffledArray[index]];
+  }
+
+  return shuffledArray;
 };
 
 const dataGeneratorFunction = () => {
@@ -89,7 +97,6 @@ const dataGeneratorFunction = () => {
 
   if (cardType === CONTENT_CARD) {
     const contentCardIndex = getRandomNumber(0, CONTENT_CARD_TYPES.length - 1);
-
     const contentCardType = CONTENT_CARD_TYPES[contentCardIndex];
     if (contentCardType === TEXT_CONTENT) {
       const textContent = {
@@ -98,7 +105,7 @@ const dataGeneratorFunction = () => {
         backgroundColor: faker.internet.color(),
       };
 
-      return { ...cardInfo, textContent };
+      return { ...cardInfo, contentCardType, textContent };
     } if (contentCardType === CHART_CONTENT) {
       const mappingSize = getRandomNumber(1, seedCount);
       const labels = [];
@@ -109,24 +116,24 @@ const dataGeneratorFunction = () => {
       }
 
       const chartContent = { labels, values };
-      return { ...cardInfo, chartContent };
+      return { ...cardInfo, contentCardType, chartContent };
     }
 
     if (contentCardType === IMAGE_CONTENT) {
       const imageURLContent = faker.image.imageUrl();
-      return { ...cardInfo, imageURLContent };
+      return { ...cardInfo, contentCardType, imageURLContent };
     }
 
     if (contentCardType === VIDEO_CONTENT) {
       // faker does not support video urls
       const videoURLContent = faker.image.imageUrl();
-      return { ...cardInfo, videoURLContent };
+      return { ...cardInfo, contentCardType, videoURLContent };
     }
 
     if (contentCardType === SERIAL_TABLE_CONTENT) {
       // not yet sure how the client side will structure this one
       const serialTableContent = faker.random.words();
-      return { ...cardInfo, serialTableContent };
+      return { ...cardInfo, contentCardType, serialTableContent };
     }
 
     if (contentCardType === SCHEDULED_CONTENT) {
@@ -149,7 +156,7 @@ const dataGeneratorFunction = () => {
         userWorkShift,
       };
 
-      return { ...cardInfo, scheduledEventContent };
+      return { ...cardInfo, contentCardType, scheduledEventContent };
     }
 
     if (contentCardType === TODO_CONTENT) {
@@ -174,7 +181,7 @@ const dataGeneratorFunction = () => {
         responsibleUser,
       };
 
-      return { ...cardInfo, todoContent };
+      return { ...cardInfo, contentCardType, todoContent };
     }
   } else if (cardType === QUESTION_CARD) {
     const question = faker.lorem.sentence();
@@ -191,9 +198,10 @@ const dataGeneratorFunction = () => {
 
       const responses = [];
       for (let index = 0; index < responsesSize; index += 1) {
+        const choiceRandomIndex = getRandomNumber(0, choices.length - 1);
         responses.push({
           ...generateFakeUser(),
-          answer: faker.random.word(),
+          answer: choices[choiceRandomIndex],
         });
       }
 
@@ -204,19 +212,16 @@ const dataGeneratorFunction = () => {
     }
 
     if (questionCardType === LIKERT_QUESTION) {
-      const choices = [];
-      for (let index = 0; index < choicesSize; index += 1) {
-        choices.push({
-          lowerBoundChoice: faker.random.word(),
-          upperBoundChoice: faker.random.word(),
-        });
-      }
+      const choices = {
+        lowerBoundChoice: faker.random.word(),
+        upperBoundChoice: faker.random.word(),
+      };
 
       const responses = [];
       for (let index = 0; index < responsesSize; index += 1) {
         responses.push({
           ...generateFakeUser(),
-          answer: faker.random.number(),
+          answer: faker.random.number(10),
         });
       }
 
@@ -251,16 +256,18 @@ const dataGeneratorFunction = () => {
       for (let index = 0; index < responsesSize; index += 1) {
         responses.push({
           ...generateFakeUser(),
-          answer: faker.lorem.sentence(),
+          answer: shuffleArrayOrder(choices),
         });
       }
 
-      const openTextContent = {
-        question, responses,
+      const columnReorderingContent = {
+        question, choices, responses,
       };
-      return { ...cardInfo, questionCardType, openTextContent };
+      return { ...cardInfo, questionCardType, columnReorderingContent };
     }
   }
+
+  return {};
 };
 
 const startSeeder = require('./seeder');
