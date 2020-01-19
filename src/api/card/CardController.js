@@ -1,8 +1,21 @@
 const CardService = require('./CardService');
 
-const getAllCards = async (request, response, next) => {
+const getCards = async (request, response, next) => {
   try {
-    const cards = await CardService.getAllCards();
+    /**
+     * These are the only filters we need atm.
+     * Convert properties into object keys if more
+     * filters are needed to be supported.
+     */
+    const { cardType = '', team = '' } = request.query;
+    let cards;
+    if (cardType !== '') {
+      cards = await CardService.getCardsByCardType(cardType);
+    } else if (team !== '') {
+      cards = await CardService.getCardsByTeam(team);
+    } else {
+      cards = await CardService.getAllCards();
+    }
     response.send(cards);
   } catch (error) {
     next(error);
@@ -10,5 +23,5 @@ const getAllCards = async (request, response, next) => {
 };
 
 module.exports = {
-  getAllCards,
+  getCards,
 };
