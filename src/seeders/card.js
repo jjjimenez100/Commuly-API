@@ -83,10 +83,17 @@ const dataGeneratorFunction = () => {
     confused.push(faker.random.uuid());
   }
 
+  const teamSize = getRandomNumber(0, seedCount);
+  const teams = [];
+  for (let index = 0; index < teamSize; index += 1) {
+    teams.push(faker.random.uuid());
+  }
+
   const cardInfo = {
     owner,
     cardType,
     tags,
+    teams,
     reactions: {
       understood,
       excited,
