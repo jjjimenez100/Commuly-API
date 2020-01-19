@@ -5,6 +5,9 @@ const {
   CLOUDFRONT_URL,
 } = require('../../config/aws');
 
+console.log('josh d id', CLOUDFRONT_DISTRIBUTION_ID);
+console.log('josh rsa key', CLOUDFRONT_RSA_KEY);
+console.log('josh url', `http*://${CLOUDFRONT_URL}/*`);
 const cloudFrontSigner = new aws.CloudFront.Signer(CLOUDFRONT_DISTRIBUTION_ID, CLOUDFRONT_RSA_KEY);
 
 const policy = JSON.stringify({

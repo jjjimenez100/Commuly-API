@@ -9,6 +9,12 @@ const startServer = async () => {
   try {
     const app = express();
     await initAppLoaders(app);
+    app.get('/test', (req, res, next) => {
+      // eslint-disable-next-line global-require
+      const attachSignedCookieToResponse = require('./modules/implementations/awsCloudfront');
+      attachSignedCookieToResponse(res);
+      res.send('ok');
+    });
     app.listen(PORT, (error) => {
       if (error) {
         throw error;

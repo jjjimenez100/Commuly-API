@@ -1,3 +1,4 @@
+require('dotenv').config();
 // TODO: Implement and further testing after getting access to an AWS account
 const S3Wrapper = require('../implementations/awsS3');
 const logger = require('../logger');
@@ -47,6 +48,7 @@ const deleteFile = async (fileName) => {
 
 const getPublicPath = (fileName) => s3.getPublicPath(S3_BUCKET_NAME, fileName);
 
+getFiles().then((a) => console.log('josh a', a)).catch((e) => console.log(e));
 module.exports = {
   getFiles, getFileDetails, getPublicPath, uploadFile, deleteFile,
 };

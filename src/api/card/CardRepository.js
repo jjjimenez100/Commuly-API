@@ -6,6 +6,8 @@ const getCardsByCardType = (cardType) => Card.find({ cardType });
 
 const getCardsByTeam = (team) => Card.find({ teams: team });
 
+const saveCard = (card) => Card.create(card);
+
 module.exports = {
-  getAllCards, getCardsByCardType, getCardsByTeam,
+  getAllCards, getCardsByCardType, getCardsByTeam, saveCard,
 };
