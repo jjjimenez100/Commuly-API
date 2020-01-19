@@ -1,4 +1,5 @@
 const faker = require('faker');
+const { ObjectId } = require('mongoose').Types;
 const model = require('../api/card/CardModel');
 const {
   CARD_TYPES,
@@ -28,7 +29,7 @@ const seedCount = 10;
 const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 const generateFakeUser = () => {
-  const id = faker.random.uuid();
+  const id = ObjectId();
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
 
@@ -48,7 +49,7 @@ const shuffleArrayOrder = (array) => {
 };
 
 const dataGeneratorFunction = () => {
-  const owner = faker.random.uuid();
+  const owner = ObjectId();
 
   const cardTypeRandomIndex = getRandomNumber(0, CARD_TYPES.length - 1);
   const cardType = CARD_TYPES[cardTypeRandomIndex];
@@ -56,37 +57,37 @@ const dataGeneratorFunction = () => {
   const taggedUsersSize = getRandomNumber(0, seedCount);
   const tags = [];
   for (let index = 0; index < taggedUsersSize; index += 1) {
-    tags.push(faker.random.uuid());
+    tags.push(ObjectId());
   }
 
   const understoodSize = getRandomNumber(0, seedCount);
   const understood = [];
   for (let index = 0; index < understoodSize; index += 1) {
-    understood.push(faker.random.uuid());
+    understood.push(ObjectId());
   }
 
   const excitedSize = getRandomNumber(0, seedCount);
   const excited = [];
   for (let index = 0; index < excitedSize; index += 1) {
-    excited.push(faker.random.uuid());
+    excited.push(ObjectId());
   }
 
   const boredSize = getRandomNumber(0, seedCount);
   const bored = [];
   for (let index = 0; index < boredSize; index += 1) {
-    bored.push(faker.random.uuid());
+    bored.push(ObjectId());
   }
 
   const confusedSize = getRandomNumber(0, seedCount);
   const confused = [];
   for (let index = 0; index < confusedSize; index += 1) {
-    confused.push(faker.random.uuid());
+    confused.push(ObjectId());
   }
 
   const teamSize = getRandomNumber(0, seedCount);
   const teams = [];
   for (let index = 0; index < teamSize; index += 1) {
-    teams.push(faker.random.uuid());
+    teams.push(ObjectId());
   }
 
   const cardInfo = {
@@ -175,7 +176,7 @@ const dataGeneratorFunction = () => {
       const randomStatusIndex = getRandomNumber(0, TODO_STATUS.length - 1);
       const status = TODO_STATUS[randomStatusIndex];
       const attachmentUrl = faker.internet.url();
-      const responsibleUser = faker.random.uuid();
+      const responsibleUser = ObjectId();
 
       const todoContent = {
         startDate,
