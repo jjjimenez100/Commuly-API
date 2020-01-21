@@ -24,6 +24,10 @@ const getCards = async (request, response, next) => {
   }
 };
 
+const postCard = async (request, response, next) => {
+  // FIXME
+};
+
 module.exports = {
-  getCards,
+  getCards, postCard,
 };
