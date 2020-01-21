@@ -14,15 +14,15 @@ const getCardsByTeam = (team) => CardRepository.getCardsByTeam(team);
 const getCardsByIds = (ids) => CardRepository.getCardsByIds(ids);
 
 const saveImageContentCard = (imageCard) => {
-
+  // FIX ME, upload to s3 then save to db
 };
 
 const saveVideoContentCard = (videoCard) => {
-
+  // FIX ME, upload to s3 then save to db
 };
 
 const saveScheduledEventCard = (scheduledCard) => {
-
+  // FIX ME, upload to s3 then save to db
 };
 
 const saveContentCard = (card) => {
@@ -45,10 +45,21 @@ const saveContentCard = (card) => {
 
 const saveQuestionCard = (card) => CardRepository.saveCard(card);
 
-const reactToCard = (cardId, reactionType, userId) => CardRepository.addReaction(cardId, reactionType, userId);
+const reactToCard = (cardId, reactionType, userId) => {
+  CardRepository.addReaction(cardId, reactionType, userId);
+};
 
-const unreactToCard = (cardId, reactionType, userId) => CardRepository.removeReaction(cardId, reactionType, userId);
+const unreactToCard = (cardId, reactionType, userId) => {
+  CardRepository.removeReaction(cardId, reactionType, userId);
+};
 
 module.exports = {
-  getAllCards, getCardsByCardType, getCardsByTeam, getCardsByIds, reactToCard, unreactToCard,
+  getAllCards,
+  getCardsByCardType,
+  getCardsByTeam,
+  getCardsByIds,
+  reactToCard,
+  unreactToCard,
+  saveContentCard,
+  saveQuestionCard,
 };
