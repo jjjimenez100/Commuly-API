@@ -7,6 +7,8 @@ const userSchema = new Schema({
   avatarUrl: String,
   email: String,
   role: String,
+  todoCards: [String],
+  scheduledEventCards: [String],
 });
 const User = model('User', userSchema);
 
