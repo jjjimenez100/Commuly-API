@@ -45,6 +45,10 @@ const saveContentCard = (card) => {
 
 const saveQuestionCard = (card) => CardRepository.saveCard(card);
 
+const reactToCard = (cardId, reactionType, userId) => CardRepository.addReaction(cardId, reactionType, userId);
+
+const unreactToCard = (cardId, reactionType, userId) => CardRepository.removeReaction(cardId, reactionType, userId);
+
 module.exports = {
-  getAllCards, getCardsByCardType, getCardsByTeam, getCardsByIds,
+  getAllCards, getCardsByCardType, getCardsByTeam, getCardsByIds, reactToCard, unreactToCard,
 };
