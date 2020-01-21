@@ -11,6 +11,8 @@ const getCardsByCardType = (cardType) => CardRepository.getCardsByCardType(cardT
 
 const getCardsByTeam = (team) => CardRepository.getCardsByTeam(team);
 
+const getCardsByIds = (ids) => CardRepository.getCardsByIds(ids);
+
 const saveImageContentCard = (imageCard) => {
 
 };
@@ -44,5 +46,5 @@ const saveContentCard = (card) => {
 const saveQuestionCard = (card) => CardRepository.saveCard(card);
 
 module.exports = {
-  getAllCards, getCardsByCardType, getCardsByTeam,
+  getAllCards, getCardsByCardType, getCardsByTeam, getCardsByIds,
 };

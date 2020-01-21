@@ -7,12 +7,14 @@ const getCards = async (request, response, next) => {
      * Convert properties into object keys if more
      * filters are needed to be supported.
      */
-    const { cardType = '', team = '' } = request.query;
+    const { cardType = '', team = '', ids = [] } = request.query;
     let cards;
     if (cardType !== '') {
       cards = await CardService.getCardsByCardType(cardType);
     } else if (team !== '') {
       cards = await CardService.getCardsByTeam(team);
+    } else if (ids) {
+      cards = await CardService.getCardsByIds(ids);
     } else {
       cards = await CardService.getAllCards();
     }
