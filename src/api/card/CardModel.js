@@ -23,6 +23,8 @@ const contentCardSchema = {
   scheduledEventContent: {
     type: {
       scheduledDate: Date,
+      // either INDIVIDUAL or TEAM
+      scheduleType: String,
       name: String,
       // s3 -> cloudfront
       imagePosterURL: String,
@@ -41,6 +43,8 @@ const contentCardSchema = {
   todoContent: {
     // user collection should also contain this one
     type: {
+      // INDIVIDUAL or TEAM
+      todoType: String,
       startDate: Date,
       endDate: Date,
       startTime: Date,

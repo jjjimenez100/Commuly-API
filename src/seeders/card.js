@@ -14,6 +14,7 @@ const {
   SERIAL_TABLE_CONTENT,
   SCHEDULED_CONTENT,
   TODO_CONTENT,
+  SCHEDULED_TODO_TYPES,
 
   QUESTION_CARD_TYPES,
   MULTIPLE_CHOICE_QUESTION,
@@ -145,6 +146,8 @@ const dataGeneratorFunction = () => {
     }
 
     if (contentCardType === SCHEDULED_CONTENT) {
+      const randomIndexType = getRandomNumber(0, SCHEDULED_TODO_TYPES.length - 1);
+      const scheduleType = SCHEDULED_TODO_TYPES[randomIndexType];
       const scheduledDate = faker.date.future();
       const name = faker.random.word();
       const imagePosterURL = faker.image.imageUrl();
@@ -158,6 +161,7 @@ const dataGeneratorFunction = () => {
       };
 
       const scheduledEventContent = {
+        scheduleType,
         scheduledDate,
         name,
         imagePosterURL,
@@ -168,6 +172,8 @@ const dataGeneratorFunction = () => {
     }
 
     if (contentCardType === TODO_CONTENT) {
+      const randomIndexType = getRandomNumber(0, SCHEDULED_TODO_TYPES.length - 1);
+      const scheduleType = SCHEDULED_TODO_TYPES[randomIndexType];
       const startDate = faker.date.recent();
       const endDate = faker.date.future();
       const startTime = faker.date.recent();
@@ -179,6 +185,7 @@ const dataGeneratorFunction = () => {
       const responsibleUser = ObjectId();
 
       const todoContent = {
+        scheduleType,
         startDate,
         endDate,
         startTime,
