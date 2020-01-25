@@ -39,12 +39,11 @@ class S3CloudStorage {
       "bucket-owner-read"
       "bucket-owner-full-control"
   */
-  uploadFileToS3Bucket(bucketName, fileName, request, permissions) {
+  uploadFileToS3Bucket(bucketName, fileName, fileBuffer) {
     const uploadParams = {
       Bucket: bucketName,
-      Body: request,
+      Body: fileBuffer,
       Key: fileName,
-      ACL: permissions,
     };
     return this.s3Instance.upload(uploadParams).promise();
   }

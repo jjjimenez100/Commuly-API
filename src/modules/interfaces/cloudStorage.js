@@ -27,9 +27,9 @@ const getFileDetails = async (fileName) => {
   }
 };
 
-const uploadFile = async (fileName, request) => {
+const uploadFile = async (fileName, fileBuffer) => {
   try {
-    return await s3.uploadFileToS3Bucket(S3_BUCKET_NAME, fileName, request, 'public-read');
+    return await s3.uploadFileToS3Bucket(S3_BUCKET_NAME, fileName, fileBuffer);
   } catch (error) {
     logger.error(`Failed to upload request file to cloud storage ${error}`);
     throw error;
