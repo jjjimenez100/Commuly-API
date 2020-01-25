@@ -1,9 +1,9 @@
 const CardService = require('./CardService');
 const { CONTENT_CARD, QUESTION_CARD } = require('./CardEnum');
 
-/* const getCards = async (request, response, next) => {
+const getCards = async (request, response, next) => {
   try {
-    const { cardType = '', team = '', ids = [] } = request.query;
+    const { cardType = '', team = '' } = request.query;
     let cards;
 
     if (cardType !== '') {
@@ -18,7 +18,7 @@ const { CONTENT_CARD, QUESTION_CARD } = require('./CardEnum');
     next(error);
   }
 };
-*/
+
 
 const postCard = async (request, response, next) => {
   // FIXME
@@ -43,5 +43,5 @@ const postCard = async (request, response, next) => {
 };
 
 module.exports = {
-  postCard,
+  getCards, postCard,
 };
