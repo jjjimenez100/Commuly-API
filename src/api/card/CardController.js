@@ -1,21 +1,15 @@
 const CardService = require('./CardService');
 const { CONTENT_CARD, QUESTION_CARD } = require('./CardEnum');
 
-const getCards = async (request, response, next) => {
+/* const getCards = async (request, response, next) => {
   try {
-    /**
-     * These are the only filters we need atm.
-     * Convert properties into object keys if more
-     * filters are needed to be supported.
-     */
     const { cardType = '', team = '', ids = [] } = request.query;
     let cards;
+
     if (cardType !== '') {
       cards = await CardService.getCardsByCardType(cardType);
     } else if (team !== '') {
       cards = await CardService.getCardsByTeam(team);
-    } else if (ids) {
-      cards = await CardService.getCardsByIds(ids);
     } else {
       cards = await CardService.getAllCards();
     }
@@ -24,6 +18,7 @@ const getCards = async (request, response, next) => {
     next(error);
   }
 };
+*/
 
 const postCard = async (request, response, next) => {
   // FIXME
@@ -48,5 +43,5 @@ const postCard = async (request, response, next) => {
 };
 
 module.exports = {
-  getCards, postCard,
+  postCard,
 };

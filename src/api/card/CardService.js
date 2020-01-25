@@ -1,3 +1,4 @@
+const path = require('path');
 const uuid = require('uuid/v4');
 const CardRepository = require('./CardRepository');
 const {
@@ -15,32 +16,51 @@ const getCardsByTeam = (team) => CardRepository.getCardsByTeam(team);
 
 const getCardsByIds = (ids) => CardRepository.getCardsByIds(ids);
 
+const getRandomizedFilename = (team, folder, originalFileName) => {
+  const randomFileName = uuid();
+  const fileExtension = path.extname(originalFileName);
+
+  return `${team}/${folder}/${randomFileName}${fileExtension}`;
+};
+
 const saveImageContentCard = async (imageCard) => {
-  // FIX ME, have distinct directories for each type, for each user/team if possible
-  const { file: image } = imageCard;
-  const imageURLContent = uuid();
-  await CloudStorage.uploadFile(imageURLContent, image);
-  await CardRepository.saveCard({
+  const { file: { buffer, originalname }, team } = imageCard;
+
+  const imageURLContent = getRandomizedFilename(team, IMAGE_CONTENT, originalname);
+  await CloudStorage.uploadFile(imageURLContent, buffer);
+
+  const { _id } = await CardRepository.saveCard({
     ...imageCard, imageURLContent,
   });
+
+  return _id;
 };
 
 const saveVideoContentCard = async (videoCard) => {
-  // FIX ME, have distinct directories for each type, for each user/team if possible
-  const { file: video } = videoCard;
-  const videoURLContent = uuid();
-  await CloudStorage.uploadFile(videoURLContent, video);
-  await CardRepository.saveCard({
-    ...videoURLContent, videoURLContent,
+  const { file: { buffer, originalname }, team } = videoCard;
+
+  const videoURLContent = getRandomizedFilename(team, VIDEO_CONTENT, originalname);
+  await CloudStorage.uploadFile(videoURLContent, buffer);
+
+  const { _id } = await CardRepository.saveCard({
+    ...videoCard, videoURLContent,
   });
+
+  return _id;
 };
 
 const saveScheduledEventCard = async (scheduledCard) => {
-  // FIX ME, have distinct directories for each type, for each user/team if possible
-  const { file: image } = scheduledCard;
-  const imagePosterURL = uuid();
-  await CloudStorage.uploadFile(imagePosterURL, image);
-  // FIX
+  const { file: { buffer, originalname }, team } = scheduledCard;
+
+  const imagePosterURL = getRandomizedFilename(team, SCHEDULED_CONTENT, originalname);
+  await CloudStorage.uploadFile(imagePosterURL, buffer);
+
+  const updatedScheduledCard = { ...scheduledCard };
+  updatedScheduledCard.scheduledEventContent.imagePosterURL = imagePosterURL;
+
+  const { _id } = await CardRepository.saveCard(updatedScheduledCard);
+
+  return _id;
 };
 
 const saveContentCard = (card) => {

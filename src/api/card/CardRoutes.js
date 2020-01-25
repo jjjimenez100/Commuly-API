@@ -5,6 +5,6 @@ const upload = multer();
 const CardController = require('./CardController');
 
 router.get('/cards', CardController.getCards);
-router.post('/card/:id', upload.single('file'), CardController.postCard);
+router.post('/card', upload.single('file'), CardController.postCard);
 
 module.exports = router;
