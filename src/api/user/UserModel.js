@@ -10,7 +10,10 @@ const userSchema = new Schema({
   email: String,
   role: String,
   pinnedCards: [ObjectId],
-  todoCards: [ObjectId],
+  todoCards: [{
+    todoId: ObjectId,
+    status: String,
+  }],
   scheduledCards: [ObjectId],
   reactedCards: [ObjectId],
   teams: [ObjectId],

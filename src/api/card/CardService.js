@@ -5,6 +5,7 @@ const {
   IMAGE_CONTENT,
   VIDEO_CONTENT,
   SCHEDULED_CONTENT,
+  TODO_CONTENT,
 } = require('./CardEnum');
 const CloudStorage = require('../../modules/interfaces/cloudStorage');
 
@@ -63,6 +64,10 @@ const saveScheduledEventCard = async (scheduledCard) => {
   return _id;
 };
 
+const saveTodoContentCard = async (todoCard) => {
+
+};
+
 const saveContentCard = (card) => {
   // text, chart, serial table, todo
   const { contentCardType } = card;
@@ -76,6 +81,10 @@ const saveContentCard = (card) => {
 
   if (contentCardType === SCHEDULED_CONTENT) {
     return saveScheduledEventCard(card);
+  }
+
+  if (contentCardType === TODO_CONTENT) {
+    return saveTodoContentCard(card);
   }
 
   return CardRepository.saveCard(card);

@@ -10,21 +10,13 @@ const updateUser = (id, user) => UserRepository.updateUser(id, user);
 
 const unregisterUser = (id) => UserRepository.deleteUserById(id);
 
-const addScheduleToUsers = (teams) => {
+const addScheduleToUsers = (userId, scheduleId) => UserRepository.addSchedule(userId, scheduleId);
 
-};
+const removeScheduleToUsers = (userId, scheduleId) => UserRepository.removeSchedule(userId, scheduleId);
 
-const removeScheduleToUsers = (teams) => {
+const addTodoToUsers = (userId, todoId, status) => UserRepository.addTodo(userId, todoId, status);
 
-};
-
-const addTodoToUsers = (teams) => {
-
-};
-
-const removeTodoToUsers = (teams) => {
-
-};
+const removeTodoToUsers = (userId, todoId) => UserRepository.removeTodo(userId, todoId);
 
 const markTodoAsDone = () => {
 

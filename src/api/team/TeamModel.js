@@ -33,6 +33,8 @@ const teamSchema = new Schema({
   members: [ObjectId],
   admins: [ObjectId],
   pinnedCards: [ObjectId],
+  scheduledCards: [ObjectId],
+  todoCards: [ObjectId],
   ...thresholds,
 }, { typePojoToMixed: false });
 
