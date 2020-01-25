@@ -14,7 +14,12 @@ const contentCardSchema = {
   },
   // By default, arrays have a default value of []
   // see; https://mongoosejs.com/docs/schematypes.html#arrays
-  chartContent: { labels: [String], values: [Number] },
+  chartContent: {
+    type: {
+      labels: [String],
+      values: [Number],
+    },
+  },
   // s3 -> cloudfront
   imageURLContent: String,
   // s3 -> cloudfront
