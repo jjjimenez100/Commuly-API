@@ -54,14 +54,14 @@ const contentCardSchema = {
       status: String,
       attachmentUrl: String,
       // ObjectID
-      responsibleUser: String,
+      responsibleUser: ObjectId,
     },
   },
 };
 
 const userResponseInfoSchema = {
   // ObjectID
-  id: String,
+  userId: ObjectId,
   // additional details for viewing responses
   firstName: String,
   lastName: String,
@@ -121,7 +121,7 @@ const questionCardSchema = {
 const cardSchema = new Schema({
   // ObjectID of owner, no need to embed their info again, since reactions are anonymous
   owner: {
-    type: String,
+    type: ObjectId,
     required: true,
   },
   // enum: either CONTENT_CARD or QUESTION_CARD
@@ -132,8 +132,6 @@ const cardSchema = new Schema({
   tags: {
     taggedUsers: [ObjectId],
   },
-  // ObjectIDs
-  teams: [String],
   reactions: {
     type: {
       // ObjectIDs
