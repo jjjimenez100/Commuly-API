@@ -30,12 +30,12 @@ const seedCount = 10;
 const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 const generateFakeUser = () => {
-  const id = ObjectId();
+  const userId = ObjectId();
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
 
   return {
-    id, firstName, lastName,
+    userId, firstName, lastName,
   };
 };
 
@@ -85,17 +85,10 @@ const dataGeneratorFunction = () => {
     confused.push(ObjectId());
   }
 
-  const teamSize = getRandomNumber(0, seedCount);
-  const teams = [];
-  for (let index = 0; index < teamSize; index += 1) {
-    teams.push(ObjectId());
-  }
-
   const cardInfo = {
     owner,
     cardType,
     tags,
-    teams,
     reactions: {
       understood,
       excited,
