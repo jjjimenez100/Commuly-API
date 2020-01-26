@@ -117,12 +117,24 @@ const saveContentCard = (card, team = '') => {
 
 const saveQuestionCard = (card) => CardRepository.saveCard(card);
 
-const reactToCard = (cardId, reactionType, userId) => {
-  CardRepository.addReaction(cardId, reactionType, userId);
+const reactToCard = (cardId, reactionType, userId) => CardRepository.addReaction(cardId, reactionType, userId);
+
+const unreactToCard = (cardId, reactionType, userId) => CardRepository.removeReaction(cardId, reactionType, userId);
+
+const pinCardToUserStream = (cardId, userId) => {
+
 };
 
-const unreactToCard = (cardId, reactionType, userId) => {
-  CardRepository.removeReaction(cardId, reactionType, userId);
+const pinCardToTeamStream = (cardId, teamId) => {
+
+};
+
+const unpinCardToUserStream = (cardId, userId) => {
+
+};
+
+const unpinCardToTeamStream = (cardId, teamId) => {
+
 };
 
 module.exports = {

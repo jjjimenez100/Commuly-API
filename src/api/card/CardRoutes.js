@@ -6,5 +6,6 @@ const CardController = require('./CardController');
 
 router.get('/cards', CardController.getCards);
 router.post('/card', upload.single('file'), CardController.postCard);
+router.patch('/card/:id', CardController.patchCard);
 
 module.exports = router;

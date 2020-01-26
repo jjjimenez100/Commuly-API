@@ -1,5 +1,10 @@
 const CardService = require('./CardService');
-const { CONTENT_CARD, QUESTION_CARD } = require('./CardEnum');
+const {
+  CONTENT_CARD,
+  QUESTION_CARD,
+  REACT,
+  UNREACT,
+} = require('./CardEnum');
 
 const getCards = async (request, response, next) => {
   try {
@@ -41,6 +46,24 @@ const postCard = async (request, response, next) => {
   }
 };
 
+const patchCard = async (request, response, next) => {
+  try {
+    const { patchType } = request.body;
+    if (patchType === REACT) {
+      const { reactionType, userId } = request.body;
+      const { id: cardId } = request.params;
+      await CardService.reactToCard(cardId, reactionType, userId);
+    } else if (patchType === UNREACT) {
+      const { reactionType, userId } = request.body;
+      const { id: cardId } = request.params;
+      await CardService.unreactToCard(cardId, reactionType, userId);
+    }
+    response.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
-  getCards, postCard,
+  getCards, postCard, patchCard,
 };

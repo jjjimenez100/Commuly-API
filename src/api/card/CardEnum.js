@@ -1,3 +1,13 @@
+const REACT = 'REACT';
+const UNREACT = 'UNREACT';
+const PIN = 'PIN';
+const UNPIN = 'UNPIN';
+
+const PATCH_TYPES = [
+  REACT, UNREACT,
+  PIN, UNPIN,
+];
+
 const CONTENT_CARD = 'CONTENT_CARD';
 const QUESTION_CARD = 'QUESTION_CARD';
 
@@ -73,4 +83,10 @@ module.exports = {
   TODO_STATUS,
   DONE_STATUS,
   STUCK_STATUS,
+
+  REACT,
+  UNREACT,
+  PIN,
+  UNPIN,
+  PATCH_TYPES,
 };
