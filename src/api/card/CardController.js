@@ -23,10 +23,10 @@ const postCard = async (request, response, next) => {
   // FIXME
   try {
     const { body, file } = request;
-    const { cardType } = body;
+    const { cardType, team } = body;
     let id;
     if (cardType === CONTENT_CARD) {
-      id = await CardService.saveContentCard({ ...body, file });
+      id = await CardService.saveContentCard({ ...body, file }, team);
     } else if (cardType === QUESTION_CARD) {
       id = await CardService.saveQuestionCard({ ...body });
     } else {

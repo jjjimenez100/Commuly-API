@@ -74,6 +74,7 @@ const addTodo = (userId, todoId) => User.findOneAndUpdate(
     $push: {
       todoCards: {
         todoId,
+        status: 'N/A',
       },
     },
   },
@@ -90,6 +91,7 @@ const addTodoToMultipleUsers = (userIds, todoId) => User.updateMany(
     $push: {
       todoCards: {
         todoId,
+        status: 'N/A',
       },
     },
   },

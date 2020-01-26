@@ -93,7 +93,7 @@ const saveTodoContentCard = async (todoCard, team = '') => {
   return _id;
 };
 
-const saveContentCard = (card) => {
+const saveContentCard = (card, team = '') => {
   // text, chart, serial table, todo
   const { contentCardType } = card;
   if (contentCardType === IMAGE_CONTENT) {
@@ -109,7 +109,7 @@ const saveContentCard = (card) => {
   }
 
   if (contentCardType === TODO_CONTENT) {
-    return saveTodoContentCard(card);
+    return saveTodoContentCard(card, team);
   }
 
   return CardRepository.saveCard(card);

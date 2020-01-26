@@ -42,8 +42,15 @@
     "lint": "eslint",
     "dev": "nodemon src/server.js",
     "prod": "pm2 start src/server.js",
+
     "cards": "node src/seeders/card.js",
-    "seed:cards": "yarn cards"
+    "seed:cards": "yarn cards",
+
+    "users": "node src/seeders/user.js",
+    "seed:users": "yarn users",
+
+    "teams": "node src/seeders/team.js",
+    "seed:teams": "yarn teams"
   },
   "husky": {
     "hooks": {

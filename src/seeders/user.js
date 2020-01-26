@@ -1,7 +1,7 @@
 const faker = require('faker');
 const model = require('../api/user/UserModel');
 
-const seedCount = process.argv[2] || 0;
+const seedCount = process.argv[2] || 10;
 const dataGeneratorFunction = () => {
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();

@@ -6,9 +6,7 @@ const addSchedule = (teamId, scheduleId) => Team.findOneAndUpdate(
   },
   {
     $push: {
-      scheduledCards: {
-        scheduleId,
-      },
+      scheduledCards: scheduleId,
     },
   },
   { useFindAndModify: false },
@@ -16,7 +14,17 @@ const addSchedule = (teamId, scheduleId) => Team.findOneAndUpdate(
 
 const removeSchedule = () => {};
 
-const addTodo = () => {};
+const addTodo = (teamId, todoId) => Team.findOneAndUpdate(
+  {
+    _id: teamId,
+  },
+  {
+    $push: {
+      todoCards: todoId,
+    },
+  },
+  { useFindAndModify: false },
+).exec();
 
 const removeTodo = () => {};
 
