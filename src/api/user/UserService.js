@@ -39,6 +39,14 @@ const markTodoAsDone = (userId, todoId) => UserRepository.markTodo(userId, todoI
 
 const markTodoAsStuck = (userId, todoId) => UserRepository.markTodo(userId, todoId, STUCK_STATUS);
 
+const pinCardToUserStream = (userId, cardId) => {
+
+};
+
+const unpinCardToUserStream = (userId, cardId) => {
+
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -58,4 +66,7 @@ module.exports = {
 
   markTodoAsDone,
   markTodoAsStuck,
+
+  pinCardToUserStream,
+  unpinCardToUserStream,
 };

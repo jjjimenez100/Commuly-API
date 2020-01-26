@@ -121,22 +121,6 @@ const reactToCard = (cardId, reactionType, userId) => CardRepository.addReaction
 
 const unreactToCard = (cardId, reactionType, userId) => CardRepository.removeReaction(cardId, reactionType, userId);
 
-const pinCardToUserStream = (cardId, userId) => {
-
-};
-
-const pinCardToTeamStream = (cardId, teamId) => {
-
-};
-
-const unpinCardToUserStream = (cardId, userId) => {
-
-};
-
-const unpinCardToTeamStream = (cardId, teamId) => {
-
-};
-
 module.exports = {
   getAllCards,
   getCardsByCardType,

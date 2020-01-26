@@ -1,11 +1,9 @@
 const REACT = 'REACT';
 const UNREACT = 'UNREACT';
-const PIN = 'PIN';
-const UNPIN = 'UNPIN';
+const MARK_TODO = 'MARK_TODO';
 
 const PATCH_TYPES = [
-  REACT, UNREACT,
-  PIN, UNPIN,
+  REACT, UNREACT, MARK_TODO,
 ];
 
 const CONTENT_CARD = 'CONTENT_CARD';
@@ -86,7 +84,6 @@ module.exports = {
 
   REACT,
   UNREACT,
-  PIN,
-  UNPIN,
+  MARK_TODO,
   PATCH_TYPES,
 };
