@@ -64,7 +64,19 @@ const saveScheduledEventCard = async (scheduledCard) => {
   return _id;
 };
 
-const saveTodoContentCard = async (todoCard) => {
+const saveIndividualScheduledEventCard = async (scheduledCard, userIds) => {
+
+};
+
+const saveTeamScheduledEventCard = async (scheduledCard) => {
+
+};
+
+const saveIndividualTodoContentCard = async (todoCard, userIds) => {
+
+};
+
+const saveTeamTodoContentCard = async (todoCard, team) => {
 
 };
 
