@@ -2,12 +2,12 @@ const User = require('./UserModel');
 
 const getAllUsers = () => User.find({}).exec();
 
-const getUserById = (id) => User.findById(id).exec();
+const getUserById = (userId) => User.findById(userId).exec();
 
 const saveUser = (user) => User.create(user);
 
-const updateUser = (_id, user) => User.findOneAndUpdate(
-  { _id }, user, { useFindAndModify: false },
+const updateUser = (userId, user) => User.findOneAndUpdate(
+  { _id: userId }, user, { useFindAndModify: false },
 ).exec();
 
 const addSchedule = (userId, scheduleId) => User.findOneAndUpdate(
@@ -34,14 +34,30 @@ const removeSchedule = (userId, scheduleId) => User.findOneAndUpdate(
   { useFindAndModify: false },
 ).exec();
 
-const addTodo = (userId, todoId, status) => User.findOneAndUpdate(
+const addTodo = (userId, todoId) => User.findOneAndUpdate(
   {
     _id: userId,
   },
   {
     $push: {
       todoCards: {
-        todoId, status,
+        todoId,
+      },
+    },
+  },
+  { useFindAndModify: false },
+).exec();
+
+const addTodoToMultipleUsers = (userIds, todoId) => User.updateMany(
+  {
+    _id: {
+      $in: userIds,
+    },
+  },
+  {
+    $push: {
+      todoCards: {
+        todoId,
       },
     },
   },
@@ -62,16 +78,30 @@ const removeTodo = (userId, todoId) => User.findOneAndUpdate(
   { useFindAndModify: false },
 ).exec();
 
-const markTodoAsDone = (userId, todoId) => User.findOneAndUpdate(
+const removeTodoToMultipleUsers = (userIds, todoId) => User.updateMany(
   {
-    _id: userId,
+    _id: {
+      $in: userIds,
+    },
   },
   {
     $pull: {
       todoCards: {
         todoId,
-        status: 
       },
+    },
+  },
+  { useFindAndModify: false },
+).exec();
+
+const markTodo = (userId, todoId, status) => User.update(
+  {
+    _id: userId,
+    'todoCards.todoId': todoId,
+  },
+  {
+    $set: {
+      'todoCards.$.status': status,
     },
   },
   { useFindAndModify: false },
@@ -80,5 +110,19 @@ const markTodoAsDone = (userId, todoId) => User.findOneAndUpdate(
 const deleteUserById = (id) => User.findByIdAndDelete(id).exec();
 
 module.exports = {
-  getAllUsers, getUserById, saveUser, deleteUserById, updateUser, addSchedule, removeSchedule,
+  getAllUsers,
+  getUserById,
+  saveUser,
+  deleteUserById,
+  updateUser,
+
+  addSchedule,
+  removeSchedule,
+
+  addTodo,
+  addTodoToMultipleUsers,
+  removeTodo,
+  removeTodoToMultipleUsers,
+
+  markTodo,
 };

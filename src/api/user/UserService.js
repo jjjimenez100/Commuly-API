@@ -1,4 +1,5 @@
 const UserRepository = require('./UserRepository');
+const { DONE_STATUS, STUCK_STATUS } = require('../card/CardEnum');
 
 const getAllUsers = () => UserRepository.getAllUsers();
 
@@ -12,20 +13,39 @@ const unregisterUser = (id) => UserRepository.deleteUserById(id);
 
 const addScheduleToUsers = (userId, scheduleId) => UserRepository.addSchedule(userId, scheduleId);
 
-const removeScheduleToUsers = (userId, scheduleId) => UserRepository.removeSchedule(userId, scheduleId);
+const removeScheduleToUsers = (userId, scheduleId) => UserRepository.removeSchedule(
+  userId, scheduleId,
+);
 
-const addTodoToUsers = (userId, todoId, status) => UserRepository.addTodo(userId, todoId, status);
+const addTodoToUser = (userId, todoId) => UserRepository.addTodo(userId, todoId);
 
-const removeTodoToUsers = (userId, todoId) => UserRepository.removeTodo(userId, todoId);
+const addTodoToUsers = (userIds, todoId) => UserRepository.addTodoToMultipleUsers(userIds, todoId);
 
-const markTodoAsDone = () => {
+const removeTodoToUser = (userId, todoId) => UserRepository.removeTodo(userId, todoId);
 
-};
+const removeTodoToUsers = (userIds, todoId) => UserRepository.removeTodoToMultipleUsers(
+  userIds, todoId,
+);
 
-const markTodoAsStuck = () => {
+const markTodoAsDone = (userId, todoId) => UserRepository.markTodo(userId, todoId, DONE_STATUS);
 
-};
+const markTodoAsStuck = (userId, todoId) => UserRepository.markTodo(userId, todoId, STUCK_STATUS);
 
 module.exports = {
-  getAllUsers, getUserById, registerUser, unregisterUser, updateUser,
+  getAllUsers,
+  getUserById,
+  registerUser,
+  unregisterUser,
+  updateUser,
+
+  addScheduleToUsers,
+  removeScheduleToUsers,
+
+  addTodoToUser,
+  addTodoToUsers,
+  removeTodoToUser,
+  removeTodoToUsers,
+
+  markTodoAsDone,
+  markTodoAsStuck,
 };
