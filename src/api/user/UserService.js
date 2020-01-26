@@ -11,10 +11,18 @@ const updateUser = (id, user) => UserRepository.updateUser(id, user);
 
 const unregisterUser = (id) => UserRepository.deleteUserById(id);
 
-const addScheduleToUsers = (userId, scheduleId) => UserRepository.addSchedule(userId, scheduleId);
+const addScheduleToUser = (userId, scheduleId) => UserRepository.addSchedule(userId, scheduleId);
 
-const removeScheduleToUsers = (userId, scheduleId) => UserRepository.removeSchedule(
+const addScheduleToUsers = (userIds, scheduleId) => UserRepository.addScheduleToMultipleUsers(
+  userIds, scheduleId,
+);
+
+const removeScheduleToUser = (userId, scheduleId) => UserRepository.removeSchedule(
   userId, scheduleId,
+);
+
+const removeScheduleToUsers = (userIds, scheduleId) => UserRepository.removeScheduleToMultipleUsers(
+  userIds, scheduleId,
 );
 
 const addTodoToUser = (userId, todoId) => UserRepository.addTodo(userId, todoId);
@@ -38,8 +46,10 @@ module.exports = {
   unregisterUser,
   updateUser,
 
+  addScheduleToUser,
   addScheduleToUsers,
   removeScheduleToUsers,
+  removeScheduleToUser,
 
   addTodoToUser,
   addTodoToUsers,

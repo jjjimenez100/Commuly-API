@@ -22,6 +22,22 @@ const addSchedule = (userId, scheduleId) => User.findOneAndUpdate(
   { useFindAndModify: false },
 ).exec();
 
+const addScheduleToMultipleUsers = (userIds, scheduleId) => User.updateMany(
+  {
+    _id: {
+      $in: userIds,
+    },
+  },
+  {
+    $push: {
+      scheduledCards: {
+        scheduleId,
+      },
+    },
+  },
+  { useFindAndModify: false },
+).exec();
+
 const removeSchedule = (userId, scheduleId) => User.findOneAndUpdate(
   {
     _id: userId,
@@ -29,6 +45,22 @@ const removeSchedule = (userId, scheduleId) => User.findOneAndUpdate(
   {
     $pull: {
       scheduledCards: scheduleId,
+    },
+  },
+  { useFindAndModify: false },
+).exec();
+
+const removeScheduleToMultipleUsers = (userIds, scheduleId) => User.updateMany(
+  {
+    _id: {
+      $in: userIds,
+    },
+  },
+  {
+    $pull: {
+      scheduledCards: {
+        scheduleId,
+      },
     },
   },
   { useFindAndModify: false },
@@ -117,7 +149,9 @@ module.exports = {
   updateUser,
 
   addSchedule,
+  addScheduleToMultipleUsers,
   removeSchedule,
+  removeScheduleToMultipleUsers,
 
   addTodo,
   addTodoToMultipleUsers,

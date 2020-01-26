@@ -1,11 +1,18 @@
 const path = require('path');
 const uuid = require('uuid/v4');
+
 const CardRepository = require('./CardRepository');
+const UserService = require('../user/UserService');
+const TeamService = require('../team/TeamService');
+
 const {
   IMAGE_CONTENT,
   VIDEO_CONTENT,
   SCHEDULED_CONTENT,
   TODO_CONTENT,
+
+  INDIVIDUAL_TYPE,
+  TEAM_TYPE,
 } = require('./CardEnum');
 const CloudStorage = require('../../modules/interfaces/cloudStorage');
 
@@ -50,8 +57,8 @@ const saveVideoContentCard = async (videoCard) => {
   return _id;
 };
 
-const saveScheduledEventCard = async (scheduledCard) => {
-  const { file: { buffer, originalname }, team } = scheduledCard;
+const saveScheduledEventCard = async (scheduledCard, team = '') => {
+  const { file: { buffer, originalname } } = scheduledCard;
 
   const imagePosterURL = getRandomizedFilename(team, SCHEDULED_CONTENT, originalname);
   await CloudStorage.uploadFile(imagePosterURL, buffer);
@@ -61,23 +68,29 @@ const saveScheduledEventCard = async (scheduledCard) => {
 
   const { _id } = await CardRepository.saveCard(updatedScheduledCard);
 
+  const { scheduledEventContent: { scheduleType } } = scheduledCard;
+  if (scheduleType === INDIVIDUAL_TYPE) {
+    const { userIds } = scheduledCard;
+    await UserService.addScheduleToUsers(userIds, _id);
+  } else if (team !== '' && scheduleType === TEAM_TYPE) {
+    await TeamService.addScheduleToTeam(team, _id);
+  }
+
   return _id;
 };
 
-const saveIndividualScheduledEventCard = async (scheduledCard, userIds) => {
+const saveTodoContentCard = async (todoCard, team = '') => {
+  const { _id } = await CardRepository.saveCard(todoCard);
+  const { todoType } = todoCard;
 
-};
+  if (todoType === INDIVIDUAL_TYPE) {
+    const { userIds } = todoCard;
+    await UserService.addTodoToUsers(userIds, _id);
+  } else if (team !== '' && todoType === TEAM_TYPE) {
+    await TeamService.addTodoToTeam(team, _id);
+  }
 
-const saveTeamScheduledEventCard = async (scheduledCard) => {
-
-};
-
-const saveIndividualTodoContentCard = async (todoCard, userIds) => {
-
-};
-
-const saveTeamTodoContentCard = async (todoCard, team) => {
-
+  return _id;
 };
 
 const saveContentCard = (card) => {

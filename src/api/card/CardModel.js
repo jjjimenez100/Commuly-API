@@ -58,8 +58,6 @@ const contentCardSchema = {
       // Enum for: Done or Stuck
       status: String,
       attachmentUrl: String,
-      // ObjectID
-      responsibleUser: ObjectId,
     },
   },
 };
