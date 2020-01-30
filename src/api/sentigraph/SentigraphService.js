@@ -1,6 +1,9 @@
 const moment = require('moment-timezone');
+const axios = require('axios');
 const SentigraphRepository = require('./SentigraphRepository');
 const { sendSMS } = require('../../modules/interfaces/sms');
+
+const QUOTE_FOR_THE_DAY_API_URL = 'http://quotes.rest/qod.json?category=';
 
 const getReactionsHistory = () => SentigraphRepository.getAllReactionsHistory();
 
@@ -22,10 +25,13 @@ const notifyUserOnThreshold = (phoneNumber, sender) => {
   return sendSMS(phoneNumber, message, sender);
 };
 
+const getQuoteForTheDay = (category) => axios.get(`${QUOTE_FOR_THE_DAY_API_URL}${category}`);
+
 module.exports = {
   getReactionsHistory,
   getReactionsHistoryByUsers,
   recordReaction,
   deleteOldReactionHistory,
   notifyUserOnThreshold,
+  getQuoteForTheDay,
 };
