@@ -1,4 +1,3 @@
-// TODO: Further testing
 const SMSWrapper = require('../implementations/awsSNS');
 const logger = require('../logger');
 const {
