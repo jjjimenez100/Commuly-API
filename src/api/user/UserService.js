@@ -1,5 +1,23 @@
 const UserRepository = require('./UserRepository');
+const CardService = require('../card/CardService');
 const { DONE_STATUS, STUCK_STATUS } = require('../card/CardEnum');
+
+const getUserCards = async (id) => {
+  const userDetails = await UserRepository.getUserById(id);
+  const { activeTeam, scheduledCards, todoCards } = userDetails;
+  const todoIds = todoCards.map(({ todoId }) => todoId);
+  const ids = [...scheduledCards, ...todoIds];
+
+  const userCards = await CardService.getCardsByIds(ids);
+  const teamCards = await CardService.getCardsByTeam(activeTeam);
+
+  const cards = {
+    userCards,
+    teamCards,
+  };
+
+  return cards;
+};
 
 const getAllUsers = () => UserRepository.getAllUsers();
 
@@ -48,6 +66,8 @@ const unpinCardToUserStream = (userId, cardId) => {
 };
 
 module.exports = {
+  getUserCards,
+
   getAllUsers,
   getUserById,
   registerUser,

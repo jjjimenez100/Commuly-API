@@ -20,6 +20,16 @@ const getUserById = async (request, response, next) => {
   }
 };
 
+const getUserCards = async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    const user = await UserService.getUserCards(id);
+    response.send(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const postUser = async (request, response, next) => {
   try {
     // Get only necessary values, prevents http pollution
@@ -92,5 +102,5 @@ const deleteUser = async (request, response, next) => {
 };
 
 module.exports = {
-  getAllUsers, getUserById, postUser, updateUser, deleteUser,
+  getAllUsers, getUserCards, getUserById, postUser, updateUser, deleteUser,
 };

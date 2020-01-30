@@ -9,6 +9,7 @@ const userSchema = new Schema({
   avatarUrl: String,
   email: String,
   role: String,
+  activeTeam: ObjectId,
   pinnedCards: [ObjectId],
   todoCards: [{
     todoId: ObjectId,
