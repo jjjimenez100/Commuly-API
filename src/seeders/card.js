@@ -55,6 +55,8 @@ const dataGeneratorFunction = () => {
   const cardTypeRandomIndex = getRandomNumber(0, CARD_TYPES.length - 1);
   const cardType = CARD_TYPES[cardTypeRandomIndex];
 
+  const team = ObjectId();
+
   const taggedUsersSize = getRandomNumber(0, seedCount);
   const tags = [];
   for (let index = 0; index < taggedUsersSize; index += 1) {
@@ -89,6 +91,7 @@ const dataGeneratorFunction = () => {
     owner,
     cardType,
     tags,
+    team,
     reactions: {
       understood,
       excited,
