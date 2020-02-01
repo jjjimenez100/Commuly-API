@@ -148,6 +148,90 @@ const updateUserPoints = (id, points) => User.findOneAndUpdate(
   { $inc: { points } },
 );
 
+const addCardReactionToUser = (userId, cardId) => User.findOneAndUpdate(
+  {
+    _id: userId,
+  },
+  {
+    $push: {
+      reactedCards: {
+        cardId,
+      },
+    },
+  },
+  { useFindAndModify: false },
+).exec();
+
+const removeCardReactionToUser = (userId, cardId) => User.findOneAndUpdate(
+  {
+    _id: userId,
+  },
+  {
+    $pull: {
+      reactedCards: {
+        cardId,
+      },
+    },
+  },
+  { useFindAndModify: false },
+).exec();
+
+const pinCardToUserStream = (userId, cardId) => User.findOneAndUpdate(
+  {
+    _id: userId,
+  },
+  {
+    $push: {
+      pinnedCards: {
+        cardId,
+      },
+    },
+  },
+  { useFindAndModify: false },
+).exec();
+
+const unpinCardToUserStream = (userId, cardId) => User.findOneAndUpdate(
+  {
+    _id: userId,
+  },
+  {
+    $pull: {
+      pinnedCards: {
+        cardId,
+      },
+    },
+  },
+  { useFindAndModify: false },
+).exec();
+
+const addCardResponseToUser = (userId, cardId) => User.findOneAndUpdate(
+  {
+    _id: userId,
+  },
+  {
+    $push: {
+      respondedCards: {
+        cardId,
+      },
+    },
+  },
+  { useFindAndModify: false },
+).exec();
+
+const removeCardResponseToUser = (userId, cardId) => User.findOneAndUpdate(
+  {
+    _id: userId,
+  },
+  {
+    $pull: {
+      respondedCards: {
+        cardId,
+      },
+    },
+  },
+  { useFindAndModify: false },
+).exec();
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -166,6 +250,15 @@ module.exports = {
   removeTodoToMultipleUsers,
 
   updateUserPoints,
+
+  addCardReactionToUser,
+  removeCardReactionToUser,
+
+  pinCardToUserStream,
+  unpinCardToUserStream,
+
+  addCardResponseToUser,
+  removeCardResponseToUser,
 
   markTodo,
 };

@@ -59,12 +59,28 @@ const markTodoAsStuck = (userId, todoId) => UserRepository.markTodo(userId, todo
 
 const updateUserPoints = (userId, points) => UserRepository.updateUserPoints(userId, points);
 
-const pinCardToUserStream = (userId, cardId) => {
+const addCardReactionToUser = (userId, cardId) => {
+  UserRepository.addCardReactionToUser(userId, cardId);
+};
 
+const removeCardReactionToUser = (userId, cardId) => {
+  UserRepository.removeCardReactionToUser(userId, cardId);
+};
+
+const pinCardToUserStream = (userId, cardId) => {
+  UserRepository.pinCardToUserStream(userId, cardId);
 };
 
 const unpinCardToUserStream = (userId, cardId) => {
+  UserRepository.unpinCardToUserStream(userId, cardId);
+};
 
+const addCardResponseToUser = (userId, cardId) => {
+  UserRepository.addCardResponseToUser(userId, cardId);
+};
+
+const removeCardResponseToUser = (userId, cardId) => {
+  UserRepository.removeCardResponseToUser(userId, cardId);
 };
 
 module.exports = {
@@ -90,6 +106,12 @@ module.exports = {
   markTodoAsStuck,
 
   updateUserPoints,
+
+  addCardReactionToUser,
+  removeCardReactionToUser,
+
+  addCardResponseToUser,
+  removeCardResponseToUser,
 
   pinCardToUserStream,
   unpinCardToUserStream,
