@@ -143,6 +143,11 @@ const markTodo = (userId, todoId, status) => User.update(
 
 const deleteUserById = (id) => User.findByIdAndDelete(id).exec();
 
+const addPointsToUser = (id, points) => User.findOneAndUpdate(
+  { _id: id },
+  { $inc: { points } },
+);
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -159,6 +164,8 @@ module.exports = {
   addTodoToMultipleUsers,
   removeTodo,
   removeTodoToMultipleUsers,
+
+  addPointsToUser,
 
   markTodo,
 };

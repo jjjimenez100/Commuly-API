@@ -18,6 +18,8 @@ const userSchema = new Schema({
   scheduledCards: [ObjectId],
   reactedCards: [ObjectId],
   teams: [ObjectId],
+  respondedCards: [ObjectId],
+  points: Number,
 });
 const User = model('User', userSchema);
 

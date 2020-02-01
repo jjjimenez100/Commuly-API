@@ -57,6 +57,8 @@ const markTodoAsDone = (userId, todoId) => UserRepository.markTodo(userId, todoI
 
 const markTodoAsStuck = (userId, todoId) => UserRepository.markTodo(userId, todoId, STUCK_STATUS);
 
+const addPointsToUser = (userId, points) => UserRepository.addPointsToUser(userId, points);
+
 const pinCardToUserStream = (userId, cardId) => {
 
 };
