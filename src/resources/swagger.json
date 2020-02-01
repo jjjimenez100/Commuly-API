@@ -5,7 +5,6 @@
         "version": "1.0.0",
         "title": "Commuly API"
     },
-    "host": "petstore.swagger.io",
     "basePath": "/commuly/api/v1",
     "paths": {
         "/cards": {
