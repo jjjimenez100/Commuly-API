@@ -1,3 +1,122 @@
 {
-    
+    "swagger": "2.0",
+    "info": {
+        "description": "Commuly API server documentation",
+        "version": "1.0.0",
+        "title": "Commuly API"
+    },
+    "host": "petstore.swagger.io",
+    "basePath": "/commuly/api/v1",
+    "paths": {
+        "/cards": {
+            "get": {
+                "tags": [
+                    "card"
+                ],
+                "summary": "Gets all content and question cards",
+                "description": "Result set depends on the specified query . All cards are returned by default.",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cardType",
+                        "in": "query",
+                        "description": "Card types to filter by. Possible values are: CONTENT_CARD or QUESTION_CARD",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "team",
+                        "in": "query",
+                        "description": "Filter cards based on a given team ObjectID",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful GET operation, even if no matching cards are found."
+                    },
+                    "500": {
+                        "description": "Internal server error. Something might have gone wrong with the API services."
+                    }
+                }
+            },
+        "post": {
+            "tags": [
+                "card"
+            ],
+            "summary": "Adds a new content/question card",
+            "description": "Card type needs to be specified, and determines which API services to be called",
+            "consumes": [
+                "application/json"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "in": "body",
+                    "name": "body",
+                    "description": "Card object that needs to be added. Note that other card fields not specified in here differ based on the card type (e.g imageContent is not null if cardType is CONTENT_CARD and content is image). Case specific fields: contentCardType (e.g TEXT, CHART, IMAGE, VIDEO, SERIAL_TABLE, SCHEDULED_CONTENT, TODO_CONTENT), textContent, chartContent, imageURLContent, videoURLContent, serialTableContent, scheduledEventContent, todoContent, questionCardType (e.g: MULTIPLE_CHOICE, LIKERT, COLUMN_ORDERING, OPEN_TEXT), multipleChoiceContent, likertContent, openTextContent, columnOrderingContent. See CardModel.js and CardEnum.js for more reference.",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/defaultCardFields"
+                    }
+                }
+            ],
+            "responses": {
+                "201": {
+                    "description": "Successfully created card. Created card entity (including image/video urls) are returned back to the caller."
+                },
+                "500": {
+                    "description": "Internal server error. Something might have gone wrong with the API services."
+                }
+            }
+            }
+        },
+        "user/{id}/cards": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Gets all content and question cards under the user and its currently active team.",
+                "description": "All types of card under the user are retrieved (scheduled, todos, etc.) as well as those that are specific to the team. Endpoint to be used by the dashboard.",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful GET operation, even if no matching cards for the user is found."
+                    },
+                    "500": {
+                        "description": "Internal server error. Something might have gone wrong with the API services."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "defaultCardFields": {
+            "type": "Object",
+            "required": [
+                "owner", "cardType", "team"
+            ],
+            "properties": {
+                "owner": {
+                    "type": "string",
+                    "example": "5e35bfdec83b1711f69653de"
+                },
+                "cardType": {
+                    "type": "string",
+                    "example": "CONTENT_CARD"
+                },
+                "team": {
+                    "type": "string",
+                    "example": "5e35bfdec83b1711f69653df"
+                }
+            }
+        }
+    }
 }
