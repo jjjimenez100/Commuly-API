@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocument = require('../resources/swagger.json');
 
 const logger = require('../modules/logger');
 const errorHandler = require('../api/errorHandler');
@@ -14,6 +16,8 @@ const initRoutes = (app) => {
   logger.info('Routes');
   app.use(BASE_URL, router);
   app.use(errorHandler);
+  // for swagger documentation
+  app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
   logger.info(' \u2714 mounted');
 };
 
