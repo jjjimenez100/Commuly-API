@@ -1,12 +1,11 @@
 const CardService = require('./CardService');
+
 const {
   CONTENT_CARD,
   QUESTION_CARD,
 
   REACT,
   UNREACT,
-
-  MARK_TODO,
 } = require('./CardEnum');
 
 const getCards = async (request, response, next) => {
@@ -28,7 +27,6 @@ const getCards = async (request, response, next) => {
 };
 
 const postCard = async (request, response, next) => {
-  // FIXME
   try {
     const { body, file } = request;
     const { cardType, team } = body;
@@ -56,30 +54,11 @@ const patchCard = async (request, response, next) => {
       const { reactionType, userId } = request.body;
       const { id: cardId } = request.params;
       await CardService.reactToCard(cardId, reactionType, userId);
-      // user service here
     } else if (patchType === UNREACT) {
       const { reactionType, userId } = request.body;
       const { id: cardId } = request.params;
       await CardService.unreactToCard(cardId, reactionType, userId);
-      // user service here
     }
-    /* else if (patchType === PIN_USER) {
-      const { id: cardId } = request.params;
-      const { userId } = request.body;
-      await CardService.pinCardToUserStream(cardId, userId);
-    } else if (patchType === PIN_TEAM) {
-      const { id: cardId } = request.params;
-      const { teamId } = request.body;
-      await CardService.pinCardToTeamStream(cardId, teamId);
-    } else if (patchType === UNPIN_USER) {
-      const { id: cardId } = request.params;
-      const { userId } = request.body;
-      await CardService.unpinCardToUserStream(cardId, userId);
-    } else if (patchType === UNPIN_TEAM) {
-      const { id: cardId } = request.params;
-      const { teamId } = request.body;
-      await CardService.unpinCardToTeamStream(cardId, teamId);
-    } */
     response.status(204).send();
   } catch (error) {
     next(error);
