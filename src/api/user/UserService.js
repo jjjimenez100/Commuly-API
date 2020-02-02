@@ -1,6 +1,7 @@
 const UserRepository = require('./UserRepository');
 const CardService = require('../card/CardService');
 const { DONE_STATUS, STUCK_STATUS } = require('../card/CardEnum');
+const { REACTION_POINT, PIN_POINT, RESPONSE_POINT } = require('./UserEnum');
 
 const getUserCards = async (id) => {
   const userDetails = await UserRepository.getUserById(id);
@@ -59,28 +60,34 @@ const markTodoAsStuck = (userId, todoId) => UserRepository.markTodo(userId, todo
 
 const updateUserPoints = (userId, points) => UserRepository.updateUserPoints(userId, points);
 
-const addCardReactionToUser = (userId, cardId) => {
-  UserRepository.addCardReactionToUser(userId, cardId);
+const addCardReactionToUser = async (userId, cardId) => {
+  await UserRepository.addCardReactionToUser(userId, cardId);
+  await updateUserPoints(userId, REACTION_POINT);
 };
 
-const removeCardReactionToUser = (userId, cardId) => {
-  UserRepository.removeCardReactionToUser(userId, cardId);
+const removeCardReactionToUser = async (userId, cardId) => {
+  await UserRepository.removeCardReactionToUser(userId, cardId);
+  await updateUserPoints(userId, -REACTION_POINT);
 };
 
-const pinCardToUserStream = (userId, cardId) => {
-  UserRepository.pinCardToUserStream(userId, cardId);
+const pinCardToUserStream = async (userId, cardId) => {
+  await UserRepository.pinCardToUserStream(userId, cardId);
+  await updateUserPoints(userId, PIN_POINT);
 };
 
-const unpinCardToUserStream = (userId, cardId) => {
-  UserRepository.unpinCardToUserStream(userId, cardId);
+const unpinCardToUserStream = async (userId, cardId) => {
+  await UserRepository.unpinCardToUserStream(userId, cardId);
+  await updateUserPoints(userId, -PIN_POINT);
 };
 
-const addCardResponseToUser = (userId, cardId) => {
-  UserRepository.addCardResponseToUser(userId, cardId);
+const addCardResponseToUser = async (userId, cardId) => {
+  await UserRepository.addCardResponseToUser(userId, cardId);
+  await updateUserPoints(userId, RESPONSE_POINT);
 };
 
-const removeCardResponseToUser = (userId, cardId) => {
-  UserRepository.removeCardResponseToUser(userId, cardId);
+const removeCardResponseToUser = async (userId, cardId) => {
+  await UserRepository.removeCardResponseToUser(userId, cardId);
+  await updateUserPoints(userId, -RESPONSE_POINT);
 };
 
 module.exports = {
