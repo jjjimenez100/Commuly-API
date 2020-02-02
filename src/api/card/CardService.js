@@ -117,9 +117,15 @@ const saveContentCard = (card, team = '') => {
 
 const saveQuestionCard = (card) => CardRepository.saveCard(card);
 
-const reactToCard = (cardId, reactionType, userId) => CardRepository.addReaction(cardId, reactionType, userId);
+const reactToCard = async (cardId, reactionType, userId) => {
+  await CardRepository.addReaction(cardId, reactionType, userId);
+  await UserService.addCardReactionToUser(userId, cardId);
+};
 
-const unreactToCard = (cardId, reactionType, userId) => CardRepository.removeReaction(cardId, reactionType, userId);
+const unreactToCard = async (cardId, reactionType, userId) => {
+  await CardRepository.removeReaction(cardId, reactionType, userId);
+  await UserService.removeCardReactionToUser(userId, cardId);
+};
 
 module.exports = {
   getAllCards,
