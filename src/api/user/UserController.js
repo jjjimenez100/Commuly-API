@@ -1,5 +1,6 @@
 const logger = require('../../modules/logger');
 const UserService = require('./UserService');
+const { PIN_USER, UNPIN_USER } = require('./UserEnum');
 
 const getAllUsers = async (request, response, next) => {
   try {
@@ -101,6 +102,21 @@ const deleteUser = async (request, response, next) => {
   }
 };
 
+const patchUserCard = async (request, response, next) => {
+  try {
+    const { patchType } = request.body;
+    const { userId, cardId } = request.body;
+    if (patchType === PIN_USER) {
+      await UserService.pinCardToUserStream(userId, cardId);
+    } else if (patchType === UNPIN_USER) {
+      await UserService.unpinCardToUserStream(userId, cardId);
+    }
+    response.status(200).send();
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
-  getAllUsers, getUserCards, getUserById, postUser, updateUser, deleteUser,
+  getAllUsers, getUserCards, getUserById, postUser, updateUser, deleteUser, patchUserCard,
 };

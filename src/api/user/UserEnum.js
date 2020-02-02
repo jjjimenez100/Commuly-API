@@ -6,9 +6,15 @@ const TODO_STATUS = [
   STUCK_STATUS,
 ];
 
+const PIN_USER = 'PIN_USER';
+const UNPIN_USER = 'UNPIN_USER';
+
 module.exports = {
   DONE_STATUS,
   STUCK_STATUS,
 
   TODO_STATUS,
+
+  PIN_USER,
+  UNPIN_USER,
 };
