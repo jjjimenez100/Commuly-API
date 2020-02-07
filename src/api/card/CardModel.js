@@ -55,8 +55,6 @@ const contentCardSchema = {
       startTime: Date,
       endTime: Date,
       name: String,
-      // Enum for: Done or Stuck
-      status: String,
     },
   },
 };

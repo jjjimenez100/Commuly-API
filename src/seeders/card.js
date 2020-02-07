@@ -21,11 +21,10 @@ const {
   LIKERT_QUESTION,
   COLUMN_ORDERING_QUESTION,
   OPEN_TEXT_QUESTION,
-
-  TODO_STATUS,
 } = require('../api/card/CardEnum');
 
 const seedCount = 10;
+const defaultTeamId = '5e35bfdec83b1711f69653c5';
 
 const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -55,7 +54,7 @@ const dataGeneratorFunction = () => {
   const cardTypeRandomIndex = getRandomNumber(0, CARD_TYPES.length - 1);
   const cardType = CARD_TYPES[cardTypeRandomIndex];
 
-  const team = ObjectId();
+  const team = ObjectId(defaultTeamId);
 
   const taggedUsersSize = getRandomNumber(0, seedCount);
   const tags = [];
@@ -175,8 +174,6 @@ const dataGeneratorFunction = () => {
       const startTime = faker.date.recent();
       const endTime = faker.date.recent();
       const name = faker.random.word();
-      const randomStatusIndex = getRandomNumber(0, TODO_STATUS.length - 1);
-      const status = TODO_STATUS[randomStatusIndex];
       const attachmentUrl = faker.internet.url();
       const responsibleUser = ObjectId();
 
@@ -187,7 +184,6 @@ const dataGeneratorFunction = () => {
         startTime,
         endTime,
         name,
-        status,
         attachmentUrl,
         responsibleUser,
       };
