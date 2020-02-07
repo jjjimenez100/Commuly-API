@@ -4,7 +4,7 @@ const getAllCards = () => Card.find({}).exec();
 
 const getCardsByCardType = (cardType) => Card.find({ cardType }).exec();
 
-const getCardsByTeam = (team) => Card.find({ team }).exec();
+const getCardsByTeam = (team) => Card.find({ team }).limit(5).exec();
 
 const getCardsByIds = (ids) => Card.find({
   _id: {
