@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { createTransport } = require('nodemailer');
 const EmailTemplate = require('email-templates');
 const SES = require('aws-sdk/clients/ses');
@@ -5,12 +7,11 @@ const SES = require('aws-sdk/clients/ses');
 class SESEmail {
   constructor(accessKeyId, secretAccessKey, region) {
     const accessConfig = {
-      accessKeyId, secretAccessKey, region,
+      accessKeyId, secretAccessKey, region, paramValidation: false,
     };
 
-    this.snsInstance = new SES(accessConfig);
     this.transporter = createTransport({
-      SES: this.snsInstance,
+      SES: new SES(accessConfig),
     });
   }
 
