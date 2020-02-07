@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const jwtSigner = require('jsonwebtoken');
 const jwt = require('express-jwt');
 const moment = require('moment-timezone');
+const passport = require('passport');
 
 const ITERATIONS = 10000;
 const KEY_LENGTH = 512;
@@ -46,6 +47,22 @@ const auth = {
   }),
 };
 
+const authenticate = () => new Promise((resolve, reject) => {
+  passport.authenticate(
+    'jwt',
+    { session: false },
+    (error, user) => {
+      if (error) {
+        reject(new Error(error));
+      } else if (!user) {
+        reject(new Error('Not authenticated'));
+      }
+      resolve(user);
+    },
+  );
+});
+
+
 module.exports = {
   hashPassword,
   isPasswordValid,
@@ -53,4 +70,5 @@ module.exports = {
   generateSalt,
 
   auth,
+  authenticate,
 };
