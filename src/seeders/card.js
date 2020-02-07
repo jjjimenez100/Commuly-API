@@ -51,8 +51,9 @@ const shuffleArrayOrder = (array) => {
 const dataGeneratorFunction = () => {
   const owner = ObjectId();
 
-  const cardTypeRandomIndex = getRandomNumber(0, CARD_TYPES.length - 1);
-  const cardType = CARD_TYPES[cardTypeRandomIndex];
+  // const cardTypeRandomIndex = getRandomNumber(0, CARD_TYPES.length - 1);
+  // const cardType = CARD_TYPES[cardTypeRandomIndex];
+  const cardType = CONTENT_CARD;
 
   const team = ObjectId(defaultTeamId);
 
@@ -99,14 +100,17 @@ const dataGeneratorFunction = () => {
     },
   };
 
-  if (cardType === CONTENT_CARD) {
+  if (true || cardType === CONTENT_CARD) {
     const contentCardIndex = getRandomNumber(0, CONTENT_CARD_TYPES.length - 1);
-    const contentCardType = CONTENT_CARD_TYPES[contentCardIndex];
-    if (contentCardType === TEXT_CONTENT) {
+    // const contentCardType = CONTENT_CARD_TYPES[contentCardIndex];
+    const contentCardType = TEXT_CONTENT;
+    if (true || contentCardType === TEXT_CONTENT) {
       const textContent = {
+        title: faker.random.words(),
         content: faker.random.words(),
         textColor: faker.internet.color(),
         backgroundColor: faker.internet.color(),
+        fontStyle: faker.random.word(),
       };
 
       return { ...cardInfo, contentCardType, textContent };
