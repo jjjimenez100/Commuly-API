@@ -16,7 +16,9 @@ const getCards = async (request, response, next) => {
     if (cardType !== '') {
       cards = await CardService.getCardsByCardType(cardType);
     } else if (team !== '') {
-      cards = await CardService.getCardsByTeam(team);
+      const { page = 0, limit = 5 } = request.query;
+      // eslint-disable-next-line radix
+      cards = await CardService.getCardsByTeam(team, parseInt(page), parseInt(limit));
     } else {
       cards = await CardService.getAllCards();
     }

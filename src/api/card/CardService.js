@@ -20,7 +20,7 @@ const getAllCards = () => CardRepository.getAllCards();
 
 const getCardsByCardType = (cardType) => CardRepository.getCardsByCardType(cardType);
 
-const getCardsByTeam = (team) => CardRepository.getCardsByTeam(team);
+const getCardsByTeam = (team, page, limit) => CardRepository.getCardsByTeam(team, page, limit);
 
 const getCardsByIds = (ids) => CardRepository.getCardsByIds(ids);
 
