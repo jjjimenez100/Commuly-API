@@ -1,5 +1,6 @@
 const UserRepository = require('./UserRepository');
 const CardService = require('../card/CardService');
+const { generateSalt, hashPassword } = require('../credentials');
 const { DONE_STATUS, STUCK_STATUS } = require('../card/CardEnum');
 const { REACTION_POINT, PIN_POINT, RESPONSE_POINT } = require('./UserEnum');
 
@@ -24,7 +25,16 @@ const getAllUsers = () => UserRepository.getAllUsers();
 
 const getUserById = (id) => UserRepository.getUserById(id);
 
-const registerUser = (user) => UserRepository.saveUser(user);
+const registerUser = (user) => {
+  const salt = generateSalt();
+  const hash = hashPassword(user.password, salt);
+
+  const { password, ...newUser } = user;
+  newUser.salt = salt;
+  newUser.hash = hash;
+
+  return UserRepository.saveUser(newUser);
+};
 
 const updateUser = (id, user) => UserRepository.updateUser(id, user);
 

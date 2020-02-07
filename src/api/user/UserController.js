@@ -41,6 +41,7 @@ const postUser = async (request, response, next) => {
       avatarUrl,
       email,
       role,
+      password,
     } = request.body;
 
     const user = {
@@ -50,6 +51,7 @@ const postUser = async (request, response, next) => {
       avatarUrl,
       email,
       role,
+      password,
     };
 
     const newUser = await UserService.registerUser(user);

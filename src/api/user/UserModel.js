@@ -20,7 +20,12 @@ const userSchema = new Schema({
   teams: [ObjectId],
   respondedCards: [ObjectId],
   points: Number,
+
+  // credentials
+  hash: String,
+  salt: String,
 });
+
 const User = model('User', userSchema);
 
 module.exports = User;
