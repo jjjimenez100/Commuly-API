@@ -7,9 +7,11 @@ const contentCardSchema = {
   contentCardType: String,
   textContent: {
     type: {
+      title: String,
       content: String,
       textColor: String,
       backgroundColor: String,
+      fontStyle: String,
     },
   },
   // By default, arrays have a default value of []
