@@ -1,5 +1,6 @@
 const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
+const jwtSigner = require('jsonwebtoken');
+const jwt = require('express-jwt');
 const moment = require('moment-timezone');
 
 const ITERATIONS = 10000;
@@ -13,9 +14,36 @@ const generateSalt = () => crypto.randomBytes(16).toString('hex');
 
 const generateJWT = (userId, email) => {
   const expirationDate = moment.tz().add(1, 'hour');
-  return jwt.sign({
+  return jwtSigner.sign({
     userId, email, exp: expirationDate,
   });
+};
+
+const getTokenFromHeaders = (request) => {
+  const { headers: { authorization } } = request;
+  const tokens = authorization.split(' ');
+
+  if (authorization && tokens[0] === 'Token') {
+    return tokens[1];
+  }
+
+  return null;
+};
+
+const authObj = {
+  secret: 'secret',
+  userProperty: 'payload',
+  getToken: getTokenFromHeaders,
+};
+
+const auth = {
+  required: jwt({
+    ...authObj,
+  }),
+  optional: jwt({
+    ...authObj,
+    credentialsRequired: false,
+  }),
 };
 
 module.exports = {
@@ -23,4 +51,6 @@ module.exports = {
   isPasswordValid,
   generateJWT,
   generateSalt,
+
+  auth,
 };
