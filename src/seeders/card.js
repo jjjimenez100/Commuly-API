@@ -2,10 +2,12 @@ const faker = require('faker');
 const { ObjectId } = require('mongoose').Types;
 const model = require('../api/card/CardModel');
 const {
+  // eslint-disable-next-line no-unused-vars
   CARD_TYPES,
   CONTENT_CARD,
   QUESTION_CARD,
 
+  // eslint-disable-next-line no-unused-vars
   CONTENT_CARD_TYPES,
   TEXT_CONTENT,
   CHART_CONTENT,
@@ -49,7 +51,8 @@ const shuffleArrayOrder = (array) => {
 };
 
 const dataGeneratorFunction = () => {
-  const owner = ObjectId();
+  // temp
+  const owner = ObjectId('5e244ae00c52b859c482a3c6');
 
   // const cardTypeRandomIndex = getRandomNumber(0, CARD_TYPES.length - 1);
   // const cardType = CARD_TYPES[cardTypeRandomIndex];
@@ -101,13 +104,13 @@ const dataGeneratorFunction = () => {
   };
 
   if (true || cardType === CONTENT_CARD) {
-    const contentCardIndex = getRandomNumber(0, CONTENT_CARD_TYPES.length - 1);
+    // const contentCardIndex = getRandomNumber(0, CONTENT_CARD_TYPES.length - 1);
     // const contentCardType = CONTENT_CARD_TYPES[contentCardIndex];
     const contentCardType = TEXT_CONTENT;
     if (true || contentCardType === TEXT_CONTENT) {
       const textContent = {
         title: faker.random.words(),
-        content: faker.random.words(),
+        content: faker.lorem.paragraphs(),
         textColor: faker.internet.color(),
         backgroundColor: faker.internet.color(),
         fontStyle: faker.random.word(),
