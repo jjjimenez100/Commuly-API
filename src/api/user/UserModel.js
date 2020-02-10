@@ -3,11 +3,16 @@ const { Schema, model } = require('mongoose');
 const { ObjectId } = Schema.Types;
 
 const userSchema = new Schema({
-  firstName: String,
-  lastName: String,
-  phoneNumber: String,
+  name: String,
+  phoneNumber: {
+    type: String,
+    unique: true,
+  },
+  email: {
+    type: String,
+    unique: true,
+  },
   avatarUrl: String,
-  email: String,
   role: String,
   activeTeam: ObjectId,
   pinnedCards: [ObjectId],

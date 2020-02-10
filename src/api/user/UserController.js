@@ -50,9 +50,16 @@ const postUser = async (request, response, next) => {
 
     const newUser = await UserService.registerUser(user);
     logger.info(`Registered new user: ${JSON.stringify(newUser)}`);
-    response.send(newUser);
+    response.status(201).send();
   } catch (error) {
-    next(error);
+    if (error.name === 'MongoError' && error.code === 11000) {
+      response.status(400).send({
+        message: 'Email or contact number already exists',
+      });
+    } else {
+      next(error);
+    }
+    // next(error);
   }
 };
 
