@@ -35,22 +35,16 @@ const postUser = async (request, response, next) => {
   try {
     // Get only necessary values, prevents http pollution
     const {
-      firstName,
-      lastName,
+      name,
       phoneNumber,
-      avatarUrl,
       email,
-      role,
       password,
     } = request.body;
 
     const user = {
-      firstName,
-      lastName,
+      name,
       phoneNumber,
-      avatarUrl,
       email,
-      role,
       password,
     };
 

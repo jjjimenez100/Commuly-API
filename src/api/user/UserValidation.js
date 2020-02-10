@@ -2,19 +2,15 @@ const { body, param } = require('express-validator');
 const { requiredString } = require('../validation');
 
 const idValidation = param('id').isMongoId();
-const firstNameValidation = requiredString('firstName');
-const lastNameValidation = requiredString('lastName');
+const nameValidation = requiredString('name');
 const phoneNumberValidation = requiredString('phoneNumber');
-const roleValidation = requiredString('role');
-const avatarUrlValidation = body('avatarUrl').isURL();
+// const roleValidation = requiredString('role');
+// const avatarUrlValidation = body('avatarUrl').isURL();
 const emailValidation = body('email').isEmail();
 
 const UserValidation = [
-  firstNameValidation,
-  lastNameValidation,
+  nameValidation,
   phoneNumberValidation,
-  roleValidation,
-  avatarUrlValidation,
   emailValidation,
 ];
 
