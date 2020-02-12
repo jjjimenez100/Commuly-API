@@ -4,6 +4,7 @@ const MONGO_DB_URL = require('../config/database');
 const mongooseOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 };
 
 // replace this with constant and env
