@@ -1,6 +1,8 @@
+const passport = require('passport');
 const logger = require('../../modules/logger');
 const UserService = require('./UserService');
 const { PIN_USER, UNPIN_USER } = require('./UserEnum');
+const { generateJWT } = require('../credentials');
 
 const getAllUsers = async (request, response, next) => {
   try {
@@ -29,6 +31,31 @@ const getUserCards = async (request, response, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+const loginUser = async (request, response, next) => {
+  // eslint-disable-next-line consistent-return
+  passport.authenticate('login', async (err, user, { message }) => {
+    try {
+      if (err) {
+        return next(message);
+      }
+      if (!user) {
+        return response.status(400).send({ message });
+      }
+      request.login(user, { session: false }, async (error) => {
+        if (error) {
+          return next(error);
+        }
+
+        const { _id: userId, email } = user;
+        const token = generateJWT(userId, email);
+        return response.send({ token });
+      });
+    } catch (error) {
+      return next(error);
+    }
+  })(request, response, next);
 };
 
 const postUser = async (request, response, next) => {
@@ -121,5 +148,12 @@ const patchUserCard = async (request, response, next) => {
 };
 
 module.exports = {
-  getAllUsers, getUserCards, getUserById, postUser, updateUser, deleteUser, patchUserCard,
+  getAllUsers,
+  getUserCards,
+  getUserById,
+  postUser,
+  updateUser,
+  deleteUser,
+  patchUserCard,
+  loginUser,
 };
