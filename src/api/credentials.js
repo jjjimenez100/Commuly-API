@@ -4,6 +4,8 @@ const jwt = require('express-jwt');
 const moment = require('moment-timezone');
 const passport = require('passport');
 
+const { JWT_PRIVATE_KEY } = require('../config/authentication');
+
 const ITERATIONS = 10000;
 const KEY_LENGTH = 512;
 
@@ -15,9 +17,9 @@ const generateSalt = () => crypto.randomBytes(16).toString('hex');
 
 const generateJWT = (userId, email) => {
   const expirationDate = moment.tz().add(1, 'hour');
-  return jwtSigner.sign({
-    userId, email, exp: expirationDate,
-  });
+  const tokenDetails = { userId, email, expirationDate };
+
+  return jwtSigner.sign(tokenDetails, JWT_PRIVATE_KEY);
 };
 
 const getTokenFromHeaders = (request) => {
