@@ -4,6 +4,8 @@ const getAllUsers = () => User.find({}).exec();
 
 const getUserById = (userId) => User.findById(userId).exec();
 
+const getUserByEmail = (email) => User.findOne({ email });
+
 const saveUser = (user) => User.create(user);
 
 const updateUser = (userId, user) => User.findOneAndUpdate(
@@ -235,6 +237,7 @@ const removeCardResponseToUser = (userId, cardId) => User.findOneAndUpdate(
 module.exports = {
   getAllUsers,
   getUserById,
+  getUserByEmail,
   saveUser,
   deleteUserById,
   updateUser,

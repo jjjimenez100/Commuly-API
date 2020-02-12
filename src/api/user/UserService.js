@@ -25,6 +25,8 @@ const getAllUsers = () => UserRepository.getAllUsers();
 
 const getUserById = (id) => UserRepository.getUserById(id);
 
+const getUserByEmail = (email) => UserRepository.getUserByEmail(email);
+
 const registerUser = (user) => {
   const salt = generateSalt();
   const hash = hashPassword(user.password, salt);
@@ -105,6 +107,7 @@ module.exports = {
 
   getAllUsers,
   getUserById,
+  getUserByEmail,
   registerUser,
   unregisterUser,
   updateUser,
