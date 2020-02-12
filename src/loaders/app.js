@@ -4,12 +4,14 @@ const { initDatabaseConnection } = require('./database');
 const { initMiddlewares } = require('./middleware');
 const { initRoutes } = require('./route');
 const { initVariablesOnExternalFiles } = require('./variable');
+const { initAuthenticationStrategy } = require('./authentication');
 
 const initAppLoaders = async (app) => {
   logger.info('Initializing server modules...');
 
   try {
     initVariablesOnExternalFiles();
+    initAuthenticationStrategy();
     initMiddlewares(app);
     initRoutes(app);
     await initDatabaseConnection(app);
