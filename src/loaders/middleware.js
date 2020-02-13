@@ -51,6 +51,8 @@ const initHelmet = (app) => {
 
 const initCors = (app) => {
   app.use(cors());
+  // TODO: Whitelist only specific IP of amplify app
+  app.options('*', cors());
   logger.info(' \u2714 cors');
 };
 
