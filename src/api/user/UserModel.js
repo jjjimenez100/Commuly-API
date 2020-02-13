@@ -2,6 +2,8 @@ const { Schema, model } = require('mongoose');
 
 const { ObjectId } = Schema.Types;
 
+const { EMPLOYEE_ROLE } = require('./UserEnum');
+
 const userSchema = new Schema({
   name: String,
   phoneNumber: {
@@ -13,7 +15,10 @@ const userSchema = new Schema({
     unique: true,
   },
   avatarUrl: String,
-  role: String,
+  role: {
+    type: String,
+    default: EMPLOYEE_ROLE,
+  },
   activeTeam: ObjectId,
   pinnedCards: [ObjectId],
   todoCards: [{
