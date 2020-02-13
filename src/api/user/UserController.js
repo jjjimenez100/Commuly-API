@@ -48,9 +48,15 @@ const loginUser = async (request, response, next) => {
           return next(error);
         }
 
-        const { _id: userId, email } = user;
-        const token = generateJWT(userId, email);
-        return response.send({ userId, email, token });
+        const { _id: userId, email, role } = user;
+        const { token, expirationDate } = generateJWT(userId, email, role);
+        return response.send({
+          userId,
+          email,
+          role,
+          token,
+          expirationDate,
+        });
       });
     } catch (error) {
       return next(error);
