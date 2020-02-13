@@ -50,7 +50,7 @@ const loginUser = async (request, response, next) => {
 
         const { _id: userId, email } = user;
         const token = generateJWT(userId, email);
-        return response.send({ token });
+        return response.send({ userId, email, token });
       });
     } catch (error) {
       return next(error);
