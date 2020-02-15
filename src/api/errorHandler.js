@@ -16,6 +16,10 @@ const errorHandler = (error, request, response, next) => {
     }
   }
 
+  if (name === 'ValidationError') {
+    return response.status(422).send();
+  }
+
   logger.error(`Server Error. ${error}`);
   if (response.headersSent) {
     return next(error);
