@@ -13,10 +13,10 @@ const isPasswordValid = (password, salt, hash) => hashPassword(password, salt) =
 
 const generateSalt = () => crypto.randomBytes(16).toString('hex');
 
-const generateJWT = (userId, email, role) => {
+const generateJWT = (userId, email, role, team) => {
   const expirationDate = moment.tz().add(1, 'hour').format();
   const tokenDetails = {
-    userId, email, role, expirationDate,
+    userId, email, role, team, expirationDate,
   };
   const token = jwtSigner.sign(tokenDetails, JWT_PRIVATE_KEY);
 

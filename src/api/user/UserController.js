@@ -50,13 +50,16 @@ const loginUser = async (request, response, next) => {
           return next(error);
         }
 
-        const { _id: userId, email, role } = user;
-        const { token, expirationDate } = generateJWT(userId, email, role);
+        const {
+          _id: userId, email, role, team,
+        } = user;
+        const { token, expirationDate } = generateJWT(userId, email, role, team);
         return response.send({
           userId,
           email,
           role,
           token,
+          team,
           expirationDate,
         });
       });
