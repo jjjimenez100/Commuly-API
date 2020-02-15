@@ -24,8 +24,9 @@ const {
 } = require('../api/card/CardEnum');
 
 // Type of cards under "TEAM" only
-const CONTENT_CARD_TYPES = [TEXT_CONTENT, SCHEDULED_CONTENT, TODO_CONTENT];
+const CONTENT_CARD_TYPES = [TEXT_CONTENT, SCHEDULED_CONTENT, TODO_CONTENT, IMAGE_CONTENT];
 
+const IMAGE_URLS = ['https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Short-haired-Dachshund.jpg/220px-Short-haired-Dachshund.jpg', 'https://cdn1-www.dogtime.com/assets/uploads/2011/01/file_23020_dachshund-dog-breed.jpg', 'https://i.pinimg.com/originals/63/0f/0e/630f0ef3f6f3126ca11f19f4a9b85243.jpg'];
 // temp, users array should be passed instead
 const generateFakeUser = () => {
   const userId = ObjectId();
@@ -130,7 +131,7 @@ const dataGeneratorFunction = (maxSize, userIds, teamId, cardId) => {
     }
 
     if (contentCardType === IMAGE_CONTENT) {
-      const imageURLContent = faker.image.imageUrl();
+      const imageURLContent = IMAGE_URLS[faker.random.number(IMAGE_URLS.length - 1)];
       return { ...cardInfo, contentCardType, imageURLContent };
     }
 
