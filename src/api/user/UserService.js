@@ -1,3 +1,7 @@
+// Temp
+const { ObjectId } = require('mongoose').Types;
+//
+
 const UserRepository = require('./UserRepository');
 const CardService = require('../card/CardService');
 const { generateSalt, hashPassword } = require('../credentials');
@@ -6,15 +10,21 @@ const { REACTION_POINT, PIN_POINT, RESPONSE_POINT } = require('./UserEnum');
 
 const getUserCards = async (id) => {
   const userDetails = await UserRepository.getUserById(id);
-  const { activeTeam, scheduledCards, todoCards } = userDetails;
-  const todoIds = todoCards.map(({ todoId }) => todoId);
-  const ids = [...scheduledCards, ...todoIds];
+  const { activeTeam, scheduledCards: scheduledIds, todoCards: todos } = userDetails;
+  const todoIds = todos.map(({ todoId }) => todoId);
 
-  const userCards = await CardService.getCardsByIds(ids);
+  const todoCards = await CardService.getCardsByIds(todoIds);
+  const scheduledCards = await CardService.getCardsByIds(scheduledIds);
   const teamCards = await CardService.getCardsByTeam(activeTeam);
 
+  // console.log('user details', userDetails);
+  console.log('todo cards', todoCards);
+  // console.log('scheduled cards', scheduledCards);
+  // console.log('team cards', teamCards);
   const cards = {
-    userCards,
+    userDetails,
+    todoCards,
+    scheduledCards,
     teamCards,
   };
 
@@ -34,6 +44,8 @@ const registerUser = (user) => {
   const { password, ...newUser } = user;
   newUser.salt = salt;
   newUser.hash = hash;
+  // temp
+  newUser.activeTeam = ObjectId('5e35bfdec83b1711f6965192');
 
   return UserRepository.saveUser(newUser);
 };
