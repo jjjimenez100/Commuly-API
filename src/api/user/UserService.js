@@ -9,10 +9,12 @@ const { DONE_STATUS, STUCK_STATUS } = require('../card/CardEnum');
 const { REACTION_POINT, PIN_POINT, RESPONSE_POINT } = require('./UserEnum');
 
 const getUserCards = async (id) => {
-  const {
-    hash, salt, role, ...userDetails
-  } = await UserRepository.getUserById(id);
+  const userDetails = await UserRepository.getUserById(id);
   const { activeTeam, scheduledCards: scheduledIds, todoCards: todos } = userDetails;
+  const {
+    hash, salt, role, ...userWithoutPrivateInfo
+  } = userDetails;
+  const { _doc: user } = userWithoutPrivateInfo;
   const todoIds = todos.map(({ todoId }) => todoId);
 
   const todoCards = await CardService.getCardsByIds(todoIds);
@@ -20,7 +22,7 @@ const getUserCards = async (id) => {
   const teamCards = await CardService.getCardsByTeam(activeTeam);
 
   const cards = {
-    userDetails,
+    user,
     todoCards,
     scheduledCards,
     teamCards,
