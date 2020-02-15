@@ -17,10 +17,7 @@ const getUserCards = async (id) => {
   const scheduledCards = await CardService.getCardsByIds(scheduledIds);
   const teamCards = await CardService.getCardsByTeam(activeTeam);
 
-  // console.log('user details', userDetails);
-  console.log('todo cards', todoCards);
-  // console.log('scheduled cards', scheduledCards);
-  // console.log('team cards', teamCards);
+
   const cards = {
     userDetails,
     todoCards,

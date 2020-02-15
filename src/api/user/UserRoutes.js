@@ -5,7 +5,7 @@ const { JWT_PRIVATE_KEY } = require('../../config/authentication');
 const { roleChecker } = require('../roleChecker');
 const {
   ADMINISTRATOR_ROLE,
-  USER_ROLES,
+  // USER_ROLES,
 } = require('./UserEnum');
 
 const {
@@ -22,8 +22,8 @@ const { UserValidation, idValidation } = require('./UserValidation');
 const { validate } = require('../validation');
 
 router.get('/users', jwt({ secret: JWT_PRIVATE_KEY }), roleChecker([ADMINISTRATOR_ROLE]), getAllUsers);
-router.get('/user/:id', idValidation, validate, jwt({ secret: JWT_PRIVATE_KEY }), roleChecker([ADMINISTRATOR_ROLE]), getUserById);
-router.get('/user/:id/cards', idValidation, validate, jwt({ secret: JWT_PRIVATE_KEY }), roleChecker(USER_ROLES), getUserCards);
+router.get('/user/:id', idValidation, validate, getUserById);
+router.get('/user/:id/cards', idValidation, validate, getUserCards);
 
 // Public route for registration and login
 router.post('/users', UserValidation, validate, postUser);
