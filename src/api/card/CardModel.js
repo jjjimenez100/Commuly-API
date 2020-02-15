@@ -133,7 +133,6 @@ const cardSchema = new Schema({
   },
   team: {
     type: ObjectId,
-    required: true,
   },
   tags: {
     taggedUsers: [ObjectId],
