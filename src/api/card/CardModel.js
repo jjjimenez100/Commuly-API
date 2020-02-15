@@ -29,7 +29,10 @@ const contentCardSchema = {
   serialTableContent: Mixed,
   scheduledEventContent: {
     type: {
-      scheduledDate: Date,
+      startDate: String,
+      endDate: String,
+      startTime: String,
+      endTime: String,
       // either INDIVIDUAL or TEAM
       scheduleType: String,
       name: String,

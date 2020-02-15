@@ -1,4 +1,5 @@
 const faker = require('faker');
+const moment = require('moment-timezone');
 const { ObjectId } = require('mongoose').Types;
 const {
   // eslint-disable-next-line no-unused-vars
@@ -150,13 +151,19 @@ const dataGeneratorFunction = (maxSize, userIds, teamId, cardId) => {
     if (contentCardType === SCHEDULED_CONTENT) {
       const randomIndexType = faker.random.number(SCHEDULED_TODO_TYPES.length - 1);
       const scheduleType = SCHEDULED_TODO_TYPES[randomIndexType];
-      const scheduledDate = faker.date.future();
+
+      const timeToday = moment.tz('Asia/Manila');
+      const startDate = timeToday.format('MM/DD/YYYY');
+      const startTime = timeToday.format('hh:mm A');
+      timeToday.add(1, 'day');
+      const endDate = timeToday.format('MM/DD/YYYY');
+      const endTime = timeToday.format('hh:mm A');
+
       const name = faker.random.word();
       const imagePosterURL = faker.image.imageUrl();
-      const start = faker.date.recent();
       const userWorkShift = {
-        start,
-        end: faker.date.between(start, scheduledDate),
+        start: faker.date.recent(),
+        end: faker.date.recent(),
         firstBreak: faker.date.recent(),
         lunchBreak: faker.date.recent(),
         lastBreak: faker.date.recent(),
@@ -164,7 +171,10 @@ const dataGeneratorFunction = (maxSize, userIds, teamId, cardId) => {
 
       const scheduledEventContent = {
         scheduleType,
-        scheduledDate,
+        startDate,
+        endDate,
+        startTime,
+        endTime,
         name,
         imagePosterURL,
         userWorkShift,
