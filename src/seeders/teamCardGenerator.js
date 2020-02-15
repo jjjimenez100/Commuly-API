@@ -1,6 +1,5 @@
 const faker = require('faker');
 const { ObjectId } = require('mongoose').Types;
-const model = require('../api/card/CardModel');
 const {
   // eslint-disable-next-line no-unused-vars
   CARD_TYPES,
@@ -8,7 +7,6 @@ const {
   QUESTION_CARD,
 
   // eslint-disable-next-line no-unused-vars
-  CONTENT_CARD_TYPES,
   TEXT_CONTENT,
   CHART_CONTENT,
   IMAGE_CONTENT,
@@ -25,11 +23,10 @@ const {
   OPEN_TEXT_QUESTION,
 } = require('../api/card/CardEnum');
 
-const seedCount = 10;
-const defaultTeamId = '5e35bfdec83b1711f69653c5';
+// Type of cards under "TEAM" only
+const CONTENT_CARD_TYPES = [TEXT_CONTENT, SCHEDULED_CONTENT, TODO_CONTENT];
 
-const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-
+// temp, users array should be passed instead
 const generateFakeUser = () => {
   const userId = ObjectId();
   const firstName = faker.name.firstName();
@@ -50,51 +47,45 @@ const shuffleArrayOrder = (array) => {
   return shuffledArray;
 };
 
-const dataGeneratorFunction = () => {
-  // temp
-  const owner = ObjectId('5e46cb1479e5525a62ad3363');
+const dataGeneratorFunction = (maxSize, userIds, teamId, cardId) => {
+  const owner = userIds[faker.random.number(userIds.length - 1)];
 
-  // const cardTypeRandomIndex = getRandomNumber(0, CARD_TYPES.length - 1);
-  // const cardType = CARD_TYPES[cardTypeRandomIndex];
   const cardType = CONTENT_CARD;
 
-  const team = ObjectId(defaultTeamId);
-
-  const taggedUsersSize = getRandomNumber(0, seedCount);
+  const taggedUsersSize = faker.random.number(userIds.length - 1);
   const tags = [];
   for (let index = 0; index < taggedUsersSize; index += 1) {
-    tags.push(ObjectId());
+    tags.push(userIds[faker.random.number(userIds.length - 1)]);
   }
 
-  const understoodSize = getRandomNumber(0, seedCount);
+  const understoodSize = faker.random.number(userIds.length - 1);
   const understood = [];
   for (let index = 0; index < understoodSize; index += 1) {
-    understood.push(ObjectId());
+    understood.push(userIds[faker.random.number(userIds.length - 1)]);
   }
 
-  const excitedSize = getRandomNumber(0, seedCount);
+  const excitedSize = faker.random.number(userIds.length - 1);
   const excited = [];
   for (let index = 0; index < excitedSize; index += 1) {
-    excited.push(ObjectId());
+    excited.push(userIds[faker.random.number(userIds.length - 1)]);
   }
 
-  const boredSize = getRandomNumber(0, seedCount);
+  const boredSize = faker.random.number(userIds.length - 1);
   const bored = [];
   for (let index = 0; index < boredSize; index += 1) {
-    bored.push(ObjectId());
+    bored.push(userIds[faker.random.number(userIds.length - 1)]);
   }
 
-  const confusedSize = getRandomNumber(0, seedCount);
+  const confusedSize = faker.random.number(userIds.length - 1);
   const confused = [];
   for (let index = 0; index < confusedSize; index += 1) {
-    confused.push(ObjectId());
+    confused.push(userIds[faker.random.number(userIds.length - 1)]);
   }
 
   const cardInfo = {
     owner,
     cardType,
     tags,
-    team,
     reactions: {
       understood,
       excited,
@@ -103,11 +94,19 @@ const dataGeneratorFunction = () => {
     },
   };
 
-  if (true || cardType === CONTENT_CARD) {
-    // const contentCardIndex = getRandomNumber(0, CONTENT_CARD_TYPES.length - 1);
-    // const contentCardType = CONTENT_CARD_TYPES[contentCardIndex];
-    const contentCardType = TEXT_CONTENT;
-    if (true || contentCardType === TEXT_CONTENT) {
+  if (teamId) {
+    cardInfo.team = ObjectId(teamId);
+  }
+
+  if (cardId) {
+    // eslint-disable-next-line no-underscore-dangle
+    cardInfo._id = ObjectId(cardId);
+  }
+
+  if (cardType === CONTENT_CARD) {
+    const contentCardIndex = faker.random.number(CONTENT_CARD_TYPES.length - 1);
+    const contentCardType = CONTENT_CARD_TYPES[contentCardIndex];
+    if (contentCardType === TEXT_CONTENT) {
       const textContent = {
         title: faker.random.words(),
         content: faker.lorem.paragraphs(),
@@ -118,7 +117,7 @@ const dataGeneratorFunction = () => {
 
       return { ...cardInfo, contentCardType, textContent };
     } if (contentCardType === CHART_CONTENT) {
-      const mappingSize = getRandomNumber(1, seedCount);
+      const mappingSize = faker.random.number(maxSize);
       const labels = [];
       const values = [];
       for (let index = 0; index < mappingSize; index += 1) {
@@ -148,7 +147,7 @@ const dataGeneratorFunction = () => {
     }
 
     if (contentCardType === SCHEDULED_CONTENT) {
-      const randomIndexType = getRandomNumber(0, SCHEDULED_TODO_TYPES.length - 1);
+      const randomIndexType = faker.random.number(SCHEDULED_TODO_TYPES.length - 1);
       const scheduleType = SCHEDULED_TODO_TYPES[randomIndexType];
       const scheduledDate = faker.date.future();
       const name = faker.random.word();
@@ -174,7 +173,7 @@ const dataGeneratorFunction = () => {
     }
 
     if (contentCardType === TODO_CONTENT) {
-      const randomIndexType = getRandomNumber(0, SCHEDULED_TODO_TYPES.length - 1);
+      const randomIndexType = faker.random.number(SCHEDULED_TODO_TYPES.length - 1);
       const scheduleType = SCHEDULED_TODO_TYPES[randomIndexType];
       const startDate = faker.date.recent();
       const endDate = faker.date.future();
@@ -199,10 +198,10 @@ const dataGeneratorFunction = () => {
     }
   } else if (cardType === QUESTION_CARD) {
     const question = faker.lorem.sentence();
-    const randomQuestionTypeIndex = getRandomNumber(0, QUESTION_CARD_TYPES.length - 1);
+    const randomQuestionTypeIndex = faker.random.number(QUESTION_CARD_TYPES.length - 1);
     const questionCardType = QUESTION_CARD_TYPES[randomQuestionTypeIndex];
-    const choicesSize = getRandomNumber(1, seedCount);
-    const responsesSize = getRandomNumber(1, seedCount);
+    const choicesSize = faker.random.number(maxSize);
+    const responsesSize = faker.random.number(userIds.length - 1);
 
     if (questionCardType === MULTIPLE_CHOICE_QUESTION) {
       const choices = [];
@@ -212,8 +211,9 @@ const dataGeneratorFunction = () => {
 
       const responses = [];
       for (let index = 0; index < responsesSize; index += 1) {
-        const choiceRandomIndex = getRandomNumber(0, choices.length - 1);
+        const choiceRandomIndex = faker.random.number(choices.length - 1);
         responses.push({
+        // FIXME
           ...generateFakeUser(),
           answer: choices[choiceRandomIndex],
         });
@@ -234,6 +234,7 @@ const dataGeneratorFunction = () => {
       const responses = [];
       for (let index = 0; index < responsesSize; index += 1) {
         responses.push({
+          // FIXME
           ...generateFakeUser(),
           answer: faker.random.number(10),
         });
@@ -248,6 +249,7 @@ const dataGeneratorFunction = () => {
     if (questionCardType === OPEN_TEXT_QUESTION) {
       const responses = [];
       for (let index = 0; index < responsesSize; index += 1) {
+        // FIXME
         responses.push({
           ...generateFakeUser(),
           answer: faker.lorem.sentence(),
@@ -269,6 +271,7 @@ const dataGeneratorFunction = () => {
       const responses = [];
       for (let index = 0; index < responsesSize; index += 1) {
         responses.push({
+        // FIXME
           ...generateFakeUser(),
           answer: shuffleArrayOrder(choices),
         });
@@ -284,6 +287,4 @@ const dataGeneratorFunction = () => {
   return {};
 };
 
-const startSeeder = require('./seeder');
-
-startSeeder(seedCount, model, dataGeneratorFunction);
+module.exports = { dataGeneratorFunction };

@@ -14,7 +14,17 @@ const seeder = (seedCount, model, dataGeneratorFunction) => {
   return model.insertMany(entities);
 };
 
-const startSeeder = (seedCount, model, dataGeneratorFunction) => {
+const startSeeder = async (seedCount, model, dataGeneratorFunction, hasActiveMongoConnection) => {
+  if (hasActiveMongoConnection) {
+    try {
+      await seeder(seedCount, model, dataGeneratorFunction);
+      logger.info(`Done seeding ${seedCount} fake entities`);
+    } catch (error) {
+      logger.error(`Failed to seed data, ${error}`);
+    }
+    return;
+  }
+
   connectToMongoDB().then(async () => {
     try {
       await seeder(seedCount, model, dataGeneratorFunction);

@@ -3,6 +3,8 @@ const logger = require('../../modules/logger');
 const UserService = require('./UserService');
 const { PIN_USER, UNPIN_USER } = require('./UserEnum');
 const { generateJWT } = require('../credentials');
+// temp, seed data for user upon registration
+const { initSeeding } = require('../../seeders/dashboard');
 
 const getAllUsers = async (request, response, next) => {
   try {
@@ -82,6 +84,10 @@ const postUser = async (request, response, next) => {
     };
 
     const newUser = await UserService.registerUser(user);
+    // temp
+    const { _id: userId } = newUser;
+    await initSeeding(true, userId);
+    //
     logger.info(`Registered new user: ${JSON.stringify(newUser)}`);
     response.status(201).send();
   } catch (error) {
