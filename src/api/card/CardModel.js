@@ -12,6 +12,7 @@ const contentCardSchema = {
       textColor: String,
       backgroundColor: String,
       fontStyle: String,
+      textSize: Number,
     },
   },
   // By default, arrays have a default value of []
