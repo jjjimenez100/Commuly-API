@@ -3,6 +3,7 @@ const logger = require('../../modules/logger');
 const UserService = require('./UserService');
 const { PIN_USER, UNPIN_USER } = require('./UserEnum');
 const { generateJWT } = require('../credentials');
+const { attachSignedCookieToResponse } = require('../../modules/implementations/awsCloudfront');
 // temp, seed data for user upon registration
 const { initSeeding } = require('../../seeders/dashboard');
 
@@ -54,7 +55,8 @@ const loginUser = async (request, response, next) => {
           _id: userId, email, role, activeTeam,
         } = user;
         const { token, expirationDate } = generateJWT(userId, email, role, activeTeam);
-        return response.send({
+        const signedResponse = attachSignedCookieToResponse(response);
+        return signedResponse.send({
           userId,
           email,
           role,
