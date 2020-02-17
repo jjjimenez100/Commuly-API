@@ -37,11 +37,9 @@ const saveImageContentCard = async (imageCard) => {
   const imageURLContent = getRandomizedFilename(team, IMAGE_CONTENT, originalname);
   await CloudStorage.uploadFile(imageURLContent, buffer);
 
-  const { _id } = await CardRepository.saveCard({
+  return CardRepository.saveCard({
     ...imageCard, imageURLContent,
   });
-
-  return _id;
 };
 
 const saveVideoContentCard = async (videoCard) => {
@@ -50,11 +48,9 @@ const saveVideoContentCard = async (videoCard) => {
   const videoURLContent = getRandomizedFilename(team, VIDEO_CONTENT, originalname);
   await CloudStorage.uploadFile(videoURLContent, buffer);
 
-  const { _id } = await CardRepository.saveCard({
+  return CardRepository.saveCard({
     ...videoCard, videoURLContent,
   });
-
-  return _id;
 };
 
 const saveScheduledEventCard = async (scheduledCard, team = '') => {
@@ -66,9 +62,10 @@ const saveScheduledEventCard = async (scheduledCard, team = '') => {
   const updatedScheduledCard = { ...scheduledCard };
   updatedScheduledCard.scheduledEventContent.imagePosterURL = imagePosterURL;
 
-  const { _id } = await CardRepository.saveCard(updatedScheduledCard);
+  const card = await CardRepository.saveCard(updatedScheduledCard);
 
   const { scheduledEventContent: { scheduleType } } = scheduledCard;
+  const { _id } = card;
   if (scheduleType === INDIVIDUAL_TYPE) {
     const { userIds } = scheduledCard;
     await UserService.addScheduleToUsers(userIds, _id);
@@ -76,11 +73,12 @@ const saveScheduledEventCard = async (scheduledCard, team = '') => {
     await TeamService.addScheduleToTeam(team, _id);
   }
 
-  return _id;
+  return card;
 };
 
 const saveTodoContentCard = async (todoCard, team = '') => {
-  const { _id } = await CardRepository.saveCard(todoCard);
+  const card = await CardRepository.saveCard(todoCard);
+  const { _id } = card;
   const { todoType } = todoCard;
 
   if (todoType === INDIVIDUAL_TYPE) {
@@ -90,7 +88,7 @@ const saveTodoContentCard = async (todoCard, team = '') => {
     await TeamService.addTodoToTeam(team, _id);
   }
 
-  return _id;
+  return card;
 };
 
 const saveContentCard = (card, team = '') => {

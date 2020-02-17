@@ -32,18 +32,18 @@ const postCard = async (request, response, next) => {
   try {
     const { body, file } = request;
     const { cardType, team } = body;
-    let id;
+    let savedCard;
     if (cardType === CONTENT_CARD) {
-      id = await CardService.saveContentCard({ ...body, file }, team);
+      savedCard = await CardService.saveContentCard({ ...body, file }, team);
     } else if (cardType === QUESTION_CARD) {
-      id = await CardService.saveQuestionCard({ ...body });
+      savedCard = await CardService.saveQuestionCard({ ...body });
     } else {
       response.status(422).send({
         message: 'Unexpected card type',
       });
       return;
     }
-    response.status(201).send({ id });
+    response.status(201).send({ savedCard });
   } catch (error) {
     next(error);
   }
