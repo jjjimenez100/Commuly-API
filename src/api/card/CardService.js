@@ -32,7 +32,7 @@ const getRandomizedFilename = (team, folder, originalFileName) => {
 };
 
 const saveImageContentCard = async (imageCard) => {
-  const { file: { buffer, originalname }, team } = imageCard;
+  const { file: { buffer, originalname }, team = '' } = imageCard;
 
   const imageURLContent = getRandomizedFilename(team, IMAGE_CONTENT, originalname);
   await CloudStorage.uploadFile(imageURLContent, buffer);
@@ -43,7 +43,7 @@ const saveImageContentCard = async (imageCard) => {
 };
 
 const saveVideoContentCard = async (videoCard) => {
-  const { file: { buffer, originalname }, team } = videoCard;
+  const { file: { buffer, originalname }, team = '' } = videoCard;
 
   const videoURLContent = getRandomizedFilename(team, VIDEO_CONTENT, originalname);
   await CloudStorage.uploadFile(videoURLContent, buffer);
@@ -53,15 +53,17 @@ const saveVideoContentCard = async (videoCard) => {
   });
 };
 
-const saveScheduledEventCard = async (scheduledCard, team = '') => {
-  const { file: { buffer, originalname } } = scheduledCard;
+const saveScheduledEventCard = async (scheduledCard) => {
+  const { file: { buffer, originalname }, team = '' } = scheduledCard;
 
   const imagePosterURL = getRandomizedFilename(team, SCHEDULED_CONTENT, originalname);
   await CloudStorage.uploadFile(imagePosterURL, buffer);
 
   const updatedScheduledCard = { ...scheduledCard };
+  updatedScheduledCard.scheduledEventContent = JSON.parse(
+    updatedScheduledCard.scheduledEventContent,
+  );
   updatedScheduledCard.scheduledEventContent.imagePosterURL = imagePosterURL;
-
   const card = await CardRepository.saveCard(updatedScheduledCard);
 
   const { scheduledEventContent: { scheduleType } } = scheduledCard;
@@ -92,7 +94,6 @@ const saveTodoContentCard = async (todoCard, team = '') => {
 };
 
 const saveContentCard = (card, team = '') => {
-  // text, chart, serial table, todo
   const { contentCardType } = card;
   if (contentCardType === IMAGE_CONTENT) {
     return saveImageContentCard(card);
