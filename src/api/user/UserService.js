@@ -114,37 +114,28 @@ const removeCardResponseToUser = async (userId, cardId) => {
   await updateUserPoints(userId, -RESPONSE_POINT);
 };
 
-module.exports = {
-  getUserCards,
-
-  getAllUsers,
-  getUserById,
-  getUserByEmail,
-  registerUser,
-  unregisterUser,
-  updateUser,
-
-  addScheduleToUser,
-  addScheduleToUsers,
-  removeScheduleToUsers,
-  removeScheduleToUser,
-
-  addTodoToUser,
-  addTodoToUsers,
-  removeTodoToUser,
-  removeTodoToUsers,
-
-  markTodoAsDone,
-  markTodoAsStuck,
-
-  updateUserPoints,
-
-  addCardReactionToUser,
-  removeCardReactionToUser,
-
-  addCardResponseToUser,
-  removeCardResponseToUser,
-
-  pinCardToUserStream,
-  unpinCardToUserStream,
-};
+exports.addTodoToUsers = addTodoToUsers;
+exports.getUserCards = getUserCards;
+exports.getAllUsers = getAllUsers;
+exports.getUserById = getUserById;
+exports.getUserByEmail = getUserByEmail;
+exports.registerUser = registerUser;
+exports.unregisterUser = unregisterUser;
+exports.updateUser = updateUser;
+exports.addScheduleToUser = addScheduleToUser;
+exports.addScheduleToUsers = addScheduleToUsers;
+exports.removeScheduleToUsers = removeScheduleToUsers;
+exports.removeScheduleToUser = removeScheduleToUser;
+exports.addTodoToUser = addTodoToUser;
+exports.addTodoToUsers = addTodoToUsers;
+exports.removeTodoToUser = removeTodoToUser;
+exports.removeTodoToUsers = removeTodoToUsers;
+exports.markTodoAsDone = markTodoAsDone;
+exports.markTodoAsStuck = markTodoAsStuck;
+exports.updateUserPoints = updateUserPoints;
+exports.addCardReactionToUser = addCardReactionToUser;
+exports.removeCardReactionToUser = removeCardReactionToUser;
+exports.addCardResponseToUser = addCardResponseToUser;
+exports.removeCardResponseToUser = removeCardResponseToUser;
+exports.pinCardToUserStream = pinCardToUserStream;
+exports.unpinCardToUserStream = unpinCardToUserStream;

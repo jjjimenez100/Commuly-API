@@ -125,13 +125,11 @@ const unreactToCard = async (cardId, reactionType, userId) => {
   await UserService.removeCardReactionToUser(userId, cardId);
 };
 
-module.exports = {
-  getAllCards,
-  getCardsByCardType,
-  getCardsByTeam,
-  getCardsByIds,
-  reactToCard,
-  unreactToCard,
-  saveContentCard,
-  saveQuestionCard,
-};
+exports.getAllCards = getAllCards;
+exports.getCardsByCardType = getCardsByCardType;
+exports.getCardsByTeam = getCardsByTeam;
+exports.getCardsByIds = getCardsByIds;
+exports.reactToCard = reactToCard;
+exports.unreactToCard = unreactToCard;
+exports.saveContentCard = saveContentCard;
+exports.saveQuestionCard = saveQuestionCard;
