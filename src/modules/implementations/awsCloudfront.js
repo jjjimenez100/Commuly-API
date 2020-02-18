@@ -5,8 +5,6 @@ const {
   CLOUDFRONT_URL,
 } = require('../../config/aws');
 
-const cloudFrontSigner = new aws.CloudFront.Signer(CLOUDFRONT_DISTRIBUTION_ID, CLOUDFRONT_RSA_KEY);
-
 const policy = JSON.stringify({
   Statement: [
     {
@@ -22,6 +20,9 @@ const policy = JSON.stringify({
 });
 
 const attachSignedCookieToResponse = (response) => {
+  const cloudFrontSigner = new aws.CloudFront.Signer(
+    CLOUDFRONT_DISTRIBUTION_ID, CLOUDFRONT_RSA_KEY(),
+  );
   const signedCookie = cloudFrontSigner.getSignedCookie({ policy });
 
   response.cookie('CloudFront-Key-Pair-Id', signedCookie['CloudFront-Key-Pair-Id'], {
@@ -45,4 +46,4 @@ const attachSignedCookieToResponse = (response) => {
   return response;
 };
 
-module.exports = attachSignedCookieToResponse;
+module.exports = { attachSignedCookieToResponse };
