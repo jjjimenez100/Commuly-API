@@ -56,10 +56,9 @@ const contentCardSchema = {
     type: {
       // INDIVIDUAL or TEAM
       todoType: String,
-      startDate: Date,
-      endDate: Date,
-      startTime: Date,
-      endTime: Date,
+      startDate: String,
+      startTime: String,
+      endTime: String,
       name: String,
     },
   },
