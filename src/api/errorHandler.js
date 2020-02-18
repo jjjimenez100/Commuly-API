@@ -1,6 +1,8 @@
 const logger = require('../modules/logger');
 
 const errorHandler = (error, request, response, next) => {
+  logger.error(`Encountered error. ${error}`);
+
   const { name = '', code = '', message = '' } = error;
   if (name === 'UnauthorizedError') {
     if (code === 'credentials_required') {
