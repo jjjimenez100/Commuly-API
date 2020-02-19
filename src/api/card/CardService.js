@@ -126,6 +126,14 @@ const unreactToCard = async (cardId, reactionType, userId) => {
   await UserService.removeCardReactionToUser(userId, cardId);
 };
 
+const addResponseToCard = (cardId, response, questionCardType) => CardRepository.addResponse(
+  cardId, response, questionCardType,
+);
+
+const removeResponseToCard = (cardId, userId, questionCardType) => CardRepository.removeResponse(
+  cardId, userId, questionCardType,
+);
+
 exports.getAllCards = getAllCards;
 exports.getCardsByCardType = getCardsByCardType;
 exports.getCardsByTeam = getCardsByTeam;
@@ -134,3 +142,5 @@ exports.reactToCard = reactToCard;
 exports.unreactToCard = unreactToCard;
 exports.saveContentCard = saveContentCard;
 exports.saveQuestionCard = saveQuestionCard;
+exports.addResponseToCard = addResponseToCard;
+exports.removeResponseToCard = removeResponseToCard;

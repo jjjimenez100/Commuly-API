@@ -36,7 +36,35 @@ const removeReaction = (cardId, reactionType, userId) => Card.findOneAndUpdate(
   },
   {
     $pull: {
-      [`reactions.${reactionType.toLowerCase()}`]: userId,
+      [`reactions.${reactionType.toLowerCase()}`]: {
+        userId,
+      },
+    },
+  },
+  { useFindAndModify: false },
+);
+
+const addResponse = (cardId, response, questionCardType) => Card.findOneAndUpdate(
+  {
+    _id: cardId,
+  },
+  {
+    $push: {
+      [`${questionCardType}.responses`]: response,
+    },
+  },
+  { useFindAndModify: false },
+);
+
+const removeResponse = (cardId, userId, questionCardType) => Card.findOneAndUpdate(
+  {
+    _id: cardId,
+  },
+  {
+    $pull: {
+      [`${questionCardType}.responses`]: {
+        userId,
+      },
     },
   },
   { useFindAndModify: false },
@@ -50,4 +78,6 @@ module.exports = {
   saveCard,
   addReaction,
   removeReaction,
+  addResponse,
+  removeResponse,
 };

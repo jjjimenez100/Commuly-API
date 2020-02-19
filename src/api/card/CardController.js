@@ -1,4 +1,5 @@
 const CardService = require('./CardService');
+const UserService = require('../user/UserService');
 
 const {
   CONTENT_CARD,
@@ -6,6 +7,11 @@ const {
 
   REACT,
   UNREACT,
+
+  ADD_RESPONSE,
+  REMOVE_RESPONSE,
+
+  QUESTION_CONTENT_RESPONSE_MAPPING,
 } = require('./CardEnum');
 
 const getCards = async (request, response, next) => {
@@ -51,15 +57,32 @@ const postCard = async (request, response, next) => {
 
 const patchCard = async (request, response, next) => {
   try {
-    const { patchType } = request.body;
+    const {
+      patchType = '',
+      reactionType = '',
+      userId = '',
+      response: userResponse = '',
+      questionCardType = '',
+    } = request.body;
+    const { id: cardId } = request.params;
     if (patchType === REACT) {
-      const { reactionType, userId } = request.body;
-      const { id: cardId } = request.params;
       await CardService.reactToCard(cardId, reactionType, userId);
     } else if (patchType === UNREACT) {
-      const { reactionType, userId } = request.body;
-      const { id: cardId } = request.params;
       await CardService.unreactToCard(cardId, reactionType, userId);
+    } else if (patchType === ADD_RESPONSE) {
+      await CardService.addResponseToCard(
+        cardId,
+        userResponse,
+        QUESTION_CONTENT_RESPONSE_MAPPING[questionCardType],
+      );
+      await UserService.addCardResponseToUser(userId, cardId);
+    } else if (patchType === REMOVE_RESPONSE) {
+      await CardService.removeResponseToCard(
+        cardId,
+        userId,
+        QUESTION_CONTENT_RESPONSE_MAPPING[questionCardType],
+      );
+      await UserService.removeCardResponseToUser(userId, cardId);
     }
     response.status(204).send();
   } catch (error) {
