@@ -59,7 +59,8 @@ const contentCardSchema = {
       startDate: String,
       startTime: String,
       endTime: String,
-      name: String,
+      title: String,
+      description: String,
     },
   },
 };
