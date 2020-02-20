@@ -36,7 +36,8 @@ const contentCardSchema = {
       endTime: String,
       // either INDIVIDUAL or TEAM
       scheduleType: String,
-      name: String,
+      title: String,
+      description: String,
       // s3 -> cloudfront
       imagePosterURL: String,
       userWorkShift: {
