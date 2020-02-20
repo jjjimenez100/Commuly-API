@@ -140,6 +140,9 @@ const cardSchema = new Schema({
   tags: {
     taggedUsers: [ObjectId],
   },
+  createdDate: {
+    type: String,
+  },
   reactions: {
     type: {
       // ObjectIDs

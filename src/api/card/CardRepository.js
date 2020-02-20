@@ -1,3 +1,4 @@
+const moment = require('moment-timezone');
 const Card = require('./CardModel');
 
 const getAllCards = () => Card.find({}).exec();
@@ -14,9 +15,13 @@ const getCardsByIds = (ids) => Card.find({
   _id: {
     $in: ids,
   },
-}).exec();
+})
+  .exec();
 
-const saveCard = (card) => Card.create(card);
+const saveCard = (card) => Card.create({
+  ...card,
+  createdDate: moment.tz('Asia/Manila').format('MM/DD/YYYY hh:mm:ss A'),
+});
 
 const addReaction = (cardId, reactionType, userId) => Card.findOneAndUpdate(
   {

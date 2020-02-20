@@ -1,5 +1,6 @@
 const path = require('path');
 const uuid = require('uuid/v4');
+const moment = require('moment-timezone');
 
 const CardRepository = require('./CardRepository');
 const UserService = require('../user/UserService');
@@ -18,11 +19,30 @@ const CloudStorage = require('../../modules/interfaces/cloudStorage');
 
 const getAllCards = () => CardRepository.getAllCards();
 
-const getCardsByCardType = (cardType) => CardRepository.getCardsByCardType(cardType);
+const sortMostRecentCards = (cards) => {
+  cards.sort(({ createdDate: a }, { createdDate: b }) => moment.tz(b, 'Asia/Manila') - moment.tz(a, 'Asia/Manila'));
+};
 
-const getCardsByTeam = (team, page, limit) => CardRepository.getCardsByTeam(team, page, limit);
+const getCardsByCardType = async (cardType) => {
+  const cards = await CardRepository.getCardsByCardType(cardType);
+  sortMostRecentCards(cards);
 
-const getCardsByIds = (ids) => CardRepository.getCardsByIds(ids);
+  return cards;
+};
+
+const getCardsByTeam = async (team, page, limit) => {
+  const cards = await CardRepository.getCardsByTeam(team, page, limit);
+  sortMostRecentCards(cards);
+
+  return cards;
+};
+
+const getCardsByIds = async (ids) => {
+  const cards = await CardRepository.getCardsByIds(ids);
+  sortMostRecentCards(cards);
+
+  return cards;
+};
 
 const getRandomizedFilename = (team, folder, originalFileName) => {
   const randomFileName = uuid();

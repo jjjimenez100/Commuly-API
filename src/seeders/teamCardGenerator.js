@@ -84,6 +84,8 @@ const dataGeneratorFunction = (maxSize, userIds, teamId, cardId) => {
     confused.push(userIds[faker.random.number(userIds.length - 1)]);
   }
 
+  const createdDate = moment.tz('Asia/Manila').format('MM/DD/YYYY hh:mm:ss A');
+
   const cardInfo = {
     owner,
     cardType,
@@ -94,6 +96,7 @@ const dataGeneratorFunction = (maxSize, userIds, teamId, cardId) => {
       bored,
       confused,
     },
+    createdDate,
   };
 
   if (teamId) {
