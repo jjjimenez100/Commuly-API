@@ -10,17 +10,37 @@ const { REACTION_POINT, PIN_POINT, RESPONSE_POINT } = require('./UserEnum');
 
 const getUserCards = async (id) => {
   const userDetails = await UserRepository.getUserById(id);
-  const { activeTeam, scheduledCards: scheduledIds, todoCards: todos } = userDetails;
   const {
-    hash, salt, role, ...userWithoutPrivateInfo
+    activeTeam,
+    scheduledCards: scheduledIds,
+    todoCards: todos,
+    email,
+    name,
+    phoneNumber,
+    pinnedCards,
+    reactedCards,
+    respondedCards,
+    role,
+    teams,
   } = userDetails;
-  const { _doc: user } = userWithoutPrivateInfo;
+
   const todoIds = todos.map(({ todoId }) => todoId);
 
   const todoCards = await CardService.getCardsByIds(todoIds);
   const scheduledCards = await CardService.getCardsByIds(scheduledIds);
   const teamCards = await CardService.getCardsByTeam(activeTeam);
 
+  const user = {
+    activeTeam,
+    email,
+    name,
+    phoneNumber,
+    pinnedCards,
+    reactedCards,
+    respondedCards,
+    role,
+    teams,
+  };
   const cards = {
     user,
     todoCards,
