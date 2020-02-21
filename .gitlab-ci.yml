@@ -7,7 +7,7 @@ cache:
 stages:
   - lint
   - deploy_staging
-
+  
 lint:
   stage: lint
   script:
