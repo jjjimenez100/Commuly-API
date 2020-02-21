@@ -1,6 +1,7 @@
 // Temp
 const { ObjectId } = require('mongoose').Types;
 //
+const lodash = require('lodash');
 
 const UserRepository = require('./UserRepository');
 const CardService = require('../card/CardService');
@@ -33,10 +34,22 @@ const getUserCards = async (id) => {
   const teamCards = await CardService.getCardsByTeam(activeTeam);
 
   const todoTeamCards = teamCards.filter(({ contentCardType = '' }) => contentCardType === TODO_CONTENT);
-  const todoCards = [...partialTodoCards, ...todoTeamCards];
+  const todoCards = lodash.uniqBy(
+    [...partialTodoCards, ...todoTeamCards], ({ _id }) => _id.toString(),
+  );
+  const todoCardsWithUserStatus = todoCards.map((todoCard) => {
+    const { _id: todoCardId } = todoCard;
+    // should always have a match, or else, something went wrong with inserting data
+    const { status = '' } = todos.find(({ todoId }) => todoId.toString() === todoCardId.toString());
+    // eslint-disable-next-line no-underscore-dangle
+    return { ...todoCard._doc, status };
+  });
 
   const scheduledTeamCards = teamCards.filter(({ contentCardType = '' }) => contentCardType === SCHEDULED_CONTENT);
-  const scheduledCards = [...partialScheduledCards, ...scheduledTeamCards];
+  const scheduledCards = lodash.uniqBy(
+    [...partialScheduledCards, ...scheduledTeamCards], ({ _id }) => _id.toString(),
+  );
+
 
   const user = {
     activeTeam,
@@ -51,7 +64,7 @@ const getUserCards = async (id) => {
   };
   const cards = {
     user,
-    todoCards,
+    todoCards: todoCardsWithUserStatus,
     scheduledCards,
     teamCards,
   };
