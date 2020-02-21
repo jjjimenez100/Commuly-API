@@ -1,7 +1,9 @@
 const passport = require('passport');
 const logger = require('../../modules/logger');
 const UserService = require('./UserService');
-const { PIN_USER, UNPIN_USER } = require('./UserEnum');
+const {
+  PIN_USER, UNPIN_USER, DONE_STATUS, STUCK_STATUS,
+} = require('./UserEnum');
 const { generateJWT } = require('../credentials');
 const { attachSignedCookieToResponse } = require('../../modules/implementations/awsCloudfront');
 // temp, seed data for user upon registration
@@ -151,12 +153,16 @@ const deleteUser = async (request, response, next) => {
 
 const patchUserCard = async (request, response, next) => {
   try {
-    const { patchType } = request.body;
-    const { userId, cardId } = request.body;
+    const { patchType, cardId } = request.body;
+    const { id: userId } = request.params;
     if (patchType === PIN_USER) {
       await UserService.pinCardToUserStream(userId, cardId);
     } else if (patchType === UNPIN_USER) {
       await UserService.unpinCardToUserStream(userId, cardId);
+    } else if (patchType === DONE_STATUS) {
+      await UserService.markTodoAsDone(userId, cardId);
+    } else if (patchType === STUCK_STATUS) {
+      await UserService.markTodoAsStuck(userId, cardId);
     }
     response.status(200).send();
   } catch (error) {
