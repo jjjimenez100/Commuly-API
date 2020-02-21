@@ -21,7 +21,7 @@ const {
 const { UserValidation, idValidation } = require('./UserValidation');
 const { validate } = require('../validation');
 
-router.get('/users', jwt({ secret: JWT_PRIVATE_KEY }), roleChecker([ADMINISTRATOR_ROLE]), getAllUsers);
+router.get('/users', getAllUsers);
 router.get('/user/:id', idValidation, validate, getUserById);
 router.get('/user/:id/cards', idValidation, validate, getUserCards);
 
@@ -31,7 +31,7 @@ router.post('/login', loginUser);
 
 router.put('/user/:id', UserValidation, validate, jwt({ secret: JWT_PRIVATE_KEY }), roleChecker([ADMINISTRATOR_ROLE]), updateUser);
 
-router.patch('/user/:id/cards', jwt({ secret: JWT_PRIVATE_KEY }), roleChecker([ADMINISTRATOR_ROLE]), patchUserCard);
+router.patch('/user/:id/cards', patchUserCard);
 
 router.delete('/user/:id', idValidation, validate, jwt({ secret: JWT_PRIVATE_KEY }), roleChecker([ADMINISTRATOR_ROLE]), deleteUser);
 
