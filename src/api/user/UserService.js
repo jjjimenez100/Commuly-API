@@ -5,7 +5,9 @@ const { ObjectId } = require('mongoose').Types;
 const UserRepository = require('./UserRepository');
 const CardService = require('../card/CardService');
 const { generateSalt, hashPassword } = require('../credentials');
-const { DONE_STATUS, STUCK_STATUS } = require('../card/CardEnum');
+const {
+  DONE_STATUS, STUCK_STATUS, TODO_CONTENT, SCHEDULED_CONTENT,
+} = require('../card/CardEnum');
 const { REACTION_POINT, PIN_POINT, RESPONSE_POINT } = require('./UserEnum');
 
 const getUserCards = async (id) => {
@@ -26,9 +28,15 @@ const getUserCards = async (id) => {
 
   const todoIds = todos.map(({ todoId }) => todoId);
 
-  const todoCards = await CardService.getCardsByIds(todoIds);
-  const scheduledCards = await CardService.getCardsByIds(scheduledIds);
+  const partialTodoCards = await CardService.getCardsByIds(todoIds);
+  const partialScheduledCards = await CardService.getCardsByIds(scheduledIds);
   const teamCards = await CardService.getCardsByTeam(activeTeam);
+
+  const todoTeamCards = teamCards.filter(({ contentCardType = '' }) => contentCardType === TODO_CONTENT);
+  const todoCards = [...partialTodoCards, ...todoTeamCards];
+
+  const scheduledTeamCards = teamCards.filter(({ contentCardType = '' }) => contentCardType === SCHEDULED_CONTENT);
+  const scheduledCards = [...partialScheduledCards, ...scheduledTeamCards];
 
   const user = {
     activeTeam,
