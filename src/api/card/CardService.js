@@ -98,7 +98,7 @@ const saveScheduledEventCard = async (scheduledCard) => {
   return card;
 };
 
-const saveTodoContentCard = async (todoCard, team = '') => {
+const saveTodoContentCard = async (todoCard, team = '', userId = 0) => {
   const card = await CardRepository.saveCard(todoCard);
   const { _id } = card;
   const { todoType } = todoCard;
@@ -108,12 +108,13 @@ const saveTodoContentCard = async (todoCard, team = '') => {
     await UserService.addTodoToUsers(userIds, _id);
   } else if (team !== '' && todoType === TEAM_TYPE) {
     await TeamService.addTodoToTeam(team, _id);
+    await UserService.addTodoToUser(userId, _id);
   }
 
   return card;
 };
 
-const saveContentCard = (card, team = '') => {
+const saveContentCard = (card, team = '', userId = 0) => {
   const { contentCardType } = card;
   if (contentCardType === IMAGE_CONTENT) {
     return saveImageContentCard(card);
@@ -128,7 +129,7 @@ const saveContentCard = (card, team = '') => {
   }
 
   if (contentCardType === TODO_CONTENT) {
-    return saveTodoContentCard(card, team);
+    return saveTodoContentCard(card, team, userId);
   }
 
   return CardRepository.saveCard(card);

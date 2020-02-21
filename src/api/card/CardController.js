@@ -37,10 +37,10 @@ const getCards = async (request, response, next) => {
 const postCard = async (request, response, next) => {
   try {
     const { body, file } = request;
-    const { cardType, team } = body;
+    const { cardType, team = '', owner = 0 } = body;
     let savedCard;
     if (cardType === CONTENT_CARD) {
-      savedCard = await CardService.saveContentCard({ ...body, file }, team);
+      savedCard = await CardService.saveContentCard({ ...body, file }, team, owner);
     } else if (cardType === QUESTION_CARD) {
       savedCard = await CardService.saveQuestionCard({ ...body });
     } else {
