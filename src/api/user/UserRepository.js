@@ -150,13 +150,16 @@ const updateUserPoints = (id, points) => User.findOneAndUpdate(
   { $inc: { points } },
 );
 
-const addCardReactionToUser = (userId, cardId) => User.findOneAndUpdate(
+const addCardReactionToUser = (userId, cardId, reactionType) => User.findOneAndUpdate(
   {
     _id: userId,
   },
   {
     $push: {
-      reactedCards: cardId,
+      reactedCards: {
+        cardId,
+        reactionType,
+      },
     },
   },
   { useFindAndModify: false },
@@ -168,7 +171,9 @@ const removeCardReactionToUser = (userId, cardId) => User.findOneAndUpdate(
   },
   {
     $pull: {
-      reactedCards: cardId,
+      reactedCards: {
+        cardId,
+      },
     },
   },
   { useFindAndModify: false },
