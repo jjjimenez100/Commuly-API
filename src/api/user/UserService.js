@@ -8,6 +8,7 @@ const CardService = require('../card/CardService');
 const { generateSalt, hashPassword } = require('../credentials');
 const {
   DONE_STATUS, STUCK_STATUS, TODO_CONTENT, SCHEDULED_CONTENT,
+  CONTENT_CARD, QUESTION_CARD, QUESTION_CONTENT_RESPONSE_MAPPING,
 } = require('../card/CardEnum');
 const { REACTION_POINT, PIN_POINT, RESPONSE_POINT } = require('./UserEnum');
 
@@ -31,16 +32,38 @@ const getUserCards = async (id) => {
 
   const partialTodoCards = await CardService.getCardsByIds(todoIds);
   const partialScheduledCards = await CardService.getCardsByIds(scheduledIds);
-  const teamCards = await CardService.getCardsByTeam(activeTeam);
+  const partialTeamCards = await CardService.getCardsByTeam(activeTeam);
+  const teamCards = partialTeamCards.map(teamCard => {
+    const { cardType, _id: teamCardId } = teamCard;
+    if (cardType === CONTENT_CARD) {
+      return teamCard;
+    }
+
+    // map answered question cards to true
+    const hasUserSubmittedAnswer = cardType === QUESTION_CARD && respondedCards.includes(teamCardId);
+    if (hasUserSubmittedAnswer) {
+      // get answer and map
+      const { questionCardType = '' } = teamCard;
+      const { responses = [] } = teamCard[QUESTION_CONTENT_RESPONSE_MAPPING[questionCardType]];
+      const userResponse = responses.find(({ userId }) => userId.toString() === id)
+
+      return { ...teamCard._doc, hasUserSubmittedAnswer, userResponse };
+    }
+    
+    return { ...teamCard._doc, hasUserSubmittedAnswer };
+  });
 
   const todoTeamCards = teamCards.filter(({ contentCardType = '' }) => contentCardType === TODO_CONTENT);
   const todoCards = lodash.uniqBy(
     [...partialTodoCards, ...todoTeamCards], ({ _id }) => _id.toString(),
   );
+
+  // map todo cards with user status
   const todoCardsWithUserStatus = todoCards.map((todoCard) => {
     const { _id: todoCardId } = todoCard;
     // should always have a match, or else, something went wrong with inserting data
-    const { status = '' } = todos.find(({ todoId }) => todoId.toString() === todoCardId.toString());
+    const matchedTodo = todos.find(({ todoId }) => todoId.toString() === todoCardId.toString());
+    const status = matchedTodo ? matchedTodo.status : '';
     // eslint-disable-next-line no-underscore-dangle
     return { ...todoCard._doc, status };
   });

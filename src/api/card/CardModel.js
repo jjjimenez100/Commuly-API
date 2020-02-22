@@ -115,11 +115,13 @@ const questionCardSchema = {
   columnReorderingContent: {
     type: {
       question: String,
+      options: [String],
       choices: [String],
       responses: [{
         ...userResponseInfoSchema,
         // in order
-        answer: [String],
+        optionsAnswer: [String],
+        choicesAnswer: [String],
       }],
     },
   },
