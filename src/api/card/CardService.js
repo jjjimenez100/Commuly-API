@@ -139,7 +139,7 @@ const saveQuestionCard = (card) => CardRepository.saveCard(card);
 
 const reactToCard = async (cardId, reactionType, userId) => {
   await CardRepository.addReaction(cardId, reactionType, userId);
-  await UserService.addCardReactionToUser(userId, cardId);
+  await UserService.addCardReactionToUser(userId, cardId, reactionType);
 };
 
 const unreactToCard = async (cardId, reactionType, userId) => {

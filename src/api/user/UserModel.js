@@ -26,7 +26,10 @@ const userSchema = new Schema({
     status: String,
   }],
   scheduledCards: [ObjectId],
-  reactedCards: [ObjectId],
+  reactedCards: [{
+    cardId: ObjectId,
+    reactionType: String,
+  }],
   teams: [ObjectId],
   respondedCards: [ObjectId],
   points: Number,

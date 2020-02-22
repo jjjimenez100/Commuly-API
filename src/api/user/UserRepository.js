@@ -202,13 +202,16 @@ const unpinCardToUserStream = (userId, cardId) => User.findOneAndUpdate(
   { useFindAndModify: false },
 ).exec();
 
-const addCardResponseToUser = (userId, cardId) => User.findOneAndUpdate(
+const addCardResponseToUser = (userId, cardId, reactionType) => User.findOneAndUpdate(
   {
     _id: userId,
   },
   {
     $push: {
-      respondedCards: cardId,
+      respondedCards: {
+        cardId,
+        reactionType,
+      },
     },
   },
   { useFindAndModify: false },
@@ -220,7 +223,9 @@ const removeCardResponseToUser = (userId, cardId) => User.findOneAndUpdate(
   },
   {
     $pull: {
-      respondedCards: cardId,
+      respondedCards: {
+        cardId,
+      },
     },
   },
   { useFindAndModify: false },

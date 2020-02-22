@@ -148,8 +148,8 @@ const markTodoAsStuck = (userId, todoId) => UserRepository.markTodo(userId, todo
 
 const updateUserPoints = (userId, points) => UserRepository.updateUserPoints(userId, points);
 
-const addCardReactionToUser = async (userId, cardId) => {
-  await UserRepository.addCardReactionToUser(userId, cardId);
+const addCardReactionToUser = async (userId, cardId, reactionType) => {
+  await UserRepository.addCardReactionToUser(userId, cardId, reactionType);
   await updateUserPoints(userId, REACTION_POINT);
 };
 
