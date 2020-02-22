@@ -156,9 +156,7 @@ const addCardReactionToUser = (userId, cardId) => User.findOneAndUpdate(
   },
   {
     $push: {
-      reactedCards: {
-        cardId,
-      },
+      reactedCards: cardId,
     },
   },
   { useFindAndModify: false },
@@ -170,9 +168,7 @@ const removeCardReactionToUser = (userId, cardId) => User.findOneAndUpdate(
   },
   {
     $pull: {
-      reactedCards: {
-        cardId,
-      },
+      reactedCards: cardId,
     },
   },
   { useFindAndModify: false },
