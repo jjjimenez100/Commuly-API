@@ -55,6 +55,18 @@ const postCard = async (request, response, next) => {
   }
 };
 
+const putCard = async (request, response, next) => {
+  try {
+    const { id: cardId } = request.params;
+    const { body: card } = request;
+
+    await CardService.updateCard(cardId, card);
+    response.status(200).send();
+  } catch (error) {
+    next(error);
+  }
+};
+
 const patchCard = async (request, response, next) => {
   try {
     const {
@@ -91,5 +103,5 @@ const patchCard = async (request, response, next) => {
 };
 
 module.exports = {
-  getCards, postCard, patchCard,
+  getCards, postCard, patchCard, putCard,
 };

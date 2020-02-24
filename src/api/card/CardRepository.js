@@ -23,6 +23,18 @@ const saveCard = (card) => Card.create({
   createdDate: moment.tz('Asia/Manila').format('MM/DD/YYYY hh:mm:ss A'),
 });
 
+const updateAndOverwriteCard = (cardId, card) => Card.findOneAndUpdate(
+  {
+    _id: cardId,
+  },
+  {
+    ...card,
+  },
+  {
+    overwrite: true,
+  },
+);
+
 const addReaction = (cardId, reactionType, userId) => Card.findOneAndUpdate(
   {
     _id: cardId,
@@ -80,6 +92,7 @@ module.exports = {
   getCardsByCardType,
   getCardsByTeam,
   getCardsByIds,
+  updateAndOverwriteCard,
   saveCard,
   addReaction,
   removeReaction,

@@ -139,7 +139,7 @@ const saveQuestionCard = (card) => CardRepository.saveCard(card);
 
 const reactToCard = async (cardId, reactionType, userId) => {
   await CardRepository.addReaction(cardId, reactionType, userId);
-  await UserService.addCardReactionToUser(userId, cardId, reactionType);
+  await UserService.addCardReactionToUser(userId, cardId);
 };
 
 const unreactToCard = async (cardId, reactionType, userId) => {
@@ -155,6 +155,8 @@ const removeResponseToCard = (cardId, userId, questionCardType) => CardRepositor
   cardId, userId, questionCardType,
 );
 
+const updateCard = (cardId, card) => CardRepository.updateAndOverwriteCard(cardId, card);
+
 exports.getAllCards = getAllCards;
 exports.getCardsByCardType = getCardsByCardType;
 exports.getCardsByTeam = getCardsByTeam;
@@ -165,3 +167,4 @@ exports.saveContentCard = saveContentCard;
 exports.saveQuestionCard = saveQuestionCard;
 exports.addResponseToCard = addResponseToCard;
 exports.removeResponseToCard = removeResponseToCard;
+exports.updateCard = updateCard;
