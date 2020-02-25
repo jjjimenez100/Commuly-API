@@ -87,6 +87,18 @@ const removeResponse = (cardId, userId, questionCardType) => Card.findOneAndUpda
   { useFindAndModify: false },
 );
 
+const removeResponses = (cardId, questionCardType) => Card.findOneAndUpdate(
+  {
+    _id: cardId,
+  },
+  {
+    $set: {
+      [`${questionCardType}.responses`]: [],
+    },
+  },
+  { useFindAndModify: false },
+);
+
 module.exports = {
   getAllCards,
   getCardById,
@@ -99,4 +111,5 @@ module.exports = {
   removeReaction,
   addResponse,
   removeResponse,
+  removeResponses,
 };

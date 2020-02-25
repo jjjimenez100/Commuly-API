@@ -231,6 +231,20 @@ const removeCardResponseToUser = (userId, cardId) => User.findOneAndUpdate(
   { useFindAndModify: false },
 ).exec();
 
+const removeCardResponseToUsers = (userIds, cardId) => User.findOneAndUpdate(
+  {
+    _id: {
+      $in: userIds,
+    },
+  },
+  {
+    $pull: {
+      respondedCards: cardId,
+    },
+  },
+  { useFindAndModify: false },
+).exec();
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -259,6 +273,7 @@ module.exports = {
 
   addCardResponseToUser,
   removeCardResponseToUser,
+  removeCardResponseToUsers,
 
   markTodo,
 };

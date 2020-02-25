@@ -33,23 +33,26 @@ const getUserCards = async (id) => {
   const partialTodoCards = await CardService.getCardsByIds(todoIds);
   const partialScheduledCards = await CardService.getCardsByIds(scheduledIds);
   const partialTeamCards = await CardService.getCardsByTeam(activeTeam);
-  const teamCards = partialTeamCards.map(teamCard => {
+  const teamCards = partialTeamCards.map((teamCard) => {
     const { cardType, _id: teamCardId } = teamCard;
     if (cardType === CONTENT_CARD) {
       return teamCard;
     }
 
     // map answered question cards to true
-    const hasUserSubmittedAnswer = cardType === QUESTION_CARD && respondedCards.includes(teamCardId);
+    const hasUserSubmittedAnswer = cardType === QUESTION_CARD
+    && respondedCards.includes(teamCardId);
     if (hasUserSubmittedAnswer) {
       // get answer and map
       const { questionCardType = '' } = teamCard;
       const { responses = [] } = teamCard[QUESTION_CONTENT_RESPONSE_MAPPING[questionCardType]];
-      const userResponse = responses.find(({ userId }) => userId.toString() === id)
+      const userResponse = responses.find(({ userId }) => userId.toString() === id);
 
+      // eslint-disable-next-line no-underscore-dangle
       return { ...teamCard._doc, hasUserSubmittedAnswer, userResponse };
     }
-    
+
+    // eslint-disable-next-line no-underscore-dangle
     return { ...teamCard._doc, hasUserSubmittedAnswer };
   });
 
@@ -178,6 +181,10 @@ const removeCardResponseToUser = async (userId, cardId) => {
   await updateUserPoints(userId, -RESPONSE_POINT);
 };
 
+const removeCardResponseToUsers = (userIds, cardId) => UserRepository.removeCardResponseToUsers(
+  userIds, cardId,
+);
+
 exports.addTodoToUsers = addTodoToUsers;
 exports.getUserCards = getUserCards;
 exports.getAllUsers = getAllUsers;
@@ -203,3 +210,4 @@ exports.addCardResponseToUser = addCardResponseToUser;
 exports.removeCardResponseToUser = removeCardResponseToUser;
 exports.pinCardToUserStream = pinCardToUserStream;
 exports.unpinCardToUserStream = unpinCardToUserStream;
+exports.removeCardResponseToUsers = removeCardResponseToUsers;

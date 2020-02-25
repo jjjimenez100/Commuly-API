@@ -64,6 +64,7 @@ const saveImageContentCard = async (imageCard) => {
   });
 };
 
+
 const saveVideoContentCard = async (videoCard) => {
   const { file: { buffer, originalname }, team = '' } = videoCard;
 
@@ -137,6 +138,50 @@ const saveContentCard = (card, team = '', userId = 0) => {
   return CardRepository.saveCard(card);
 };
 
+const updateVideoContentCard = async (videoCard) => {
+  const { file: { buffer, originalname }, team = '' } = videoCard;
+
+  const videoURLContent = getRandomizedFilename(team, VIDEO_CONTENT, originalname);
+  await CloudStorage.uploadFile(videoURLContent, buffer);
+
+  return videoURLContent;
+};
+
+const updateImageContentCard = async (imageCard) => {
+  const { file: { buffer, originalname }, team = '' } = imageCard;
+
+  const imageURLContent = getRandomizedFilename(team, IMAGE_CONTENT, originalname);
+  await CloudStorage.uploadFile(imageURLContent, buffer);
+
+  return imageURLContent;
+};
+
+const updateScheduledEventCard = async (scheduledCard) => {
+  const { file: { buffer, originalname }, team = '' } = scheduledCard;
+
+  const imagePosterURL = getRandomizedFilename(team, SCHEDULED_CONTENT, originalname);
+  await CloudStorage.uploadFile(imagePosterURL, buffer);
+
+  return imagePosterURL;
+};
+
+const updateFile = (card) => {
+  const { contentCardType = '' } = card;
+  if (contentCardType === IMAGE_CONTENT) {
+    return updateImageContentCard(card);
+  }
+
+  if (contentCardType === VIDEO_CONTENT) {
+    return updateVideoContentCard(card);
+  }
+
+  if (contentCardType === SCHEDULED_CONTENT) {
+    return updateScheduledEventCard(card);
+  }
+
+  return '';
+};
+
 const saveQuestionCard = (card) => CardRepository.saveCard(card);
 
 const reactToCard = async (cardId, reactionType, userId) => {
@@ -157,6 +202,10 @@ const removeResponseToCard = (cardId, userId, questionCardType) => CardRepositor
   cardId, userId, questionCardType,
 );
 
+const removeResponsesToCard = (cardId, questionCardType) => CardRepository.removeResponses(
+  cardId, questionCardType,
+);
+
 const updateCard = (cardId, card) => CardRepository.updateAndOverwriteCard(cardId, card);
 
 exports.getAllCards = getAllCards;
@@ -170,4 +219,6 @@ exports.saveQuestionCard = saveQuestionCard;
 exports.addResponseToCard = addResponseToCard;
 exports.removeResponseToCard = removeResponseToCard;
 exports.updateCard = updateCard;
+exports.updateFile = updateFile;
 exports.getCardById = getCardById;
+exports.removeResponsesToCard = removeResponsesToCard;

@@ -67,12 +67,11 @@ const putCard = async (request, response, next) => {
     const { id: cardId } = request.params;
     const { body: card } = request;
     const { cardType } = card;
+    const cardDetails = await CardService.getCardById(cardId);
 
     if (cardType === CONTENT_CARD) {
       const { contentCardType, shouldDeleteCloudFile = false } = card;
       if (CONTENT_CARD_TYPES_WITH_CLOUD_FILES.includes(contentCardType)) {
-        // get content card details first
-        const cardDetails = await CardService.getCardById(cardId);
         let cloudFileName = '';
         if (contentCardType === IMAGE_CONTENT) {
           cloudFileName = cardDetails.imageURLContent || '';
@@ -85,12 +84,34 @@ const putCard = async (request, response, next) => {
         if (shouldDeleteCloudFile) {
           await CloudStorage.deleteFile(cloudFileName);
         }
+
+        const updatedFileURL = await CardService.updateFile(card);
+        if (contentCardType === IMAGE_CONTENT) {
+          cardDetails.imageURLContent = updatedFileURL;
+        } else if (contentCardType === VIDEO_CONTENT) {
+          cardDetails.videoURLContent = updatedFileURL;
+        } else if (contentCardType === SCHEDULED_CONTENT) {
+          cardDetails.scheduledEventContent.imagePosterURL = updatedFileURL;
+        }
+
+        await CardService.updateCard(cardId, { ...card });
+        response.send({ updatedFileURL });
       }
     } else if (cardType === QUESTION_CARD) {
-      // remove responses
+      // remove responses on the actual card
+      const { questionCardType = '' } = cardDetails;
+      const questionCardContent = QUESTION_CONTENT_RESPONSE_MAPPING[questionCardType];
+      await CardService.removeResponsesToCard(
+        cardId, questionCardContent,
+      );
+
+      // remove responses to each user
+      const { responses } = cardDetails[questionCardContent];
+      const respondedUserIds = responses.map(({ userId }) => userId);
+      await UserService.removeCardResponseToUsers(respondedUserIds, cardId);
+      await CardService.updateCard(cardId, { ...card });
+      response.status(200).send();
     }
-    await CardService.updateCard(cardId, { ...card });
-    response.status(200).send();
   } catch (error) {
     next(error);
   }
