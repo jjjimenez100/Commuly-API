@@ -20,7 +20,7 @@ const CloudStorage = require('../../modules/interfaces/cloudStorage');
 const getAllCards = () => CardRepository.getAllCards();
 
 const sortMostRecentCards = (cards) => {
-  cards.sort(({ createdDate: a }, { createdDate: b }) => moment.tz(b, 'Asia/Manila') - moment.tz(a, 'Asia/Manila'));
+  cards.sort(({ createdDate: a }, { createdDate: b }) => moment.tz(b, 'MM/DD/YYYY hh:mm:ss A', 'Asia/Manila') - moment.tz(a, 'MM/DD/YYYY hh:mm:ss A', 'Asia/Manila'));
 };
 
 const getCardsByCardType = async (cardType) => {

@@ -148,6 +148,7 @@ const deleteUserById = (id) => User.findByIdAndDelete(id).exec();
 const updateUserPoints = (id, points) => User.findOneAndUpdate(
   { _id: id },
   { $inc: { points } },
+  { useFindAndModify: false },
 );
 
 const addCardReactionToUser = (userId, cardId, reactionType) => User.findOneAndUpdate(

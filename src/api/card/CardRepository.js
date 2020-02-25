@@ -35,6 +35,7 @@ const updateAndOverwriteCard = (cardId, card) => Card.findOneAndUpdate(
   {
     overwrite: true,
     new: true,
+    useFindAndModify: false,
   },
 );
 
