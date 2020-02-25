@@ -25,6 +25,7 @@ const contentCardSchema = {
   },
   // s3 -> cloudfront
   imageURLContent: String,
+  imageDescription: String,
   // s3 -> cloudfront
   videoURLContent: String,
   serialTableContent: Mixed,
