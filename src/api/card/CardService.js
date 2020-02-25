@@ -44,6 +44,8 @@ const getCardsByIds = async (ids) => {
   return cards;
 };
 
+const getCardById = (id) => CardRepository.getCardById(id);
+
 const getRandomizedFilename = (team, folder, originalFileName) => {
   const randomFileName = uuid();
   const fileExtension = path.extname(originalFileName);
@@ -168,3 +170,4 @@ exports.saveQuestionCard = saveQuestionCard;
 exports.addResponseToCard = addResponseToCard;
 exports.removeResponseToCard = removeResponseToCard;
 exports.updateCard = updateCard;
+exports.getCardById = getCardById;

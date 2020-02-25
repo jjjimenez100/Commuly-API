@@ -1,6 +1,8 @@
 const CardService = require('./CardService');
 const UserService = require('../user/UserService');
 
+const CloudStorage = require('../../modules/interfaces/cloudStorage');
+
 const {
   CONTENT_CARD,
   QUESTION_CARD,
@@ -12,6 +14,11 @@ const {
   REMOVE_RESPONSE,
 
   QUESTION_CONTENT_RESPONSE_MAPPING,
+
+  CONTENT_CARD_TYPES_WITH_CLOUD_FILES,
+  IMAGE_CONTENT,
+  VIDEO_CONTENT,
+  SCHEDULED_CONTENT,
 } = require('./CardEnum');
 
 const getCards = async (request, response, next) => {
@@ -59,8 +66,30 @@ const putCard = async (request, response, next) => {
   try {
     const { id: cardId } = request.params;
     const { body: card } = request;
+    const { cardType } = card;
 
-    await CardService.updateCard(cardId, card);
+    if (cardType === CONTENT_CARD) {
+      const { contentCardType, shouldDeleteCloudFile = false } = card;
+      if (CONTENT_CARD_TYPES_WITH_CLOUD_FILES.includes(contentCardType)) {
+        // get content card details first
+        const cardDetails = await CardService.getCardById(cardId);
+        let cloudFileName = '';
+        if (contentCardType === IMAGE_CONTENT) {
+          cloudFileName = cardDetails.imageURLContent || '';
+        } else if (contentCardType === VIDEO_CONTENT) {
+          cloudFileName = cardDetails.videoURLContent || '';
+        } else if (contentCardType === SCHEDULED_CONTENT) {
+          cloudFileName = cardDetails.scheduledEventContent.imagePosterURL || '';
+        }
+
+        if (shouldDeleteCloudFile) {
+          await CloudStorage.deleteFile(cloudFileName);
+        }
+      }
+    } else if (cardType === QUESTION_CARD) {
+      // remove responses
+    }
+    await CardService.updateCard(cardId, { ...card });
     response.status(200).send();
   } catch (error) {
     next(error);

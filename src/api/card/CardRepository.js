@@ -3,6 +3,8 @@ const Card = require('./CardModel');
 
 const getAllCards = () => Card.find({}).exec();
 
+const getCardById = (_id) => Card.find({ _id }).exec();
+
 const getCardsByCardType = (cardType) => Card.find({ cardType }).exec();
 
 const getCardsByTeam = (team, page, limit) => Card
@@ -87,6 +89,7 @@ const removeResponse = (cardId, userId, questionCardType) => Card.findOneAndUpda
 
 module.exports = {
   getAllCards,
+  getCardById,
   getCardsByCardType,
   getCardsByTeam,
   getCardsByIds,
