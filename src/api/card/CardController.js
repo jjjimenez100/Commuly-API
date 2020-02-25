@@ -67,35 +67,38 @@ const putCard = async (request, response, next) => {
     const { id: cardId } = request.params;
     const { body: card } = request;
     const { cardType } = card;
-    const cardDetails = await CardService.getCardById(cardId);
 
+    const [cardDetails] = await CardService.getCardById(cardId);
+    const { createdDate } = cardDetails;
     if (cardType === CONTENT_CARD) {
       const { contentCardType, shouldDeleteCloudFile = false } = card;
       if (CONTENT_CARD_TYPES_WITH_CLOUD_FILES.includes(contentCardType)) {
-        let cloudFileName = '';
-        if (contentCardType === IMAGE_CONTENT) {
-          cloudFileName = cardDetails.imageURLContent || '';
-        } else if (contentCardType === VIDEO_CONTENT) {
-          cloudFileName = cardDetails.videoURLContent || '';
-        } else if (contentCardType === SCHEDULED_CONTENT) {
-          cloudFileName = cardDetails.scheduledEventContent.imagePosterURL || '';
-        }
-
         if (shouldDeleteCloudFile) {
+          let cloudFileName = '';
+          if (contentCardType === IMAGE_CONTENT) {
+            cloudFileName = cardDetails.imageURLContent || '';
+          } else if (contentCardType === VIDEO_CONTENT) {
+            cloudFileName = cardDetails.videoURLContent || '';
+          } else if (contentCardType === SCHEDULED_CONTENT) {
+            cloudFileName = cardDetails.scheduledEventContent.imagePosterURL || '';
+          }
           await CloudStorage.deleteFile(cloudFileName);
         }
 
         const updatedFileURL = await CardService.updateFile(card);
         if (contentCardType === IMAGE_CONTENT) {
-          cardDetails.imageURLContent = updatedFileURL;
+          card.imageURLContent = updatedFileURL;
         } else if (contentCardType === VIDEO_CONTENT) {
-          cardDetails.videoURLContent = updatedFileURL;
+          card.videoURLContent = updatedFileURL;
         } else if (contentCardType === SCHEDULED_CONTENT) {
-          cardDetails.scheduledEventContent.imagePosterURL = updatedFileURL;
+          card.scheduledEventContent.imagePosterURL = updatedFileURL;
         }
 
-        await CardService.updateCard(cardId, { ...card });
-        response.send({ updatedFileURL });
+        const updatedCard = await CardService.updateCard(cardId, { ...card, createdDate });
+        response.send({ updatedCard });
+      } else {
+        const updatedCard = await CardService.updateCard(cardId, { ...card, createdDate });
+        response.send({ updatedCard });
       }
     } else if (cardType === QUESTION_CARD) {
       // remove responses on the actual card
@@ -109,8 +112,11 @@ const putCard = async (request, response, next) => {
       const { responses } = cardDetails[questionCardContent];
       const respondedUserIds = responses.map(({ userId }) => userId);
       await UserService.removeCardResponseToUsers(respondedUserIds, cardId);
-      await CardService.updateCard(cardId, { ...card });
-      response.status(200).send();
+
+      const updatedCard = await CardService.updateCard(cardId, { ...card, createdDate });
+      response.status(200).send({ updatedCard });
+    } else {
+      response.status(400).send({ message: 'Invalid card type. ' });
     }
   } catch (error) {
     next(error);
