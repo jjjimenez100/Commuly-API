@@ -71,6 +71,9 @@ const putCard = async (request, response, next) => {
     const { createdDate } = cardDetails;
     if (cardType === CONTENT_CARD) {
       const { contentCardType, shouldDeleteCloudFile = false } = card;
+      const scheduledEventContent = contentCardType === SCHEDULED_CONTENT
+        ? JSON.parse(card.scheduledEventContent)
+        : {};
       if (CONTENT_CARD_TYPES_WITH_CLOUD_FILES.includes(contentCardType)) {
         // form data stringifies boolean
         if (String(shouldDeleteCloudFile) === 'true') {
@@ -90,10 +93,19 @@ const putCard = async (request, response, next) => {
           } else if (contentCardType === VIDEO_CONTENT) {
             card.videoURLContent = updatedFileURL;
           } else if (contentCardType === SCHEDULED_CONTENT) {
-            card.scheduledEventContent.imagePosterURL = updatedFileURL;
+            scheduledEventContent.imagePosterURL = updatedFileURL;
           }
 
-          const updatedCard = await CardService.updateCard(cardId, { ...card, createdDate });
+          let updatedCard;
+          if (contentCardType === SCHEDULED_CONTENT) {
+            updatedCard = await CardService.updateCard(cardId, {
+              ...card,
+              scheduledEventContent,
+              createdDate,
+            });
+          } else {
+            updatedCard = await CardService.updateCard(cardId, { ...card, createdDate });
+          }
           response.send({ updatedCard });
           return;
         }
@@ -103,12 +115,19 @@ const putCard = async (request, response, next) => {
         } else if (contentCardType === VIDEO_CONTENT) {
           partialUpdatedCard.videoURLContent = cardDetails.videoURLContent;
         } else if (contentCardType === SCHEDULED_CONTENT) {
-          partialUpdatedCard
-            .scheduledEventContent
+          scheduledEventContent
             .imagePosterURL = cardDetails.scheduledEventContent.imagePosterURL;
         }
 
-        const updatedCard = await CardService.updateCard(cardId, partialUpdatedCard);
+        let updatedCard;
+        if (contentCardType === SCHEDULED_CONTENT) {
+          updatedCard = await CardService.updateCard(cardId, {
+            ...partialUpdatedCard,
+            scheduledEventContent,
+          });
+        } else {
+          updatedCard = await CardService.updateCard(cardId, partialUpdatedCard);
+        }
         response.send({ updatedCard });
       } else {
         const updatedCard = await CardService.updateCard(cardId, { ...card, createdDate });
