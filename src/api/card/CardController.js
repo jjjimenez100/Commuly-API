@@ -65,9 +65,8 @@ const postCard = async (request, response, next) => {
 const putCard = async (request, response, next) => {
   try {
     const { id: cardId } = request.params;
-    const { body: card } = request;
+    const { body: card, file } = request;
     const { cardType } = card;
-
     const [cardDetails] = await CardService.getCardById(cardId);
     const { createdDate } = cardDetails;
     if (cardType === CONTENT_CARD) {
@@ -85,7 +84,7 @@ const putCard = async (request, response, next) => {
           await CloudStorage.deleteFile(cloudFileName);
         }
 
-        const updatedFileURL = await CardService.updateFile(card);
+        const updatedFileURL = await CardService.updateFile({ ...card, file });
         if (contentCardType === IMAGE_CONTENT) {
           card.imageURLContent = updatedFileURL;
         } else if (contentCardType === VIDEO_CONTENT) {
