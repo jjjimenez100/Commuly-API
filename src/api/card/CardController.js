@@ -72,7 +72,8 @@ const putCard = async (request, response, next) => {
     if (cardType === CONTENT_CARD) {
       const { contentCardType, shouldDeleteCloudFile = false } = card;
       if (CONTENT_CARD_TYPES_WITH_CLOUD_FILES.includes(contentCardType)) {
-        if (shouldDeleteCloudFile) {
+        // form data stringifies boolean
+        if (String(shouldDeleteCloudFile) === 'true') {
           let cloudFileName = '';
           if (contentCardType === IMAGE_CONTENT) {
             cloudFileName = cardDetails.imageURLContent || '';
@@ -82,18 +83,32 @@ const putCard = async (request, response, next) => {
             cloudFileName = cardDetails.scheduledEventContent.imagePosterURL || '';
           }
           await CloudStorage.deleteFile(cloudFileName);
-        }
 
-        const updatedFileURL = await CardService.updateFile({ ...card, file });
+          const updatedFileURL = await CardService.updateFile({ ...card, file });
+          if (contentCardType === IMAGE_CONTENT) {
+            card.imageURLContent = updatedFileURL;
+          } else if (contentCardType === VIDEO_CONTENT) {
+            card.videoURLContent = updatedFileURL;
+          } else if (contentCardType === SCHEDULED_CONTENT) {
+            card.scheduledEventContent.imagePosterURL = updatedFileURL;
+          }
+
+          const updatedCard = await CardService.updateCard(cardId, { ...card, createdDate });
+          response.send({ updatedCard });
+          return;
+        }
+        const partialUpdatedCard = { ...card, createdDate };
         if (contentCardType === IMAGE_CONTENT) {
-          card.imageURLContent = updatedFileURL;
+          partialUpdatedCard.imageURLContent = cardDetails.imageURLContent;
         } else if (contentCardType === VIDEO_CONTENT) {
-          card.videoURLContent = updatedFileURL;
+          partialUpdatedCard.videoURLContent = cardDetails.videoURLContent;
         } else if (contentCardType === SCHEDULED_CONTENT) {
-          card.scheduledEventContent.imagePosterURL = updatedFileURL;
+          partialUpdatedCard
+            .scheduledEventContent
+            .imagePosterURL = cardDetails.scheduledEventContent.imagePosterURL;
         }
 
-        const updatedCard = await CardService.updateCard(cardId, { ...card, createdDate });
+        const updatedCard = await CardService.updateCard(cardId, partialUpdatedCard);
         response.send({ updatedCard });
       } else {
         const updatedCard = await CardService.updateCard(cardId, { ...card, createdDate });
