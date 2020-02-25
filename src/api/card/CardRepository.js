@@ -53,9 +53,7 @@ const removeReaction = (cardId, reactionType, userId) => Card.findOneAndUpdate(
   },
   {
     $pull: {
-      [`reactions.${reactionType.toLowerCase()}`]: {
-        userId,
-      },
+      [`reactions.${reactionType.toLowerCase()}`]: userId,
     },
   },
   { useFindAndModify: false },
