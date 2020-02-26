@@ -171,9 +171,12 @@ const patchCard = async (request, response, next) => {
     } else if (patchType === UNREACT) {
       await CardService.unreactToCard(cardId, reactionType, userId);
     } else if (patchType === ADD_RESPONSE) {
+      const { userId: responseUserId } = userResponse;
+      const { name, email } = await UserService.getUserById(responseUserId);
+      const newUserResponse = { ...userResponse, name, email };
       await CardService.addResponseToCard(
         cardId,
-        userResponse,
+        newUserResponse,
         QUESTION_CONTENT_RESPONSE_MAPPING[questionCardType],
       );
       await UserService.addCardResponseToUser(userId, cardId);

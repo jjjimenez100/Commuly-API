@@ -69,7 +69,10 @@ const addResponse = (cardId, response, questionCardType) => Card.findOneAndUpdat
   },
   {
     $push: {
-      [`${questionCardType}.responses`]: response,
+      [`${questionCardType}.responses`]: {
+        ...response,
+        respondedDate: moment.tz('Asia/Manila').format('MM/DD/YYYY hh:mm:ss A'),
+      },
     },
   },
   { useFindAndModify: false },

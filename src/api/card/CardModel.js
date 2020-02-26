@@ -71,8 +71,9 @@ const userResponseInfoSchema = {
   // ObjectID
   userId: ObjectId,
   // additional details for viewing responses
-  firstName: String,
-  lastName: String,
+  name: String,
+  email: String,
+  respondedDate: String,
 };
 
 const questionCardSchema = {
