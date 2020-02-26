@@ -80,6 +80,7 @@ const questionCardSchema = {
   questionCardType: String,
   multipleChoiceContent: {
     type: {
+      title: String,
       question: String,
       choices: [String],
 
@@ -91,6 +92,7 @@ const questionCardSchema = {
   },
   likertContent: {
     type: {
+      title: String,
       question: String,
       choices: {
         type: {
@@ -106,6 +108,7 @@ const questionCardSchema = {
   },
   openTextContent: {
     type: {
+      title: String,
       question: String,
       responses: [{
         ...userResponseInfoSchema,
@@ -115,6 +118,7 @@ const questionCardSchema = {
   },
   columnReorderingContent: {
     type: {
+      title: String,
       question: String,
       options: [String],
       choices: [String],
