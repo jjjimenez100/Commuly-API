@@ -8,7 +8,7 @@ const CardService = require('../card/CardService');
 const { generateSalt, hashPassword } = require('../credentials');
 const {
   DONE_STATUS, STUCK_STATUS, TODO_CONTENT, SCHEDULED_CONTENT,
-  CONTENT_CARD, QUESTION_CARD, QUESTION_CONTENT_RESPONSE_MAPPING,
+  CONTENT_CARD, QUESTION_CARD,
 } = require('../card/CardEnum');
 const { REACTION_POINT, PIN_POINT, RESPONSE_POINT } = require('./UserEnum');
 
@@ -33,27 +33,13 @@ const getUserCards = async (id) => {
   const partialTodoCards = await CardService.getCardsByIds(todoIds);
   const partialScheduledCards = await CardService.getCardsByIds(scheduledIds);
   const partialTeamCards = await CardService.getCardsByTeam(activeTeam);
-  const teamCards = partialTeamCards.map((teamCard) => {
+  const teamCards = partialTeamCards.filter((teamCard) => {
     const { cardType, _id: teamCardId } = teamCard;
     if (cardType === CONTENT_CARD) {
-      return teamCard;
+      return true;
     }
 
-    // map answered question cards to true
-    const hasUserSubmittedAnswer = cardType === QUESTION_CARD
-    && respondedCards.includes(teamCardId);
-    if (hasUserSubmittedAnswer) {
-      // get answer and map
-      const { questionCardType = '' } = teamCard;
-      const { responses = [] } = teamCard[QUESTION_CONTENT_RESPONSE_MAPPING[questionCardType]];
-      const userResponse = responses.find(({ userId }) => userId.toString() === id);
-
-      // eslint-disable-next-line no-underscore-dangle
-      return { ...teamCard._doc, hasUserSubmittedAnswer, userResponse };
-    }
-
-    // eslint-disable-next-line no-underscore-dangle
-    return { ...teamCard._doc, hasUserSubmittedAnswer };
+    return cardType === QUESTION_CARD && !respondedCards.includes(teamCardId);
   });
 
   const todoTeamCards = teamCards.filter(({ contentCardType = '' }) => contentCardType === TODO_CONTENT);
