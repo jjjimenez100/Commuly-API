@@ -48,13 +48,15 @@ const removeTodo = (teamId, todoId) => Team.findOneAndUpdate(
   { useFindAndModify: false },
 ).exec();
 
-const pinCard = (teamId, cardId) => Team.findOneAndUpdate(
+const pinCard = (teamId, cardId, pinType) => Team.findOneAndUpdate(
   {
     _id: teamId,
   },
   {
     $push: {
-      pinnedCards: cardId,
+      pinnedCards: {
+        cardId, pinType,
+      },
     },
   },
   { useFindAndModify: false },
@@ -66,7 +68,9 @@ const unpinCard = (teamId, cardId) => Team.findOneAndUpdate(
   },
   {
     $pull: {
-      pinnedCards: cardId,
+      pinnedCards: {
+        cardId,
+      },
     },
   },
   { useFindAndModify: false },

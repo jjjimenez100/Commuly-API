@@ -8,13 +8,15 @@ const {
 
 const patchTeam = async (request, response, next) => {
   try {
-    const { patchType, teamId, cardId } = request.body;
+    const {
+      patchType, teamId, cardId, pinType = '',
+    } = request.body;
     if (patchType === ADD_SCHEDULE_TEAM) {
       await TeamService.addScheduleToTeam(teamId, cardId);
     } else if (patchType === ADD_TODO_TEAM) {
       await TeamService.addTodoToTeam(teamId, cardId);
     } else if (patchType === PIN_CARD_TEAM) {
-      await TeamService.pinCardToTeamStream(teamId, cardId);
+      await TeamService.pinCardToTeamStream(teamId, cardId, pinType);
     } else if (patchType === UNPIN_CARD_TEAM) {
       await TeamService.unpinCardToTeamStream(teamId, cardId);
     }

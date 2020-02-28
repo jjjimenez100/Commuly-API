@@ -4,7 +4,9 @@ const addScheduleToTeam = (teamId, scheduleId) => TeamRepository.addSchedule(tea
 
 const addTodoToTeam = (teamId, todoId) => TeamRepository.addTodo(teamId, todoId);
 
-const pinCardToTeamStream = (teamId, cardId) => TeamRepository.pinCard(teamId, cardId);
+const pinCardToTeamStream = (teamId, cardId, pinType) => TeamRepository.pinCard(
+  teamId, cardId, pinType,
+);
 
 const unpinCardToTeamStream = (teamId, cardId) => TeamRepository.unpinCard(teamId, cardId);
 

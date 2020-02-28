@@ -32,7 +32,10 @@ const teamSchema = new Schema({
   name: String,
   members: [ObjectId],
   admins: [ObjectId],
-  pinnedCards: [ObjectId],
+  pinnedCards: [{
+    cardId: ObjectId,
+    pinType: String,
+  }],
   scheduledCards: [ObjectId],
   todoCards: [ObjectId],
   ...thresholds,
