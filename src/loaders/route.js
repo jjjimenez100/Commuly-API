@@ -8,9 +8,11 @@ const { BASE_URL } = require('../config/api');
 
 const UserRoutes = require('../api/user/UserRoutes');
 const CardRoutes = require('../api/card/CardRoutes');
+const TeamRoutes = require('../api/team/TeamRoutes');
 
 router.use(UserRoutes);
 router.use(CardRoutes);
+router.use(TeamRoutes);
 
 const initRoutes = (app) => {
   logger.info('Routes');

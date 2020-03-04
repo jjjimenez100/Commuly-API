@@ -186,9 +186,7 @@ const pinCardToUserStream = (userId, cardId) => User.findOneAndUpdate(
   },
   {
     $push: {
-      pinnedCards: {
-        cardId,
-      },
+      pinnedCards: cardId,
     },
   },
   { useFindAndModify: false },
@@ -200,9 +198,7 @@ const unpinCardToUserStream = (userId, cardId) => User.findOneAndUpdate(
   },
   {
     $pull: {
-      pinnedCards: {
-        cardId,
-      },
+      pinnedCards: cardId,
     },
   },
   { useFindAndModify: false },
