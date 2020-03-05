@@ -10,10 +10,14 @@ const pinCardToTeamStream = (teamId, cardId, pinType) => TeamRepository.pinCard(
 
 const unpinCardToTeamStream = (teamId, cardId) => TeamRepository.unpinCard(teamId, cardId);
 
+const getPinnedCardsByTeamId = (teamId) => TeamRepository.getPinnedCardsByTeamId(teamId);
+
 module.exports = {
   addScheduleToTeam,
   addTodoToTeam,
 
   pinCardToTeamStream,
   unpinCardToTeamStream,
+
+  getPinnedCardsByTeamId,
 };

@@ -5,12 +5,16 @@ const lodash = require('lodash');
 
 const UserRepository = require('./UserRepository');
 const CardService = require('../card/CardService');
+const TeamService = require('../team/TeamService');
+
 const { generateSalt, hashPassword } = require('../credentials');
 const {
   DONE_STATUS, STUCK_STATUS, TODO_CONTENT, SCHEDULED_CONTENT,
   CONTENT_CARD, QUESTION_CARD,
 } = require('../card/CardEnum');
-const { REACTION_POINT, PIN_POINT, RESPONSE_POINT } = require('./UserEnum');
+const {
+  REACTION_POINT, PIN_POINT, RESPONSE_POINT, EMPLOYEE_ROLE, PROGRAM_ADMINISTRATOR_ROLE, SUPERVISOR_ROLE,
+} = require('./UserEnum');
 
 const getUserCards = async (id) => {
   const userDetails = await UserRepository.getUserById(id);
@@ -21,26 +25,50 @@ const getUserCards = async (id) => {
     email,
     name,
     phoneNumber,
-    pinnedCards,
+    pinnedCards: partialPinnedCards,
     reactedCards,
     respondedCards,
     role,
     teams,
   } = userDetails;
 
+  const userPinnedCards = partialPinnedCards.map(
+    (partialPinnedCard) => (
+      { _id: partialPinnedCard, cardId: partialPinnedCard, pinType: EMPLOYEE_ROLE }
+    ),
+  );
+  const { pinnedCards: activeTeamPinnedCards } = await TeamService.getPinnedCardsByTeamId(
+    activeTeam,
+  );
+  const pinnedCards = [...activeTeamPinnedCards, ...userPinnedCards];
+
   const todoIds = todos.map(({ todoId }) => todoId);
 
   const partialTodoCards = await CardService.getCardsByIds(todoIds);
   const partialScheduledCards = await CardService.getCardsByIds(scheduledIds);
   const partialTeamCards = await CardService.getCardsByTeam(activeTeam);
-  const teamCards = partialTeamCards.filter((teamCard) => {
+  const unsortedTeamCards = partialTeamCards.filter((teamCard) => {
     const { cardType, _id: teamCardId } = teamCard;
     if (cardType === CONTENT_CARD) {
       return true;
     }
-
     return cardType === QUESTION_CARD && !respondedCards.includes(teamCardId);
+  }).map((teamCard) => {
+    const { _id: teamCardId } = teamCard;
+    const match = pinnedCards.find(({ cardId }) => cardId.toString() === teamCardId.toString());
+
+    if (match) {
+      const { pinType } = match;
+      // eslint-disable-next-line no-underscore-dangle
+      return { ...teamCard._doc, pinType, isPinned: true };
+    }
+    // eslint-disable-next-line no-underscore-dangle
+    return { ...teamCard._doc, isPinned: false };
   });
+  const teamCards = lodash.orderBy(unsortedTeamCards, ['isPinned'], ['desc']);
+  const hasPinnedCardAsEmployee = !!teamCards.find(({ isPinned, pinType = '' }) => isPinned && pinType === EMPLOYEE_ROLE);
+  const hasPinnedCardAsProgramAdministrator = !!teamCards.find(({ isPinned, pinType = '' }) => isPinned && pinType === PROGRAM_ADMINISTRATOR_ROLE);
+  const hasPinnedCardAsSupervisor = !!teamCards.find(({ isPinned, pinType = '' }) => isPinned && pinType === SUPERVISOR_ROLE);
 
   const todoTeamCards = teamCards.filter(({ contentCardType = '' }) => contentCardType === TODO_CONTENT);
   const todoCards = lodash.uniqBy(
@@ -73,6 +101,9 @@ const getUserCards = async (id) => {
     respondedCards,
     role,
     teams,
+    hasPinnedCardAsEmployee,
+    hasPinnedCardAsProgramAdministrator,
+    hasPinnedCardAsSupervisor,
   };
   const cards = {
     user,

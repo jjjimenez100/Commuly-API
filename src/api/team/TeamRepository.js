@@ -1,5 +1,7 @@
 const Team = require('./TeamModel');
 
+const getPinnedCardsByTeamId = (id) => Team.findById(id).exec();
+
 const addSchedule = (teamId, scheduleId) => Team.findOneAndUpdate(
   {
     _id: teamId,
@@ -83,4 +85,5 @@ module.exports = {
   removeTodo,
   pinCard,
   unpinCard,
+  getPinnedCardsByTeamId,
 };
