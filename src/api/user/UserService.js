@@ -13,7 +13,12 @@ const {
   CONTENT_CARD, QUESTION_CARD,
 } = require('../card/CardEnum');
 const {
-  REACTION_POINT, PIN_POINT, RESPONSE_POINT, EMPLOYEE_ROLE, PROGRAM_ADMINISTRATOR_ROLE, SUPERVISOR_ROLE,
+  REACTION_POINT,
+  PIN_POINT,
+  RESPONSE_POINT,
+  EMPLOYEE_ROLE,
+  PROGRAM_ADMINISTRATOR_ROLE,
+  SUPERVISOR_ROLE,
 } = require('./UserEnum');
 
 const getUserCards = async (id) => {
@@ -76,13 +81,22 @@ const getUserCards = async (id) => {
   );
 
   // map todo cards with user status
-  const todoCardsWithUserStatus = todoCards.map((todoCard) => {
+  const todoCardsWithUserStatus = todoCards.filter((todoCard) => {
     const { _id: todoCardId } = todoCard;
     // should always have a match, or else, something went wrong with inserting data
     const matchedTodo = todos.find(({ todoId }) => todoId.toString() === todoCardId.toString());
     const status = matchedTodo ? matchedTodo.status : '';
-    // eslint-disable-next-line no-underscore-dangle
-    return { ...todoCard._doc, status };
+    return status !== DONE_STATUS;
+  });
+
+  const teamCardsWithoutDoneTodos = teamCards.filter((teamCard) => {
+    const { contentCardType, _id: todoCardId } = teamCard;
+    if (contentCardType === TODO_CONTENT) {
+      const matchedTodo = todos.find(({ todoId }) => todoId.toString() === todoCardId.toString());
+      const status = matchedTodo ? matchedTodo.status : '';
+      return status !== DONE_STATUS;
+    }
+    return true;
   });
 
   const scheduledTeamCards = teamCards.filter(({ contentCardType = '' }) => contentCardType === SCHEDULED_CONTENT);
@@ -109,7 +123,7 @@ const getUserCards = async (id) => {
     user,
     todoCards: todoCardsWithUserStatus,
     scheduledCards,
-    teamCards,
+    teamCards: teamCardsWithoutDoneTodos,
   };
 
   return cards;
