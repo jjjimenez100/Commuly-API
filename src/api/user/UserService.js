@@ -70,10 +70,11 @@ const getUserCards = async (id) => {
     // eslint-disable-next-line no-underscore-dangle
     return { ...teamCard._doc, isPinned: false };
   });
-  const teamCards = lodash.orderBy(unsortedTeamCards, ['isPinned'], ['desc']);
-  const hasPinnedCardAsEmployee = !!teamCards.find(({ isPinned, pinType = '' }) => isPinned && pinType === EMPLOYEE_ROLE);
-  const hasPinnedCardAsProgramAdministrator = !!teamCards.find(({ isPinned, pinType = '' }) => isPinned && pinType === PROGRAM_ADMINISTRATOR_ROLE);
-  const hasPinnedCardAsSupervisor = !!teamCards.find(({ isPinned, pinType = '' }) => isPinned && pinType === SUPERVISOR_ROLE);
+  const employeePinnedCard = unsortedTeamCards.find(({ isPinned, pinType = '' }) => isPinned && pinType === EMPLOYEE_ROLE);
+  const programAdministratorPinnedCard = unsortedTeamCards.find(({ isPinned, pinType = '' }) => isPinned && pinType === PROGRAM_ADMINISTRATOR_ROLE);
+  const supervisorPinnedCard = unsortedTeamCards.find(({ isPinned, pinType = '' }) => isPinned && pinType === SUPERVISOR_ROLE);
+
+  const teamCards = unsortedTeamCards.filter(({ isPinned }) => !isPinned);
 
   const todoTeamCards = teamCards.filter(({ contentCardType = '' }) => contentCardType === TODO_CONTENT);
   const todoCards = lodash.uniqBy(
@@ -115,9 +116,9 @@ const getUserCards = async (id) => {
     respondedCards,
     role,
     teams,
-    hasPinnedCardAsEmployee,
-    hasPinnedCardAsProgramAdministrator,
-    hasPinnedCardAsSupervisor,
+    employeePinnedCard,
+    programAdministratorPinnedCard,
+    supervisorPinnedCard,
   };
   const cards = {
     user,
