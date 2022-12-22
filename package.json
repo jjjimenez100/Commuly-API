@@ -22,7 +22,7 @@
     "faker": "^4.1.0",
     "figlet": "^1.2.4",
     "helmet": "^3.21.2",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.19",
     "moment-timezone": "^0.5.27",
     "mongoose": "^5.8.3",
